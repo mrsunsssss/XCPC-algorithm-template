@@ -33,9 +33,9 @@ struct ACAM {
     void insert(const string& s, int id) {
         int now = root;
         for (int i = 1;i < s.size();i++) {
-            int id = s[i] - 'a';
-            if (!tr[now][id]) tr[now][id] = newnode();
-            now = tr[now][id];
+            int c = s[i] - 'a';
+            if (!tr[now][c]) tr[now][c] = newnode();
+            now = tr[now][c];
         }
         //extend
         ID[now].push_back(id);

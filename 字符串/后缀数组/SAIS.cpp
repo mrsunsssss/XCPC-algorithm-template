@@ -499,3 +499,41 @@ private:
 
 using SA32 = SuffixArray<uint32_t>;
 using SA64 = SuffixArray<uint64_t>;
+
+ll count_unique_substrings(string& s) {
+    size_t n = s.size();
+    SA32 sa(s, 256);
+    int res = 0;
+    for (int i = 0;i < s.size();i++) {
+        res += n - sa[i] - sa.common_prefix(i);
+    }
+    return res;
+}
+
+struct LCP {
+    const int LOGN = 20;
+    const int n;
+    vector<vector<int>> f;
+    SA32 sa;
+    LCP(const string& s) :sa(s, 256), n(s.size()) {
+        f.assign(LOGN + 1, vector<int>(n));
+        for (int i = 0; i < n; i++) {
+            f[0][i] = sa.common_prefix(i);
+        }
+        for (int j = 1; j <= LOGN; j++) {
+            for (int i = 0; i + (1 << j) - 1 < n; i++) {
+                f[j][i] = min(f[j - 1][i], f[j - 1][i + (1 << (j - 1))]);
+            }
+        }
+    }
+    int query(int l, int r) {
+        int len = __lg(r - l + 1);
+        return min(f[len][l], f[len][r - (1 << len) + 1]);
+    }
+    int lcp(int x, int y) {
+        int rkx = sa.rank(x), rky = sa.rank(y);
+        if (rkx > rky) swap(rkx, rky);
+        rkx++;
+        return query(rkx, rky);
+    }
+};

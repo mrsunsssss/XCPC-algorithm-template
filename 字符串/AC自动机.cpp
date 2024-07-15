@@ -32,7 +32,7 @@ struct ACAM {
     }
     void insert(const string& s, int id) {
         int now = root;
-        for (int i = 1;i < s.size();i++) {
+        for (int i = 0;i < s.size();i++) {
             int c = s[i] - 'a';
             if (!tr[now][c]) tr[now][c] = newnode();
             now = tr[now][c];
@@ -71,7 +71,7 @@ struct ACAM {
     void query(string s) {
         int now = root;
         int res = 0;
-        for (int i = 1;i < s.size();i++) {
+        for (int i = 0;i < s.size();i++) {
             int id = s[i] - 'a';
             now = tr[now][id];
             //do something
@@ -99,5 +99,4 @@ struct ACAM {
     }
 };
 int ACAM::tr[N][26];
- 
-//s=' '+s; build()
+

@@ -13,5 +13,5 @@ template <class... Args> void debug(const Args&... args) { ((cerr << args << ", 
 template <class... Args> void myin(Args&... args) { ((cin >> args), ...); }
 template <class... Args> void myout(const Args&... args) { ((cout << args), ...); }
 
-ofstream fcout("C:/Users/Mrsuns/Desktop/out.txt");
+ifstream fcin("C:/Users/Mrsuns/Desktop/in.txt");
 ofstream fcout("C:/Users/Mrsuns/Desktop/out.txt");

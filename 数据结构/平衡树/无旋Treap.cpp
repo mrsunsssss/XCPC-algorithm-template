@@ -217,6 +217,20 @@ template <typename T> struct Treap {
         root = merge(T1, T2);
         return res;
     }
+    int __rank(T val) {//递归改循环
+        int u = root;
+        int ret = 1;
+        while (u) {
+            if (tr[u].val < val) {
+                ret += tr[ls(u)].sz + 1;
+                u = rs(u);
+            }
+            else {
+                u = ls(u);
+            }
+        }
+        return ret;
+    }
     //第k小
     T kth(int k) {
         int u = root;
@@ -236,6 +250,20 @@ template <typename T> struct Treap {
         root = merge(T1, T2);
         return tr[u].val;
     }
+    static constexpr long long INF = std::numeric_limits<long long>::max();
+    T __find_pre(T val) {//递归改循环
+        int u = root, ret = -1;
+        while (u) {
+            if (tr[u].val < val) {
+                ret = u;
+                u = rs(u);
+            }
+            else {
+                u = ls(u);
+            }
+        }
+        return (ret == -1) ? -INF : tr[ret].val;
+    }
     //val的后继
     T find_next(T val) {
         split(root, val, T1, T2);
@@ -243,6 +271,19 @@ template <typename T> struct Treap {
         while (ls(u)) u = ls(u);
         root = merge(T1, T2);
         return tr[u].val;
+    }
+    T __find_next(T val) {//递归改循环
+        int u = root, ret = -1;
+        while (u) {
+            if (tr[u].val <= val) {
+                u = rs(u);
+            }
+            else {
+                ret = u;
+                u = ls(u);
+            }
+        }
+        return (ret == -1) ? INF : tr[ret].val;
     }
 
     //l<=val<=r的数量
@@ -282,6 +323,15 @@ template <typename T> struct Treap {
             };
         dfs(dfs, root);
         return res;
+    }
+    void Delete() {//删除该根节点的子树
+        auto del = [&](auto&& del, int u) {
+            if (!u) return;
+            stk[++Top] = u;
+            if (ls(u)) del(del, ls(u));
+            if (rs(u)) del(del, rs(u));
+            };
+        del(del, root);
     }
 
 #undef ls

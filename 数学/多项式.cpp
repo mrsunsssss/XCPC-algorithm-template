@@ -1,4 +1,4 @@
-using uint = unsigned int;
+using uint = unsigned;
  
 namespace Cipolla {
     int mul(int x, int y) { return 1ll * x * y % MOD; }

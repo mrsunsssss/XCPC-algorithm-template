@@ -42,8 +42,8 @@ namespace LCT {
             tag[x] = -1;
         }
         if (rev[x]) {
-            if (ls(x)) reverse(ls(x));
-            if (rs(x)) reverse(rs(x));
+            reverse(ls(x));
+            reverse(rs(x));
             rev[x] = 0;
         }
     }

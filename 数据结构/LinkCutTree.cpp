@@ -1,14 +1,20 @@
 const int N = 2e5 + 10;
 //若要修改一个点的点权，应当先将其splay到根，然后修改，最后还要调用pushup维护。
 namespace LCT {
+    //origin
     int ch[N][2], fa[N], stk[N], rev[N];
 #define ls(x) ch[x][0]
 #define rs(x) ch[x][1]
+    //extend
     int val[N], sum[N];
-    void init() { //初始化link-cut-tree
-        memset(ch, 0, sizeof(ch));
-        memset(fa, 0, sizeof(fa));
-        memset(rev, 0, sizeof(rev));
+    //extend
+    int tag[N], size[N];//区间推平,链长
+    void init(int n) { //初始化link-cut-tree
+        for (int i = 0;i <= n;i++) ch[i][0] = ch[i][1] = 0;
+        for (int i = 0;i <= n;i++) fa[i] = 0;
+        for (int i = 0;i <= n;i++) val[i] = sum[i] = 0;
+        for (int i = 0;i <= n;i++) tag[i] = 0;
+        for (int i = 0;i <= n;i++) size[i] = 0;
     }
     inline bool son(int x) {
         return ch[fa[x]][1] == x;
@@ -20,13 +26,24 @@ namespace LCT {
         swap(ch[x][1], ch[x][0]);
         rev[x] ^= 1;
     }
-    inline void pushup(int x) {
-        sum[x] = sum[ls(x)] ^ sum[rs(x)] ^ val[x];
+    void cao(int x, int y) {//推平区间
+        val[x] = tag[x] = y;
+        sum[x] = y * size[x];
     }
+    inline void pushup(int x) {
+        sum[x] = sum[ls(x)] + sum[rs(x)] + val[x];
+        size[x] = size[ls(x)] + size[rs(x)] + 1;
+    }
+
     inline void pushdown(int x) {
+        if (tag[x] != -1) {
+            if (ls(x)) cao(ls(x), tag[x]);
+            if (rs(x)) cao(rs(x), tag[x]);
+            tag[x] = -1;
+        }
         if (rev[x]) {
-            reverse(ch[x][0]);
-            reverse(ch[x][1]);
+            if (ls(x)) reverse(ls(x));
+            if (rs(x)) reverse(rs(x));
             rev[x] = 0;
         }
     }
@@ -79,27 +96,35 @@ namespace LCT {
     void cut(int x) { //断开结点x与它的父结点之间的边
         access(x);
         splay(x);
-        ch[x][0] = fa[ch[x][0]] = 0;
+        ch[x][0] = fa[ls(x)] = 0;
         pushup(x);
     }
     bool sametree(int x, int y) { //判断结点x与y是否属于同一棵树
         makeroot(x);
         return findroot(y) == x;
     }
-    void cut(int x, int y) { //切断x与y相连的边（必须保证x与y在一棵树中）
+    void cut(int x, int y) { //切断x与y相连的边(必须保证x与y在一棵树中)
         if (!sametree(x, y)) return;
         makeroot(x); //将x置为整棵树的根
         if (fa[y] == x) cut(y); //删除y与其父结点之间的边
     }
-    void link(int x, int y) { //连接x与y（必须保证x和y属于不同的树）
+    void link(int x, int y) { //连接x与y(必须保证x和y属于不同的树)
         if (sametree(x, y)) return;
         makeroot(x);
         fa[x] = y;
     }
-    void change(int x, int y) {
+    void change(int x, int y) {//x节点的值改为y
         splay(x);
         val[x] = y;
         pushup(x);
+    }
+
+    int gao(int a, int b, int c, int d) {
+        split(a, b);cao(b, 1);
+        split(c, d);
+        int res = sum[d];
+        split(a, b);cao(b, 0);
+        return res;
     }
 
 }

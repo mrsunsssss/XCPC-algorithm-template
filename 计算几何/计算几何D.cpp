@@ -34,16 +34,45 @@ namespace Geometry_D {
     PD div(PD p, ld x) {
         return { p[0] / x,p[1] / x };
     }
+    int loca(PD u, PD v, PD w) {
+        return sgn(cross(uv(u, v), uv(u, w)));
+    }
 
     PD project(LD l, PD p) {
         PD base = uv(l[0], l[1]);//两点式描述直线
         ld r = dot(uv(l[0], p), base) / (base[0] * base[0] + base[1] * base[1]);
         return add(l[0], mul(base, r));
     }
-
-    int point_on_segment(PD a, LD line) {
+    PD rotate(P l, double angle) {//逆时针旋转angle
+        ld cosa = cos(angle), sina = sin(angle);
+        return { l[0] * cosa - l[1] * sina, l[0] * sina + l[1] * cosa };
+    }
+    bool point_on_segment(PD a, LD line) {
         return sgn(cross(uv(a, line[0]), uv(a, line[1]))) == 0
             && sgn(dot(uv(a, line[0]), uv(a, line[1]))) <= 0;
+    }
+
+    bool inter_judge_segment(LD a, LD b) {
+        //一个点的端点在另一个线段
+        if (point_on_segment(b[0], a)
+            || point_on_segment(b[1], a)
+            || point_on_segment(a[0], b)
+            || point_on_segment(a[1], b))
+            return 1;
+        //跨立试验
+        return (loca(a[0], b[0], a[1]) * loca(a[0], b[1], a[1]) < 0
+            && loca(b[0], a[0], b[1]) * loca(b[0], a[1], b[1]) < 0
+            );
+    }
+
+    bool inter_judge(LD a, LD b) {
+        return sgn(cross(uv(a[0], a[1]), uv(a[0], b[0]))
+            - cross(uv(a[0], a[1]), uv(a[0], b[1]))) != 0;
+    }
+    PD line_inter(LD a, LD b) {
+        ld s1 = cross(uv(a[0], a[1]), uv(a[0], b[0]));
+        ld s2 = cross(uv(a[0], a[1]), uv(a[0], b[1]));
+        return div(add(mul(b[0], s2), mul(b[1], s1)), s1 + s2);
     }
     array<PD, 2> inter_circle_line(PD o, ld r, LD line) {
         PD s = line[0], t = line[1];

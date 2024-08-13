@@ -28,9 +28,7 @@ P add(P u, P v) {
 int dis2(P u, P v) {
     return (u[0] - v[0]) * (u[0] - v[0]) + (u[1] - v[1]) * (u[1] - v[1]);
 }
-ld dis(PD u, PD v) {
-    return sqrt((u[0] - v[0]) * (u[0] - v[0]) + (u[1] - v[1]) * (u[1] - v[1]));
-}
+
 int cross(P u, P v) {
     return u[0] * v[1] - u[1] * v[0];
 }

@@ -56,12 +56,7 @@ struct argcmp {//极角排序
     }
 };
  
-PD rotate(P l, double angle) {//逆时针旋转angle
-    ld cosa = cos(angle), sina = sin(angle);
-    return { l[0] * cosa - l[1] * sina, l[0] * sina + l[1] * cosa };
-}
- 
-int point_on_segment(P a, LI line) {
+bool point_on_segment(P a, LI line) {
     return sgn(cross(uv(a, line[0]), uv(a, line[1]))) == 0
         && sgn(dot(uv(a, line[0]), uv(a, line[1]))) <= 0;
 }
@@ -79,16 +74,9 @@ bool inter_judge_segment(LI a, LI b) {
         );
 }
  
- 
 bool inter_judge(LI a, LI b) {
     return sgn(cross(uv(a[0], a[1]), uv(a[0], b[0]))
         - cross(uv(a[0], a[1]), uv(a[0], b[1]))) != 0;
-}
-PD line_inter(LI a, LI b) {
-    ld s1 = cross(uv(a[0], a[1]), uv(a[0], b[0]));
-    ld s2 = cross(uv(a[0], a[1]), uv(a[0], b[1]));
-    return (PD{ (s2 * b[0][0] - s1 * b[1][0]) / (s2 - s1),
-        (s2 * b[0][1] - s1 * b[1][1]) / (s2 - s1) });
 }
  
 vector<P> convex_hull(vector<P> a) {//Andrew求凸包(扫描线)

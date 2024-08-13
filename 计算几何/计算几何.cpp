@@ -231,3 +231,5 @@ CI minkovski(vector<CI> C) {//结果是非严格凸包，即存在三点共线(�
     }
     return ret[0];
 }
+
+

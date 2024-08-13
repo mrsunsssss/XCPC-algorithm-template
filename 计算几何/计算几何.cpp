@@ -232,4 +232,18 @@ CI minkovski(vector<CI> C) {//结果是非严格凸包，即存在三点共线(�
     return ret[0];
 }
 
+array<int, 2> cover(const vector<P>& a, const P& o) {//回转数法判断点是否在多边形内(O(n)),要求顺序是顺时针or逆时针
+    int cnt = 0, n = a.size();//回转数=0表示在多边形外
+    for (int i = 0; i < n; i++) {
+        P u = a[i], v = a[next(i, n)];
+        if (sgn(cross(uv(o, u), uv(o, v))) == 0 && sgn(dot(uv(o, u), uv(o, v))) <= 0) return { 1,1 };//在多边形上
+        if (sgn(u[1] - v[1]) == 0) continue;
+        if (sgn(u[1] - v[1]) < 0 && loca(u, v, o) <= 0) continue;
+        if (sgn(u[1] - v[1]) > 0 && loca(u, v, o) >= 0) continue;
+        if (sgn(u[1] - o[1]) < 0 && sgn(v[1] - o[1]) >= 0) cnt++;
+        if (sgn(u[1] - o[1]) >= 0 && sgn(v[1] - o[1]) < 0) cnt--;
+    }
+    return { cnt,0 };//返回值表示回转数及是否在多边形一条边上
+}
+
 

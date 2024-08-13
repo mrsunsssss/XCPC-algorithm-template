@@ -26,7 +26,7 @@ namespace Discretization_Int {
     }
 }
 
-namespace Discretization_LLong {
+namespace Discretization_LL {
     const int base = (1 << 17) - 1;
     vector<int> c(base + 10);
     vector<pair<long long, int>> data, tmp;

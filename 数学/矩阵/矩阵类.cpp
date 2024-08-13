@@ -51,3 +51,31 @@ matrix qp(matrix A, int t) {
     }
     return ans;
 }
+//矩阵光速幂,处理同底数同模数的幂
+namespace LP {
+    ll getphi(ll x) {
+        ll res = x;
+        for (int i = 2; i * i <= x; i++) {
+            if (x % i == 0) {
+                res -= res / i;
+                while (x % i == 0) x /= i;
+            }
+        }
+        if (x > 1) res -= res / x;
+        return res;
+    }
+    matrix base1[N], basesqrt[N];
+    int Block_len;
+    int Phi;
+    ll maxn = 1e10;//模数的最大值
+    void init(matrix x) {//初始化底数为x
+        Phi = getphi(MOD);
+        Block_len = sqrt(maxn) + 1;
+        base1[0] = matrix(100);base1[0].I(); for (int i = 1;i <= Block_len;i++) base1[i] = base1[i - 1] * x;
+        basesqrt[0] = matrix(100);basesqrt.I(); for (int i = 1;i <= Block_len;i++) basesqrt[i] = basesqrt[i - 1] * base1[Block_len];
+    }
+    matrix qp(unsigned long long x) {
+        x %= Phi;
+        return basesqrt[x / Block_len] * base1[x % Block_len];
+    }
+}

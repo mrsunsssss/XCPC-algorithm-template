@@ -140,7 +140,25 @@ array<int, 2> in_convex(P p, const CI& a) {//{no/strictly yes/yes,where}
     }
     return { 0,0 };
 }
- 
+
+int diam2(const CI& a) {//直径平方
+    int r = 0;
+    int n = a.size();
+    if (n <= 2) {
+        for (int i = 0; i < n; i++)
+            for (int j = i + 1; j < n; j++)
+                r = max(r, dis2(a[i], a[j]));
+        return r;
+    }
+    for (int i = 0, j = 1; i < n; i++) {
+        while (
+            cross(uv(a[i], a[next(i, n)]), uv(a[i], a[j]))
+            - cross(uv(a[i], a[next(i, n)]), uv(a[i], a[next(j, n)])) <= 0
+            ) j = next(j, n);
+        r = max({ r, dis2(a[i], a[j]), dis2(a[next(i, n)], a[j]) });
+    }
+    return r;
+}
 int area2(const vector<P>& a) {
     int ret = 0;
     for (int i = 0;i < a.size();i++) {

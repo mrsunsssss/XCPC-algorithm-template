@@ -111,7 +111,7 @@ vector<P> convex_hull(vector<P> a) {//Andrew求凸包(扫描线)
     ret.pop_back();
     return ret;
 }
-array<int, 2> in_convex(P p, const CI& a) {//{no/strictly yes/yes,where}
+array<int, 2> in_convex(P p, const CI& a) {//{no | strictly yes | yes,where}
     int n = a.size();
     if (n == 1) {
         return { sgn(p[0] - a[0][0]) == 0 && sgn(p[1] - a[0][0]) == 0,0 };

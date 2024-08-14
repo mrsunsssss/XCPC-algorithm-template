@@ -41,16 +41,26 @@ matrix operator+(matrix& A, matrix& B) {
 
     return C;
 }
-matrix qp(matrix A, int t) {
+matrix qp(matrix A, int m) {
     int n = A.n;
     matrix ans(n);
     for (int i = 1; i <= n; i++) ans[i][i] = 1;
-    while (t) {
-        if (t & 1) ans = ans * A;
-        t >>= 1;A = A * A;
+    while (m) {
+        if (m & 1) ans = ans * A;
+        m >>= 1;A = A * A;
     }
     return ans;
 }
+matrix pow_sum(matrix A, int m) {//qp(A,1)+qp(A,2)+...+qp(A,m) 
+    int n = A.n;
+    matrix ans(n), B = A;
+    while (m) {
+        if (m & 1) ans = ans * A + B;
+        B = B * A + B;A = A * A;m >>= 1;
+    }
+    return ans;
+}
+
 //矩阵光速幂,处理同底数同模数的幂
 namespace LP {
     ll getphi(ll x) {

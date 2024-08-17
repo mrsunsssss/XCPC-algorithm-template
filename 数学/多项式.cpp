@@ -163,6 +163,7 @@ struct Poly {
     vector<uint> p;
     Poly(int n) { p.resize(n); }
     Poly(int n, int k) { p.resize(n);for (int i = 0;i < n;i++) p[i] = k; }
+    Poly(initializer_list<uint> list) : p(list) {}
     Poly() {}
     uint operator[](const int& k)const { return p[k]; }
     uint& operator[](const int& k) { return p[k]; }

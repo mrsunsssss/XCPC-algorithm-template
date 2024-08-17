@@ -1,6 +1,6 @@
 int mu[N];int phi[N];
 int np[N];vector<int> p;
-void Prework(int n = 2e5) {//线性筛积性函数
+void Prework(int n = N - 10) {//线性筛积性函数
     np[0] = np[1] = 1;mu[1] = 1;phi[1] = 1;
     for (int i = 2;i <= n;i++) {
         if (!np[i]) {
@@ -26,7 +26,7 @@ void Prework(int n = 2e5) {//线性筛积性函数
 
 int np[N], minp[N];
 vector<int> p;
-void Prework(int n = 2e5) {//欧拉筛最小质因子
+void Prework(int n = N - 10) {//欧拉筛最小质因子
     np[0] = np[1] = 1;
     for (int i = 2;i <= n;i++) {
         if (!np[i]) {

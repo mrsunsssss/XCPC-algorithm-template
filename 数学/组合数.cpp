@@ -23,7 +23,7 @@ int __comb(int a, int b) {
 int norm(int x) {
     return (x % MOD + MOD) % MOD;
 }
-void Prework(int n = 2e5) {
+void Prework(int n = N - 10) {
     fact[0] = 1;
     for (int i = 1;i <= n;i++) {
         fact[i] = fact[i - 1] * i % MOD;

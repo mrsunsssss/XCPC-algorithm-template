@@ -35,3 +35,6 @@ struct BIT {
         return res + 1;
     }
 };
+
+
+//1-index

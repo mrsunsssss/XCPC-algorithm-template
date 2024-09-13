@@ -100,3 +100,4 @@ struct ACAM {
 };
 int ACAM::tr[N][26];
 //build()
+//0-index

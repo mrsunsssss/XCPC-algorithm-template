@@ -51,4 +51,4 @@ struct KMP {
     }
 
 };
-//s=' '+s ,ss=' '+ss
+//1-index

@@ -55,4 +55,4 @@ struct PAM {
     }
 };
 int PAM::nxt[N][26];
-//记得s=' '+s;   !!!
+//1-index

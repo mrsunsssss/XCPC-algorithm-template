@@ -61,3 +61,7 @@ ll ptoll(array<int, 2> a) {
     ll ret = ((1LL * a[0]) << 30) | a[1];
     return ret;
 }
+//0-index:初始化
+//1-index:subs
+
+

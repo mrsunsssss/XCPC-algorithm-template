@@ -102,7 +102,7 @@ public:
     template <bool (*g)(S)> int max_right(int l) {
         return max_right(l, [](S x) { return g(x); });
     }
-    template <class G> int max_right(int l, G g) {//最大的r满足g(op(l,l+1,..,r-1))=1
+    template <class G> int max_right(int l, G g) {//固定l,第一个不满足g(op(l,l+1,..,r))=1的r
         assert(0 <= l && l <= _n);
         assert(g(e()));
         if (l == _n) return _n;
@@ -131,7 +131,7 @@ public:
     template <bool (*g)(S)> int min_left(int r) {
         return min_left(r, [](S x) { return g(x); });
     }
-    template <class G> int min_left(int r, G g) {//最小的l满足g(op(l,l+1,..,r))=1
+    template <class G> int min_left(int r, G g) {//固定r,最后一个l满足g(op(l,l+1,..,r))=1
         assert(0 <= r && r <= _n);
         assert(g(e()));
         if (r == 0) return 0;

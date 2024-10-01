@@ -7,6 +7,15 @@ using LD = array<PD, 2>;
 const ld eps = 1e-9;
 
 namespace Geometry_D {
+    PD PtoPD(P u) {
+        return (PD) { (ld)u[0], (ld)u[1] };
+    }
+    LD LItoLD(LI l) {
+        LD nl;
+        nl[0] = PtoPD(l[0]);
+        nl[1] = PtoPD(l[1]);
+        return nl;
+    }
     int sgn(ld x) {
         return x > eps ? 1 : (x < -eps ? -1 : 0);
     }
@@ -30,7 +39,9 @@ namespace Geometry_D {
     PD add(PD u, PD v) {
         return { u[0] + v[0],u[1] + v[1] };
     }
-
+    PD sub(PD u, PD v) {
+        return { u[0] - v[0],u[1] - v[1] };
+    }
     PD div(PD p, ld x) {
         return { p[0] / x,p[1] / x };
     }
@@ -72,7 +83,7 @@ namespace Geometry_D {
     PD line_inter(LD a, LD b) {
         ld s1 = cross(uv(a[0], a[1]), uv(a[0], b[0]));
         ld s2 = cross(uv(a[0], a[1]), uv(a[0], b[1]));
-        return div(add(mul(b[0], s2), mul(b[1], s1)), s1 + s2);
+        return div(sub(mul(b[0], s2), mul(b[1], s1)), s2 - s1);
     }
     array<PD, 2> inter_circle_line(PD o, ld r, LD line) {
         PD s = line[0], t = line[1];

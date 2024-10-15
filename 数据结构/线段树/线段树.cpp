@@ -175,8 +175,6 @@ private:
 };
 //to use it: lazy_segtree<S,op,e,F,mapping,composition,id> tr(vector<S>/int);
 
-using segtree = lazy_segtree<S, op, e, F, mapping, composition, id>;
-
 //op：区间乘，区间加。
 //ask：区间和
 struct S {
@@ -269,5 +267,7 @@ auto g = [&](S u) {
     return u.Min >= x;
     };
 auto l = max(1LL, seg.min_left(r, g));
+
+using segtree = lazy_segtree<S, op, e, F, mapping, composition, id>;
 
 

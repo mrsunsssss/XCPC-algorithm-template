@@ -1,5 +1,7 @@
+const int MOD = 998244353;
+const int N = 4e5 + 10;
 using uint = unsigned;
- 
+
 namespace Cipolla {
     int mul(int x, int y) { return 1ll * x * y % MOD; }
     uint qp(uint a, int b) { uint res = 1; for (; b; b >>= 1, a = mul(a, a))  if (b & 1)  res = mul(res, a); return res; }
@@ -30,22 +32,24 @@ namespace Cipolla {
         return min(res, MOD - res);//返回较小解
     }
 }
- 
- 
-int rev[N];//NTT/FFT反转二进制
+
+
+int rev[N];
 namespace MTT {//任意模数多项式乘法
     const double PI = acos((double)-1);
     struct Cp {
         double x, y;
         Cp() { ; }
-        Cp(double _x, double _y) : x(_x), y(_y) { }
+        Cp(double _x, double _y) : x(_x), y(_y) {}
         inline Cp operator + (const Cp& t) const { return (Cp) { x + t.x, y + t.y }; }
         inline Cp operator - (const Cp& t) const { return (Cp) { x - t.x, y - t.y }; }
         inline Cp operator * (const Cp& t) const { return (Cp) { x* t.x - y * t.y, x* t.y + y * t.x }; }
+        inline Cp conj() const { return(Cp) { x, -y }; }
+        inline Cp operator*(const double& z) const { return (Cp) { x* z, y* z }; }
     }A[N], B[N], C[N], w[N / 2];
- 
+
 #define E(x) ll(x+0.5)%P
- 
+
     void FFT(int n, Cp* a, int f) {
         for (int i = 0;i <= n - 1;i++) if (rev[i] < i) swap(a[i], a[rev[i]]);
         w[0] = Cp(1, 0);
@@ -62,59 +66,63 @@ namespace MTT {//任意模数多项式乘法
         }
         if (f == -1) for (int i = 0;i <= n - 1;i++) a[i].x /= n, a[i].y /= n;
     }
- 
-    void Multiply(vector<uint> a, vector<uint> b, vector<uint>& res, int P) {
+
+    void conv(vector<uint> a, vector<uint> b, vector<uint>& res, int P) {
         // [0,n-1]*[0,m-1]->[0,n+m-2]
         int n = a.size(), m = b.size();res.resize(n + m - 1);
         int S = (1 << 15) - 1;
- 
         int R = 1, cc = -1;
         while (R <= n + m - 1) R <<= 1, cc++;
         for (int i = 1;i <= R;i++) rev[i] = (rev[i >> 1] >> 1) | ((i & 1) << cc);
-        for (int i = 0;i <= n - 1;i++) A[i] = Cp((a[i] & S), (a[i] >> 15));
-        for (int i = 0;i <= m - 1;i++) B[i] = Cp((b[i] & S), (b[i] >> 15));
+        for (int i = 0;i <= n - 1;i++) A[i] = Cp((a[i] >> 15), (a[i] & S));
+        for (int i = 0;i <= m - 1;i++) B[i] = Cp((b[i] >> 15), (b[i] & S));
         for (int i = n;i <= R - 1;i++) A[i] = Cp(0, 0);
         for (int i = m;i <= R - 1;i++) B[i] = Cp(0, 0);
- 
         FFT(R, A, 1), FFT(R, B, 1);
-        for (int i = 0;i <= R - 1;i++) {
-            int j = (R - i) % R;
-            C[i] = Cp((A[i].x + A[j].x) / 2, (A[i].y - A[j].y) / 2) * B[i];
-            B[i] = Cp((A[i].y + A[j].y) / 2, (A[j].x - A[i].x) / 2) * B[i];
+        Cp ai, aj, xi, yi;
+        for (int i = 0, j; i <= R / 2; i++) {
+            j = (R - i) % R;
+            xi = (B[i] + B[j].conj()) * 0.5;
+            yi = (B[j].conj() - B[i]) * Cp(0, 0.5);
+            ai = A[i], aj = A[j];
+            A[i] = ai * xi;
+            B[i] = ai * yi;
+            A[j] = aj * xi.conj();
+            B[j] = aj * yi.conj();
         }
-        FFT(R, C, -1), FFT(R, B, -1);
+        FFT(R, A, -1), FFT(R, B, -1);
         for (int i = 0;i <= n + m - 2;i++) {
-            ll a = E(C[i].x), b = E(C[i].y), c = E(B[i].x), d = E(B[i].y);
-            res[i] = (a + ((b + c) << 15) + (d << 30)) % P;
+            ll a = E(A[i].x), b = E(A[i].y), c = E(B[i].x), d = E(B[i].y);
+            res[i] = (d + ((b + c) << 15) + (a << 30)) % P;
         }
     }
-    // void Multiply_db(vector<double> a, vector<double> b, vector<double>& res) {//答案double类型
-    //     // [0,n-1]*[0,m-1]->[0,n+m-2]
-    //     int n = a.size(), m = b.size();res.resize(n + m - 1);
- 
-    //     int R = 1, cc = -1;
-    //     while (R <= n + m - 1) R <<= 1, cc++;
-    //     for (int i = 1;i <= R;i++) rev[i] = (rev[i >> 1] >> 1) | ((i & 1) << cc);
-    //     for (int i = 0;i <= n - 1;i++) A[i] = Cp(a[i], 0);
-    //     for (int i = 0;i <= m - 1;i++) B[i] = Cp(b[i], 0);
-    //     for (int i = n;i <= R - 1;i++) A[i] = Cp(0, 0);
-    //     for (int i = m;i <= R - 1;i++) B[i] = Cp(0, 0);
- 
-    //     FFT(R, A, 1), FFT(R, B, 1);
-    //     for (int i = 0;i < R;i++) C[i] = A[i] * B[i];
-    //     FFT(R, C, -1);
-    //     for (int i = 0;i <= n + m - 2;i++) res[i] = C[i].x;
-    // }
- 
+
+    void conv_db(vector<double> a, vector<double> b, vector<double>& res) {//答案double类型
+        // [0,n-1]*[0,m-1]->[0,n+m-2]
+        int n = a.size(), m = b.size();res.resize(n + m - 1);
+        int R = 1, cc = -1;
+        while (R <= n + m - 1) R <<= 1, cc++;
+        for (int i = 1;i <= R;i++) rev[i] = (rev[i >> 1] >> 1) | ((i & 1) << cc);
+        for (int i = 0;i <= n - 1;i++) A[i] = Cp(a[i], 0);
+        for (int i = 0;i <= m - 1;i++) B[i] = Cp(b[i], 0);
+        for (int i = n;i <= R - 1;i++) A[i] = Cp(0, 0);
+        for (int i = m;i <= R - 1;i++) B[i] = Cp(0, 0);
+
+        FFT(R, A, 1), FFT(R, B, 1);
+        for (int i = 0;i < R;i++) C[i] = A[i] * B[i];
+        FFT(R, C, -1);
+        for (int i = 0;i <= n + m - 2;i++) res[i] = C[i].x;
+    }
+
 #undef E
 }
- 
+
 int Add(int x, int y) { return (x + y >= MOD) ? x + y - MOD : x + y; }
 int Dec(int x, int y) { return (x - y < 0) ? x - y + MOD : x - y; }
 int mul(int x, int y) { return 1ll * x * y % MOD; }
 uint qp(uint a, int b) { uint res = 1; for (; b; b >>= 1, a = mul(a, a))  if (b & 1)  res = mul(res, a); return res; }
- 
- 
+
+
 namespace NTT {
     int sz;
     uint w[2500005], w_mf[2500005];
@@ -172,7 +180,7 @@ struct Poly {
     void resize(int n) { p.resize(n); }
     int size() { return p.size(); }
     void rev() { reverse(p.begin(), p.end()); }
-    void debug() {
+    void DebugPoly() {
         for (int i = 0;i < p.size();i++) {
             cout << p[i] << "x^" << i;
             if (i + 1 != p.size()) cout << "+";
@@ -202,21 +210,21 @@ Poly operator*(Poly A, Poly B) {//MOD=998244353,..a*2^k+1
     for (int i = 0; i < lim; i++)  A[i] = mul(A[i], B[i]);
     NTT::intt(A.p, lim); return A.extend(n);
 }
- 
+
 // Poly operator*(Poly A, Poly B) {//任意模数多项式乘法
 //     int n = A.deg() + B.deg() + 1;
 //     Poly res(n);
-//     MTT::Multiply(A.p, B.p, res.p, MOD);
+//     MTT::conv(A.p, B.p, res.p, MOD);
 //     return res.extend(n);
 // }
- 
+
 // Poly operator*(Poly A, Poly B) {//答案double类型||如果答案不取模,改成longdouble即可,注意最后的结果需要ll(res[i]+0.5)取整
 //     int n = A.deg() + B.deg() + 1;
 //     Poly res(n);
-//     MTT::Multiply_db(A.p, B.p, res.p);
+//     MTT::conv_db(A.p, B.p, res.p);
 //     return res.extend(n);
 // }
- 
+
 Poly Dev(Poly A) {//多项式求导
     int n = A.size();
     for (int i = 1;i < n;i++) A[i - 1] = mul(A[i], i);
@@ -250,18 +258,18 @@ Poly operator%(Poly A, Poly B) {
     Poly C = A / B;
     return (A - (B * C).extend(A.size())).extend((int)B.size() - 1);
 }
- 
+
 Poly __Inv(Poly A) {//任意模数多项式乘法逆元
     int n = A.size();
     if (n == 1) return A[0] = qp(A[0], MOD - 2), A;
     Poly B = A;B.resize((n + 1) >> 1); B = __Inv(B).extend(n);
     Poly C(1), D(1);
-    MTT::Multiply(A.p, B.p, C.p, MOD);C.resize(n);
-    MTT::Multiply(C.p, B.p, D.p, MOD);D.resize(n);
+    MTT::conv(A.p, B.p, C.p, MOD);C.resize(n);
+    MTT::conv(C.p, B.p, D.p, MOD);D.resize(n);
     for (int i = 0;i < n;i++) B[i] = Dec(Add(B[i], B[i]), D[i]);
     return B.extend(n);
 }
- 
+
 //保证[x ^ 0]f(x) = 1
 Poly Ln(Poly A) {//多项式对数
     Poly B; int n = A.size(); B.resize(n);
@@ -285,12 +293,12 @@ Poly __Exp(Poly A) {//任意模数多项式指数
     Poly B = A;B.resize((n + 1) >> 1); B = __Exp(B).extend(n);
     Poly C = Ln(B);
     Poly D(1), E(1);
-    MTT::Multiply(B.p, C.p, D.p, MOD);D.resize(n);
-    MTT::Multiply(B.p, A.p, E.p, MOD);E.resize(n);
+    MTT::conv(B.p, C.p, D.p, MOD);D.resize(n);
+    MTT::conv(B.p, A.p, E.p, MOD);E.resize(n);
     for (int i = 0;i < n;i++) B[i] = Add(Dec(B[i], D[i]), E[i]);
     return B.extend(n);
 }
- 
+
 //保证[x ^ 0]f(x) = 1
 Poly Sqrt(Poly A) {//多项式开根
     int n = A.size();
@@ -314,7 +322,7 @@ Poly Sqrt_pro(Poly A) {//多项式开根
     C = C * Inv(B);
     return C.extend(n);
 }
- 
+
 //保证[x ^ 0]f(x) = 1
 //k很大时,可以计算前对k模p (注意数论中是费马小定理,模p-1)
 Poly Qpow(Poly A, int k) {//多项式快速幂
@@ -345,7 +353,7 @@ Poly Qpow_pro(Poly a, int k) {//任意首项多项式快速幂
     for (int i = 0;i < shift;i++) a[i] = 0;
     return a;
 }
- 
+
 //i^2=-1(mod p),对-1用二次剩余算出i
 //i = 86583718 (mod 998244353)
 //保证[x ^ 0]f(x) = 0
@@ -398,14 +406,14 @@ Poly Arctan(Poly A) {
     B = Int(B);
     return B;
 }
- 
+
 Poly Stiring_2_row(int n) {//SC(n,i)
     Poly A(n + 1);for (int i = 0, infact_i = 1;i <= n;i++, infact_i = mul(infact_i, _inv[i])) A[i] = mul(((i & 1) ? MOD - 1 : 1), infact_i);
     Poly B(n + 1);for (int i = 0, infact_i = 1;i <= n;i++, infact_i = mul(infact_i, _inv[i])) B[i] = mul(qp(i, n), infact_i);
     A = A * B;
     return A;
 }
- 
+
 Poly Stiring_1_col(int n, int m) {//SA(i,m)
     int infact_m = 1;for (int i = 1;i <= m;i++) infact_m = mul(infact_m, _inv[i]);
     Poly A(n + 1);for (int i = 0;i <= n;i++) A[i] = qp(i, MOD - 2);
@@ -413,7 +421,7 @@ Poly Stiring_1_col(int n, int m) {//SA(i,m)
     for (int i = 0, fact_i = 1;i <= n;i++, fact_i = mul(fact_i, i)) A[i] = mul(mul(A[i], infact_m), fact_i);
     return A;
 }
- 
+
 //记得Poly_init, 如果仅是乘法则不需要
 //Poly读入和初始化时,记得取模. f[i] = -1  ==> f[i] = MOD-1 
 //MTT的rev开lim大小,为方便一般3~4倍即可

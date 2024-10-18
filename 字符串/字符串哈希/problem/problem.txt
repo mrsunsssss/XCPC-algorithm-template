@@ -1,0 +1,2 @@
+线段树维护字符串哈希
+https://www.luogu.com.cn/problem/P2757

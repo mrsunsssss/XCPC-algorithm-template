@@ -54,6 +54,27 @@ struct HLD {
         return dep[u] < dep[v] ? u : v;
     }
 
+    int dis(int u, int v) {
+        return dep[u] + dep[v] - dep[lca(u, v)] * 2;
+    }
+
+    vector<array<int, 2>> get_path(int u, int v) {//u->v，注意可能出现 [r>l]（表示反过来走）
+        vector<array<int, 2>> v1, v2;
+        while (top[u] != top[v]) {
+            if (dep[top[u]] > dep[top[v]]) {
+                v1.push_back({ dfn[u], dfn[top[u]] }), u = p[top[u]];
+            }
+            else {
+                v2.push_back({ dfn[top[v]], dfn[v] }), v = p[top[v]];
+            }
+        }
+        v1.reserve(v1.size() + v2.size() + 1);
+        v1.push_back({ dfn[u], dfn[v] });
+        reverse(v2.begin(), v2.end());
+        for (auto v : v2) v1.push_back(v);
+        return v1;
+    }
+
     // 操作路径上的节点
     void add_pat(int a, int b, function<void(int, int)> op, bool isEdge) {
         while (top[a] != top[b]) {

@@ -41,3 +41,28 @@ void Prework(int n = N - 10) {//欧拉筛最小质因子
         }
     }
 }
+
+vector<int> Divisor(int x) {//获取所有因子
+    vector<array<int, 2>> a;
+    while (x > 1) {
+        if (a.size() == 0 || a.back()[0] != minp[x]) {
+            a.push_back({ minp[x],1 });
+        }
+        else {
+            a.back()[1]++;
+        }
+        x /= minp[x];
+    }
+    vector<int> ret = { 1 };
+    for (auto [num, cnt] : a) {
+        int val = 1;
+        int sz = ret.size();
+        for (int j = 1;j <= cnt;j++) {
+            val *= num;
+            for (int j = 0;j < sz;j++) {
+                ret.push_back(ret[j] * val);
+            }
+        }
+    }
+    return ret;
+}

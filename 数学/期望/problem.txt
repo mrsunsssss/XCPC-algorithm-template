@@ -1,0 +1,5 @@
+trick:dp[i]表示i到i+1所需期望步数，最后的答案用dp的前缀和来表示
+https://atcoder.jp/contests/arc185/tasks/arc185_d
+https://codeforces.com/problemset/problem/1778/D
+https://www.luogu.com.cn/problem/P3750
+https://ac.nowcoder.com/acm/contest/90070/F

@@ -2,4 +2,4 @@
 https://www.luogu.com.cn/problem/SP31428
 
 pisano周期
-https://www.luogu.com.cn/problem/P4000  矩阵快速幂/光速幂求解斐波那契数列
+https://www.luogu.com.cn/problem/P4000

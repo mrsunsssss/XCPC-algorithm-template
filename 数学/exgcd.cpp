@@ -9,7 +9,7 @@ int exgcd(int a, int b, int& x, int& y) {
     return d;
 }
 
-int inv(int a, int b = MOD) {
+int inv(int a, int b = MOD) {// gcd(a,b)=1;
     int x, y;
     exgcd(a, b, x, y);
     return (x % MOD + MOD) % MOD;

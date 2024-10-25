@@ -39,7 +39,7 @@ matrix operator*(const matrix& A, const matrix& B) {
 }
 matrix operator+(const matrix& A, const matrix& B) {
     int n = A.n;
-    matrix C;
+    matrix C(n);
     for (int i = 1; i <= n; i++)
         for (int j = 1; j <= n; j++)
             for (int k = 1; k <= n; k++) {
@@ -51,7 +51,7 @@ matrix operator+(const matrix& A, const matrix& B) {
 }
 matrix qp(matrix A, int m) {
     int n = A.n;
-    matrix ans;
+    matrix ans(n);
     for (int i = 1; i <= n; i++) ans[i][i] = 1;
     while (m) {
         if (m & 1) ans = ans * A;

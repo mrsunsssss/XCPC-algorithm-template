@@ -7,3 +7,6 @@ https://www.luogu.com.cn/problem/P4994 入门
 
 https://www.luogu.com.cn/problem/SP12007 没做
 https://www.luogu.com.cn/problem/SP13419 没做
+
+结论：Fib(gcd(n,m)) = gcd(Fib(n),Fib(m))
+https://www.luogu.com.cn/problem/P1306 矩阵快速幂

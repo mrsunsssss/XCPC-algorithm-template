@@ -82,7 +82,7 @@ namespace LP {
         if (x > 1) res -= res / x;
         return res;
     }
-    matrix base1[N], basesqrt[N];
+    matrix base1[N], basesqrt[N];//注意段错误/栈内存不够，要放到外面作为全局变量
     int Block_len;
     int Phi;
     ll maxn = 1e9 + 7;//模数的最大值

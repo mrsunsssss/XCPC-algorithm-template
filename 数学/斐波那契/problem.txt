@@ -1,0 +1,2 @@
+扩域
+https://www.luogu.com.cn/problem/SP31428

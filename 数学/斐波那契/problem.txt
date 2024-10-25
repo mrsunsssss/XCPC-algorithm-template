@@ -2,4 +2,8 @@
 https://www.luogu.com.cn/problem/SP31428
 
 pisano周期
-https://www.luogu.com.cn/problem/P4000
+https://www.luogu.com.cn/problem/P4000 生日悖论+矩阵光速幂/快速幂
+https://www.luogu.com.cn/problem/P4994 入门
+
+https://www.luogu.com.cn/problem/SP12007 没做
+https://www.luogu.com.cn/problem/SP13419 没做

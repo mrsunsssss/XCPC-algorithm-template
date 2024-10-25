@@ -97,7 +97,7 @@ namespace LP {
             basesqrt[i] = basesqrt[i - 1] * base1[Block_len];
     }
     matrix qp(unsigned long long x) {
-        x %= Phi;
+        //x %= Phi;一般不用，加的时候考虑清楚是否要加。
         return basesqrt[x / Block_len] * base1[x % Block_len];
     }
 }

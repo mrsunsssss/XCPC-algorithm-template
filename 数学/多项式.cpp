@@ -232,8 +232,8 @@ Poly Dev(Poly A) {//多项式求导
 }
 Poly Int(Poly A) {//多项式求积分
     int n = A.size();
-    for (int i = n - 1;i >= 0;i--) A[i] = mul(A[i - 1], _inv[i]);//预处理逆元降低复杂度
-    //for (int i = n - 1;i >= 0;i--) A[i] = mul(A[i - 1], qp(i, MOD - 2));//直接求逆元
+    for (int i = n - 1;i >= 1;i--) A[i] = mul(A[i - 1], _inv[i]);//预处理逆元降低复杂度
+    //for (int i = n - 1;i >= 1;i--) A[i] = mul(A[i - 1], qp(i, MOD - 2));//直接求逆元
     return A[0] = 0, A;
 }
 Poly Inv(Poly A) {//多项式乘法逆元

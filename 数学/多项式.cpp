@@ -246,6 +246,16 @@ Poly Inv(Poly A) {//多项式乘法逆元
     for (int i = 0; i < lim; i++)  A[i] = mul(Dec(2, mul(A[i], B[i])), B[i]);
     NTT::intt(A.p, lim); return A.extend(n);
 }
+Poly __Inv(Poly A) {//任意模数多项式乘法逆元
+    int n = A.size();
+    if (n == 1) return A[0] = qp(A[0], MOD - 2), A;
+    Poly B = A;B.resize((n + 1) >> 1); B = __Inv(B).extend(n);
+    Poly C(1), D(1);
+    MTT::conv(A.p, B.p, C.p, MOD);C.resize(n);
+    MTT::conv(C.p, B.p, D.p, MOD);D.resize(n);
+    for (int i = 0;i < n;i++) B[i] = Dec(Add(B[i], B[i]), D[i]);
+    return B.extend(n);
+}
 Poly operator/(Poly A, Poly B) {
     A.rev(), B.rev();
     int n = A.size(), m = B.size();
@@ -258,18 +268,6 @@ Poly operator%(Poly A, Poly B) {
     Poly C = A / B;
     return (A - (B * C).extend(A.size())).extend((int)B.size() - 1);
 }
-
-Poly __Inv(Poly A) {//任意模数多项式乘法逆元
-    int n = A.size();
-    if (n == 1) return A[0] = qp(A[0], MOD - 2), A;
-    Poly B = A;B.resize((n + 1) >> 1); B = __Inv(B).extend(n);
-    Poly C(1), D(1);
-    MTT::conv(A.p, B.p, C.p, MOD);C.resize(n);
-    MTT::conv(C.p, B.p, D.p, MOD);D.resize(n);
-    for (int i = 0;i < n;i++) B[i] = Dec(Add(B[i], B[i]), D[i]);
-    return B.extend(n);
-}
-
 //保证[x ^ 0]f(x) = 1
 Poly Ln(Poly A) {//多项式对数
     Poly B; int n = A.size(); B.resize(n);

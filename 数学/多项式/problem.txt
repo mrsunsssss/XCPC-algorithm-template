@@ -1,0 +1,1 @@
+https://leetcode.cn/problems/find-the-original-typed-string-ii/description/    对Log部分泰勒展开，调和级数枚举。

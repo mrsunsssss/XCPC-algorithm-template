@@ -1,1 +1,4 @@
 https://codeforces.com/gym/105423/problem/D
+
+二维
+https://leetcode.cn/problems/find-the-number-of-subsequences-with-equal-gcd/description/

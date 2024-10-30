@@ -285,7 +285,7 @@ Poly Exp(Poly A) {//多项式指数
     for (int i = 0; i < n; i++)  C[i] = Dec(A[i], C[i]); C[0] = Add(C[0], 1);
     return (B * C).extend(n);
 }
-Poly __Exp(Poly A) {//任意模数多项式指数
+Poly __Exp(Poly A) {//任意首项多项式指数
     int n = A.size();
     if (n == 1) return A[0] = 1, A;
     Poly B = A;B.resize((n + 1) >> 1); B = __Exp(B).extend(n);
@@ -310,7 +310,7 @@ Poly Sqrt(Poly A) {//多项式开根
     NTT::intt(B.p, lim);
     return B.extend(n);
 }
-Poly Sqrt_pro(Poly A) {//多项式开根
+Poly Sqrt_pro(Poly A) {//任意首项多项式开根
     int n = A.size();
     if (n == 1) return A[0] = Cipolla::Cipolla(A[0]), A;
     Poly B = A;B.resize((n + 1) >> 1); B = Sqrt_pro(B).extend(n);

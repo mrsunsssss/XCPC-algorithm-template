@@ -1,0 +1,2 @@
+凸包
+https://codeforces.com/gym/105459/problem/B   凸包+旋转卡壳

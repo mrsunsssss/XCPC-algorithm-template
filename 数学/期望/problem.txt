@@ -3,3 +3,10 @@ https://atcoder.jp/contests/arc185/tasks/arc185_d
 https://codeforces.com/problemset/problem/1778/D
 https://www.luogu.com.cn/problem/P3750
 https://ac.nowcoder.com/acm/contest/90070/F
+
+
+
+
+高次方的期望
+https://codeforces.com/gym/105459/problem/L   
+按贡献计算，看作是每条边和每两条边对于所有的选点所产生的贡献。最后的答案除以((n-1)n/2)^2 。

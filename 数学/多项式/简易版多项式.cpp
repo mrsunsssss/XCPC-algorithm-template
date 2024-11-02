@@ -14,7 +14,7 @@ int qp(int a, int n) {
 int inv(int x) {
     return qp(x, MOD - 2);
 }
-vector<int> PolyMul(vector<int>& a, vector<int>& b) {
+vector<int> PolyMul(const vector<int>& a, const vector<int>& b) {
     int deg = (int)a.size() + (int)b.size() - 2;
     vector<int> c(deg + 1);
     for (int i = 0;i < a.size();i++) {
@@ -25,7 +25,7 @@ vector<int> PolyMul(vector<int>& a, vector<int>& b) {
     }
     return c;
 }
-vector<int> PolyInv(vector<int>& a) {
+vector<int> PolyInv(const vector<int>& a) {
     int n = a.size() - 1;
     vector<int> b(n + 1);
     int inv_a0 = inv(a[0]), neg = (MOD - inv_a0) % MOD;
@@ -37,7 +37,7 @@ vector<int> PolyInv(vector<int>& a) {
     }
     return b;
 }
-vector<int> PolyLn(vector<int>& a) {// 不需要保证a[0] = 1
+vector<int> PolyLn(const vector<int>& a) {// 不需要保证a[0] = 1
     int n = a.size() - 1;
     vector<int> b(n + 1);
     for (int i = 0;i <= n;i++) {
@@ -51,7 +51,7 @@ vector<int> PolyLn(vector<int>& a) {// 不需要保证a[0] = 1
     }
     return b;
 }
-vector<int> PolyExp(vector<int>& a) {// 保证a[0] = 0
+vector<int> PolyExp(const vector<int>& a) {// 保证a[0] = 0
     int n = a.size() - 1;
     vector<int> b(n + 1);
     b[0] = 1;
@@ -63,3 +63,4 @@ vector<int> PolyExp(vector<int>& a) {// 保证a[0] = 0
     }
     return b;
 }
+

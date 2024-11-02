@@ -37,6 +37,15 @@ vector<int> PolyInv(const vector<int>& a) {
     }
     return b;
 }
+vector<int> PolyDiv(vector<int> a, vector<int> b) {
+    reverse(a.begin(), a.end());reverse(b.begin(), b.end());
+    int n = a.size(), m = b.size();
+    a.resize(n - m + 1), b.resize(n - m + 1);
+    b = PolyInv(b);
+    auto c = PolyMul(a, b);c.resize(n - m + 1);
+    reverse(c.begin(), c.end());
+    return c;
+}
 vector<int> PolyLn(const vector<int>& a) {// 不需要保证a[0] = 1
     int n = a.size() - 1;
     vector<int> b(n + 1);

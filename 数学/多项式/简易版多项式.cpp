@@ -60,3 +60,5 @@ vector<int> PolyExp(vector<int>& a) {// 保证a[0] = 0
     }
     return b;
 }
+
+//时间复杂度均为O(n^2)

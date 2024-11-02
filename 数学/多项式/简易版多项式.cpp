@@ -1,3 +1,6 @@
+//时间复杂度均为O(n^2)
+//https://www.cnblogs.com/tzcwk/p/dxs-sqr.html
+
 const int MOD = 998244353;
 int qp(int a, int n) {
     int res = 1;
@@ -60,5 +63,3 @@ vector<int> PolyExp(vector<int>& a) {// 保证a[0] = 0
     }
     return b;
 }
-
-//时间复杂度均为O(n^2)

@@ -1,4 +1,4 @@
-//op：区间max，区间min。
+//op：区间最值
 //ask：区间最值
 const int inf = LLONG_MAX;
 struct S {

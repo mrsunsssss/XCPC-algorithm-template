@@ -1,0 +1,24 @@
+//op：区间max，区间min。
+//ask：区间最值
+const int inf = LLONG_MAX;
+struct S {
+    int MAX, MIN;
+};
+S op(S l, S r) {
+    return S{ max(l.MAX,r.MAX),min(l.MIN,r.MIN) };
+}
+S e() {
+    return S{ -inf,inf };
+}
+struct F {
+    int tag1, tag2;
+};
+S mapping(F f, S x) {//x->f(x)
+    return S{ max(f.tag1,x.MAX),min(f.tag2,x.MIN) };
+}
+F composition(F f, F g) { // f(g(x))
+    return F{ max(f.tag1 , g.tag1),min(f.tag2 , g.tag2) };
+}
+F id() {//e of F
+    return F{ -inf,inf };
+}

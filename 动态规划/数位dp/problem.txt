@@ -5,4 +5,6 @@ https://ac.nowcoder.com/acm/contest/93847/G
 https://leetcode.cn/problems/numbers-at-most-n-given-digit-set/description/   记录isn用于找任意长度的数字，位置i,上限lim.
 https://leetcode.cn/problems/count-of-integers/description/  记录下限限制lim_low,上限限制lim_high,数位和sum，位置i .
 https://leetcode.cn/problems/rotated-digits/description/ 上限限制lim,是否有不同的数位diff，isn 。
+https://leetcode.cn/problems/number-of-digit-one/description/  上限限制lim，数字1的个数sum。
+
 

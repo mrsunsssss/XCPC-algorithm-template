@@ -8,7 +8,7 @@ auto DP = [&](int x) {
         int res = 0;
         int mx = lim ? s[i] - '0' : 9;
         if (!isn) res += dfs(dfs, i + 1, 0, 0);
-        for (int d = 1;d <= mx;d++) {//d = digit, i = pos
+        for (int d = isn ^ 1;d <= mx;d++) {//d = digit, i = pos
             res += dfs(dfs, i + 1, 1, lim && (d == mx));
         }
         if (!lim && isn) dp[i] = res;

@@ -1,5 +1,5 @@
 vector<int> dp(N, -1);
-auto DP = [&](int x)->ll {
+auto DP = [&](int x) {
     auto s = to_string(x);
     int n = s.size();
     auto dfs = [&](auto&& dfs, int i, int isn, int lim)->ll {

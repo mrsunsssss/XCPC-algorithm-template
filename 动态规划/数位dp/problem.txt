@@ -1,4 +1,6 @@
 https://ac.nowcoder.com/acm/contest/93847/G
 
+下限限制lim_low也可以不记，只记录上限限制，做差即可。
 
-https://leetcode.cn/problems/numbers-at-most-n-given-digit-set/description/
+https://leetcode.cn/problems/numbers-at-most-n-given-digit-set/description/   记录isn用于找任意长度的数字，位置i,上限lim.
+https://leetcode.cn/problems/count-of-integers/description/  记录下限限制lim_low,上限限制lim_high,数位和sum，位置i .

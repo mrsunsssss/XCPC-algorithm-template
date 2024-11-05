@@ -14,7 +14,5 @@ auto DP = [&](int x)->ll {
         if (!lim && isn) dp[i] = res;
         return res;
         };
-    int res = 0;
-    res += dfs(dfs, 0, 0, 1);
-    return res;
+    return dfs(dfs, 0, 0, 1);
     };

@@ -1,22 +1,20 @@
-memset(f, -1, sizeof f);
-auto dp = [&](int x)->ll {
-    auto a = to_string(x);
-    reverse(a.begin(), a.end());
-    int n = a.size();
-    auto dfs = [&](auto&& dfs, int pos, int lead, int lim)->ll {
-        if (pos == -1) return;
-        int t = f[pos];
-        if (!lim && !lead && t != -1) return t;
-        t = 0;
-        int mx = lim ? a[pos] - '0' : 9;
-        if (lead) t += dfs(dfs, pos - 1, 1, 0);
-        for (int i = lead;i <= mx;i++) {
-            t += dfs(dfs, pos - 1, 0, lim && (i == mx));
+vector<int> dp(N, -1);
+auto DP = [&](int x)->ll {
+    auto s = to_string(x);
+    int n = s.size();
+    auto dfs = [&](auto&& dfs, int i, int isn, int lim)->ll {
+        if (i == n) return isn;
+        if (!lim && isn && dp[i] != -1) return dp[i];
+        int res = 0;
+        int mx = lim ? s[i] - '0' : 9;
+        if (!isn) res += dfs(dfs, i + 1, 0, 0);
+        for (int i = 1;i <= mx;i++) {
+            res += dfs(dfs, i + 1, 1, lim && (i == mx));
         }
-        if (!lim && !lead) f[pos] = t;
-        return t;
+        if (!lim && isn) dp[i] = res;
+        return res;
         };
     int res = 0;
-    res += dfs(dfs, n - 1, 1, 1);
+    res += dfs(dfs, 0, 0, 1);
     return res;
     };

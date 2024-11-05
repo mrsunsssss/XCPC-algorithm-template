@@ -1,0 +1,5 @@
+一个排列与它的逆序对序列是双射的关系，相应的，一个排列与它的正序对序列也是双射的关系。
+一个排列的正序对序列即每个数字前面比它小的数量，逆序对序列即每个数前面比它大的数量。
+
+https://codeforces.com/contest/1886/problem/D
+https://atcoder.jp/contests/abc209/tasks/abc209_f  根据该性质dp 

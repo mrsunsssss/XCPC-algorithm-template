@@ -4,7 +4,7 @@ auto DP = [&](int x) {
     int n = s.size();
     auto dfs = [&](auto&& dfs, int i, int isn, int lim)->ll {
         if (i == n) return isn;
-        if (!lim && isn && dp[i] != -1) return dp[i];
+        if (!lim && isn && dp[i] >= 0) return dp[i];
         int res = 0;
         int mx = lim ? s[i] - '0' : 9;
         if (!isn) res += dfs(dfs, i + 1, 0, 0);

@@ -1,2 +1,2 @@
 https://leetcode.cn/problems/find-the-original-typed-string-ii/description/    Log的泰勒展开，调和级数枚举。
-https://leetcode.cn/problems/count-the-number-of-inversions/description/      逆序对序列与排列的映射关系，Log的泰勒展开，调和级数枚举。
+https://leetcode.cn/problems/count-the-number-of-inversions/description/      排列与它的逆序对序列的双射关系，Log的泰勒展开，调和级数枚举。

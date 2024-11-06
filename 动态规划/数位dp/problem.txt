@@ -7,4 +7,4 @@ https://leetcode.cn/problems/count-of-integers/description/  记录下限限制l
 https://leetcode.cn/problems/rotated-digits/description/ 上限限制lim,是否有不同的数位diff，isn 。
 https://leetcode.cn/problems/number-of-digit-one/description/  上限限制lim，数字1的个数sum。
 https://leetcode.cn/problems/count-the-number-of-powerful-integers/description/ 上下限制lim1,lim2
-
+https://leetcode.cn/problems/maximum-number-that-sum-of-the-prices-is-less-than-or-equal-to-k/description/  上限限制lim，数位和sum。注意记忆化需要记录sum(想想dp的转移需要记录什么)

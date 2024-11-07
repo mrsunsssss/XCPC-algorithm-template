@@ -10,16 +10,17 @@ namespace SEG {
     }
     int n;//[0,n-1],0-index
     S t[2 * N];
-    void set_value(int i,int val) {
-        i--;
-        t[n + i].x = val;
-    }
     void build() {  // build the tree
         for (int i = n - 1; i > 0; i--) t[i] = combine(t[i << 1], t[i << 1 | 1]);
     }
     void init(int _n) {
         n = _n;
         for (int i = 0;i <= 2 * n;i++) t[i].x = 0;
+        build();
+    }
+    void init() {
+        cin >> n;
+        for (int i = 0;i < n;i++) cin >> t[i + n].x;
         build();
     }
     void modify(int p, const S& value) {

@@ -12,7 +12,7 @@
 
 即可以表示为 $D-R\le yM \;mod\; D \le D-L$ 。
 
-可以改写为 $f(M \;mod\;D,D,D-R,D-L)$ 。
+可以改写为 $f(M % D,D,D-R,D-L)$ 。
 
 
 

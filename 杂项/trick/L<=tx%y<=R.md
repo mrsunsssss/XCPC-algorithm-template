@@ -10,7 +10,7 @@
 
 移项得到 $Dx-R\le yM \le Dx-L$ ，当 $x=t+1$ 时，满足条件 $0<Dx-R\le Dx-L <D$ .
 
-即可以表示为 $D-R\le yM \% D \le D-L$ 。
+即可以表示为 $D-R\le y M \% D \le D-L$ 。
 
 可以改写为 $f(M \% D,D,D-R,D-L)$ 。
 

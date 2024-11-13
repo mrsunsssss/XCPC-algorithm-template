@@ -14,9 +14,7 @@
 
 可以改写为 $f(M \;mod\;D,D,D-R,D-L)$ 。
 
-http://poj.org/problem?id=3530
 
-https://darkbzoj.cc/problem/4270
 
 ```
 
@@ -54,3 +52,10 @@ signed main() {
 }
 
 ```
+
+
+模板题
+
+http://poj.org/problem?id=3530
+
+https://darkbzoj.cc/problem/4270

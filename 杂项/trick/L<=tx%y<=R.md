@@ -18,8 +18,7 @@ http://poj.org/problem?id=3530
 
 https://darkbzoj.cc/problem/4270
 
-$$$
-
+'''
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
@@ -52,5 +51,4 @@ signed main() {
     Prework();
     while (T--) Solve();
 }
-
-$$$
+'''

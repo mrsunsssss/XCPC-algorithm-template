@@ -1,4 +1,4 @@
-给定 $D$ , $M$ , $L$ , $R$ ，求最小的 $x$ 满足 $L\le Dx \% M\le R$ .
+给定 $D$ , $M$ , $L$ , $R$ ，求最小的 $x$ 满足 $L\le Dx \pmod M\le R$ .
 
 将 $L\le Dx \% M\le R$ ，转化为 $yM+L\le Dx \le yM+R$ 。（满足 $L\le R\le M-1$ ）
 

@@ -15,4 +15,41 @@
 可以改写为 $f(M \;mod\;D,D,D-R,D-L)$ 。
 
 http://poj.org/problem?id=3530
+
 https://darkbzoj.cc/problem/4270
+
+
+'''
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+ll dfs(ll D, ll M, ll L, ll R) {
+    if (L > R || L >= M || D == 0) return -1LL;
+    R = min(R, M - 1);
+    ll u = (L + D - 1) / D;
+    ll v = R / D;
+    if (u <= v) return u;
+    ll y = dfs(M % D, D, (D - R % D), (D - L % D));
+    if (y == -1) return y;
+    return (M * y + L + D - 1) / D;
+}
+
+void Prework() {
+
+}
+void Solve() {
+    ll m, d, l, r;
+    cin >> m >> d >> l >> r;
+    cout << dfs(d, m, l, r) << endl;
+}
+
+signed main() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);cout.tie(0);
+    int T = 1;
+    cin >> T;
+    Prework();
+    while (T--) Solve();
+}
+'''

@@ -82,7 +82,7 @@ namespace Segments {
 
 namespace Lines {
     using namespace Tools;
-    PD line_inter(LD a, LD b) {
+    PD line_inter(LD a, LD b) {//两点式
         ld s1 = cross(uv(a[0], a[1]), uv(a[0], b[0]));
         ld s2 = cross(uv(a[0], a[1]), uv(a[0], b[1]));
         return div(sub(mul(b[0], s2), mul(b[1], s1)), s2 - s1);
@@ -103,11 +103,11 @@ namespace Circles {
         return { inter1,inter2 };
     }
     pair<PD, ld> triangle_to_circle(const PD& a, const PD& b, const PD& c) {//三角形外接圆（任取三角形两边中垂线的交点）
-        auto A = mul(add(b, c), 0.5), B = mul(add(a, c), 0.5);
-        auto x = rotate_90(uv(A, c));
-        auto y = rotate_90(uv(B, c));
-        auto o = line_inter({ A,add(A,x) }, { B,add(B,y) });
-        auto r = dis(o, A);
+        PD A = mul(add(b, c), 0.5), B = mul(add(a, c), 0.5);
+        VD x = rotate_90(uv(A, c));
+        VD y = rotate_90(uv(B, c));
+        PD o = line_inter({ A,add(A,x) }, { B,add(B,y) });
+        ld r = dis(o, a);
         return pair<PD, ld> {o, r};
     }
 }

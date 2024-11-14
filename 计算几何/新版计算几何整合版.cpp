@@ -191,6 +191,7 @@ namespace Convex_Hull {
 
     ld smallest_cover(const CD& a) {//最小矩形覆盖
         int n = a.size();
+        if (n <= 2) return 0;
         ld res = 4e18;
         int ans_i, ans_j, ans_l, ans_r;//凸包与矩形的四个切点
         for (int i = 0, j = 1, r = 1, l;i < n;i++) {

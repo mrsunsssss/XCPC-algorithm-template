@@ -74,10 +74,6 @@ namespace Segments {
             && loca(b[0], a[0], b[1]) * loca(b[0], a[1], b[1]) < 0
             );
     }
-    bool inter_judge(L a, L b) {
-        return sgn(cross(uv(a[0], a[1]), uv(a[0], b[0]))
-            - cross(uv(a[0], a[1]), uv(a[0], b[1]))) != 0;
-    }
 }
 
 namespace Lines {
@@ -86,6 +82,10 @@ namespace Lines {
         ld s1 = cross(uv(a[0], a[1]), uv(a[0], b[0]));
         ld s2 = cross(uv(a[0], a[1]), uv(a[0], b[1]));
         return div(sub(mul(b[0], s2), mul(b[1], s1)), s2 - s1);
+    }
+    bool inter_judge(L a, L b) {
+        return sgn(cross(uv(a[0], a[1]), uv(a[0], b[0]))
+            - cross(uv(a[0], a[1]), uv(a[0], b[1]))) != 0;
     }
 }
 

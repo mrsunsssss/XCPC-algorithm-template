@@ -102,7 +102,7 @@ namespace Circles {
         PD inter2 = add(pr, mul(dir, -len));
         return { inter1,inter2 };
     }
-    pair<PD, ld> triangle_to_circle(const PD& a, const PD& b, const PD& c) {//三角形外接圆（任取三角形两边中垂线的交点）
+    pair<PD, ld> make_circle(const PD& a, const PD& b, const PD& c) {//三角形外接圆（任取三角形两边中垂线的交点）
         PD A = mul(add(b, c), 0.5), B = mul(add(a, c), 0.5);
         VD x = rotate_90(uv(A, c));
         VD y = rotate_90(uv(B, c));

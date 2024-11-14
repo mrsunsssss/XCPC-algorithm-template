@@ -15,8 +15,8 @@ namespace Geometry {
     P uv(P u, P v) { return { v[0] - u[0],v[1] - u[1] }; }
     P add(P u, P v) { return { u[0] + v[0],u[1] + v[1] }; }
     int dis2(P u, P v) { return (u[0] - v[0]) * (u[0] - v[0]) + (u[1] - v[1]) * (u[1] - v[1]); }
-    int cross(P u, P v) { return u[0] * v[1] - u[1] * v[0]; }
-    int dot(P u, P v) { return u[0] * v[0] + u[1] * v[1]; }
+    int cross(P u, P v) { return u[0] * v[1] - u[1] * v[0]; }//角度，顺逆，sin
+    int dot(P u, P v) { return u[0] * v[0] + u[1] * v[1]; }//投影，cos
     int loca(P u, P v, P w) { return sgn(cross(uv(u, v), uv(u, w))); }
     int locb(P u, P v, P w) { return sgn(dot(uv(u, v), uv(u, w))); }
     struct argcmp {//极角排序

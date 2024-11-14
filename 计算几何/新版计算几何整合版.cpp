@@ -90,7 +90,7 @@ namespace Lines {
 }
 
 namespace Circles {
-    using namespace Tools;
+    using namespace Tools;using namespace Lines;
     array<PD, 2> inter_circle_line(PD o, ld r, LD line) {
         PD s = line[0], t = line[1];
         PD pr = project(line, o);
@@ -101,6 +101,14 @@ namespace Circles {
         PD inter1 = add(pr, mul(dir, len));
         PD inter2 = add(pr, mul(dir, -len));
         return { inter1,inter2 };
+    }
+    pair<PD, ld> triangle_to_circle(const PD& a, const PD& b, const PD& c) {//三角形外接圆（任取三角形两边中垂线的交点）
+        auto A = mul(add(b, c), 0.5), B = mul(add(a, c), 0.5);
+        auto x = rotate_90(uv(A, c));
+        auto y = rotate_90(uv(B, c));
+        auto o = line_inter({ A,add(A,x) }, { B,add(B,y) });
+        auto r = dis(o, A);
+        return pair<PD, ld> {o, r};
     }
 }
 

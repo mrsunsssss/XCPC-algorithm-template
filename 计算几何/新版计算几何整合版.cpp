@@ -189,6 +189,44 @@ namespace Convex_Hull {
         return abs(ret);
     }
 
+    ld smallest_cover(const CD& a) {//最小矩形覆盖
+        int n = a.size();
+        ld res = 4e18;
+        int ans_i, ans_j, ans_l, ans_r;//凸包与矩形的四个切点
+        for (int i = 0, j = 1, r = 1, l;i < n;i++) {
+            VD vec = uv(a[i], a[next(i, n)]);
+            while (sgn(
+                cross(vec, uv(a[i], a[next(j, n)])) -
+                cross(vec, uv(a[i], a[j]))
+            ) >= 0) {
+                j = next(j, n);
+            }
+            while (sgn(
+                dot(vec, uv(a[i], a[next(r, n)])) -
+                dot(vec, uv(a[i], a[r]))
+            ) >= 0) {
+                r = next(r, n);
+            }
+            if (i == 0) l = r;
+            while (sgn(
+                dot(vec, uv(a[i], a[next(l, n)])) -
+                dot(vec, uv(a[i], a[l]))
+            ) <= 0) {
+                l = next(l, n);
+            }
+            ld H = abs(cross(vec, uv(a[i], a[j])));
+            ld B1 = abs(dot(vec, uv(a[i], a[l])));
+            ld B2 = abs(dot(vec, uv(a[next(i, n)], a[r])));
+            ld B3 = dis2(a[i], a[next(i, n)]);
+            ld cur = (B1 + B2 + B3) * H / dis2(a[i], a[next(i, n)]);
+            if (cur < res) {
+                res = cur;
+                ans_i = i, ans_j = j, ans_l = l, ans_r = r;
+            }
+        }
+        return res;
+    }
+
     P find_max(const C& a, auto cmp) {//极点
         int l = 1, r = (int)a.size() - 2;
         if (cmp(a.back(), a[0])) {

@@ -79,9 +79,8 @@ namespace Segments {
 namespace Lines {
     using namespace Tools;
     PD line_inter(LD a, LD b) {//两点式
-        ld s1 = cross(uv(a[0], a[1]), uv(a[0], b[0]));
-        ld s2 = cross(uv(a[0], a[1]), uv(a[0], b[1]));
-        return div(sub(mul(b[0], s2), mul(b[1], s1)), s2 - s1);
+        VD v1 = uv(a[0], a[1]), v2 = uv(b[0], b[1]);
+        return add(a[0], mul(v1, cross(v2, uv(b[0], a[0])) / cross(v1, v2)));
     }
     bool inter_judge(L a, L b) {
         return sgn(cross(uv(a[0], a[1]), uv(a[0], b[0]))

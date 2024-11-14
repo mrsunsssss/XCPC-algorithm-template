@@ -189,7 +189,7 @@ namespace Convex_Hull {
         return abs(ret);
     }
 
-    ld smallest_cover(const CD& a) {//最小矩形覆盖
+    ld smallest_Rectangle_Cover(const CD& a) {//最小矩形覆盖
         int n = a.size();
         if (n <= 2) return 0;
         ld res = 4e18;
@@ -215,11 +215,11 @@ namespace Convex_Hull {
             ) <= 0) {
                 l = next(l, n);
             }
-            ld H = abs(cross(vec, uv(a[i], a[j])));
-            ld B1 = abs(dot(vec, uv(a[i], a[l])));
-            ld B2 = abs(dot(vec, uv(a[next(i, n)], a[r])));
-            ld B3 = dis2(a[i], a[next(i, n)]);
-            ld cur = (B1 + B2 + B3) * H / dis2(a[i], a[next(i, n)]);
+            ld H = abs(cross(vec, uv(a[i], a[j])));         // 少除了dis
+            ld B1 = abs(dot(vec, uv(a[i], a[l])));          // 少除了dis
+            ld B2 = abs(dot(vec, uv(a[next(i, n)], a[r]))); // 少除了dis
+            ld B3 = dis2(a[i], a[next(i, n)]);              // 少除了dis
+            ld cur = (B1 + B2 + B3) * H / dis2(a[i], a[next(i, n)]); // 减少精度误差，统一放到这里来除以dis2.
             if (cur < res) {
                 res = cur;
                 ans_i = i, ans_j = j, ans_l = l, ans_r = r;

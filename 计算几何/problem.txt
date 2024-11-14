@@ -1,2 +1,2 @@
 凸包
-https://codeforces.com/gym/105459/problem/B   凸包+旋转卡壳
+https://codeforces.com/gym/105459/problem/B   对所有的点建一个凸包，再对内部的点也建立一个凸包，旋转卡壳即可。

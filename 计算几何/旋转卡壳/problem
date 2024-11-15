@@ -1,7 +1,6 @@
+https://www.luogu.com.cn/problem/P3187  最小矩阵覆盖
+
 https://codeforces.com/gym/105459/problem/B   对所有的点建一个凸包，再对内部的点也建立一个凸包，旋转卡壳即可。注意这题做旋转卡壳，等于号需要去掉，否则可能会死循环。
-
-
-
 
 三分凸包点集
 https://codeforces.com/gym/105229/problem/C   

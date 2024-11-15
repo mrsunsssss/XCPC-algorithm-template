@@ -5,3 +5,6 @@ https://codeforces.com/gym/105459/problem/B   对所有的点建一个凸包，�
 
 三分凸包点集
 https://codeforces.com/gym/105229/problem/C   
+
+https://www.luogu.com.cn/problem/P4166
+https://codeforces.com/gym/102460/problem/L 跑完凸包后，在凸包上枚举两个点，进行二分。注意特判凸包大小为3的情况。也可以用旋转卡壳。

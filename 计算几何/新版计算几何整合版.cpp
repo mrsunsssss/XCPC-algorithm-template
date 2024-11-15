@@ -50,6 +50,7 @@ namespace Tools {
         return add(l[0], mul(base, r));
     }
     VD rotate(VD l, ld angle) {//逆时针旋转angle
+        //x=rcosa,y=rsina;x'=rcos(a+b)=rcosa*cosb-rsina*sinb=xcosb-ysinb,y'=rsin(a+b)=rsina*cosb+rcosa*sinb=xsinb+ycosb
         ld cosa = cos(angle), sina = sin(angle);
         return { l[0] * cosa - l[1] * sina, l[0] * sina + l[1] * cosa };
     }

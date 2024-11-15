@@ -315,7 +315,7 @@ namespace Polygon {
     }
 }
 
-namespace other {
+namespace Other {
     using namespace Tools;
     struct argcmp {//极角排序
         inline static int DS[4] = { 1,2,4,3 };
@@ -336,4 +336,4 @@ using namespace Lines;
 using namespace Circles;
 using namespace Convex_Hull;
 using namespace Polygon;
-using namespace other;
+using namespace Other;

@@ -298,6 +298,46 @@ namespace Convex_Hull {
     }
 }
 
+namespace Dynamic_Convex_Hull {
+    using namespace Tools;
+    auto __compare = [](P u, P v) {return u[0] < v[0];};
+    using SET = set<P, decltype(__compare)>;
+    struct dynamic_convex_hull :SET {
+        auto pre(iterator it) { return --it; }
+        auto nxt(iterator it) { return ++it; }
+        bool is_up;//上凸包还是下凸包
+        dynamic_convex_hull(bool x) :is_up(x) {}
+        int in_convex(P u) {
+            auto it = lower_bound(u);
+            if (it == end()) return 0;
+            if (sgn(it->at(0) - u[0]) == 0) {
+                return is_up ? sgn(it->at(1) - u[1]) >= 0 : sgn(it->at(1) - u[1]) <= 0;
+            }
+            if (it == begin()) return 0;
+            P nxt_u = *it, pre_u = *pre(it);
+            int t = loca(pre_u, u, nxt_u);
+            return is_up ? t >= 0 : t <= 0;
+        }
+        int check_remove(SET::iterator it) {
+            if (it == begin()) return 0;
+            auto itl = pre(it);
+            auto itr = nxt(it);
+            if (itr == end()) return 0;
+            int t = loca(*itl, *it, *itr);
+            if (is_up ? t < 0 : t > 0) return 0;
+            return erase(it), 1;
+        }
+        void add(P u) {
+            if (in_convex(u)) return;
+            auto it = find(u);
+            if (it != end()) erase(it);
+            it = insert(u).first;//set.insert={iterator,bool}
+            while (it != begin() && check_remove(pre(it)));
+            while (nxt(it) != end() && check_remove(nxt(it)));
+        }
+    };
+}
+
 namespace Polygon {
     using namespace Tools;
 
@@ -336,5 +376,6 @@ using namespace Segments;
 using namespace Lines;
 using namespace Circles;
 using namespace Convex_Hull;
+using namespace Dynamic_Convex_Hull;
 using namespace Polygon;
 using namespace Other;

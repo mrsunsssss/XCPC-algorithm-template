@@ -1,8 +1,8 @@
 https://www.luogu.com.cn/problem/P3195
 
-$ dp_i = \min\limits_{j=0}^{i-1}(dp_j + (i-j+sum_i-sum_j-L-1)^2 )$
+$dp_i = \min\limits_{j=0}^{i-1}(dp_j + (i-j+sum_i-sum_j-L-1)^2 )$ 
 
-令 $A_i = i+sum_i,B_j=sum_j+j+L+1$，得到 $dp_i=dp_j+(A_i-B_j)^2$
+令 $A_i = i+sum_i,B_j=sum_j+j+L+1$ ，得到 $dp_i=dp_j+(A_i-B_j)^2$ 
 
 移项得： $dp_i = dp_j + A_i^2+B_j^2-2A_iB_j$
 

@@ -327,7 +327,7 @@ namespace Dynamic_Convex_Hull {
             if (is_up ? t < 0 : t > 0) return 0;
             return erase(it), 1;
         }
-        void add(P u) {
+        void push(P u) {
             if (in_convex(u)) return;
             auto it = find(u);
             if (it != end()) erase(it);

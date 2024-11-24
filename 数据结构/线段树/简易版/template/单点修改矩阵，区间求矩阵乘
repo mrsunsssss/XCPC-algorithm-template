@@ -1,0 +1,61 @@
+struct S {
+    int n;
+    int d[5][5];
+    S() {
+        for (int i = 1;i <= 4;i++) {
+            for (int j = 1;j <= 4;j++) d[i][j] = 0;
+        }
+    }
+    void clear() {
+        for (int i = 1;i <= n;i++) {
+            for (int j = 1;j <= n;j++)
+                d[i][j] = 0;
+        }
+    }
+    void I() {
+        d[1][1] = d[2][2] = d[3][3] = d[4][4] = 1;
+    }
+};
+S combine(S u, S v) {
+    S C;
+    int n = 4;
+    for (int i = 1;i <= n;i++) {
+        for (int j = 1;j <= n;j++) {
+            for (int k = 1;k <= n;k++) {
+                C.d[i][j] += u.d[i][k] * v.d[k][j];
+            }
+        }
+    }
+    return C;
+}
+
+namespace SEG {
+    const int N = 2e5 + 10;
+    int n;//[0,n-1],0-index
+    S t[2 * N];
+    void build() {  // build the tree
+        for (int i = n - 1; i > 0; i--) t[i] = combine(t[i << 1], t[i << 1 | 1]);
+    }
+    void init(int _n) {
+        n = _n;
+        for (int i = 0;i <= 2 * n;i++) t[i].clear(), t[i].I();
+        build();
+    }
+    void modify(int p, const S& value) {
+        p--;
+        for (t[p += n] = value; p >>= 1; ) t[p] = combine(t[p << 1], t[p << 1 | 1]);
+    }
+    S query(int l, int r) {//[l,r],1-index
+        l--;
+        S resl, resr;
+        resl.I();
+        resr.I();
+        for (l += n, r += n; l < r; l >>= 1, r >>= 1) {
+            if (l & 1) resl = combine(resl, t[l++]);
+            if (r & 1) resr = combine(t[--r], resr);
+        }
+        return combine(resl, resr);
+    }
+}
+using SEG::modify;
+using SEG::query;

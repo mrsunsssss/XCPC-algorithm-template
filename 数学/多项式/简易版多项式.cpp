@@ -1,4 +1,4 @@
-//多项式快速幂复杂度为O(n^2logk),其余时间复杂度均为O(n^2)
+//时间复杂度均为O(n^2)
 //https://www.cnblogs.com/tzcwk/p/dxs-sqr.html
 
 const int MOD = 998244353;
@@ -72,14 +72,20 @@ vector<int> PolyExp(const vector<int>& a) {// 保证a[0] = 0
     }
     return b;
 }
-vector<int> PolyPow(vector<int> a, int k, int n) {
-    if (k == 0) {
-        vector<int> b(n);b[0] = 1;return b;
-    }
-    if (k == 1) return a;
-    auto half = PolyExp(a, k / 2, n);
-    auto res = PolyMul(half, half);res.resize(n);
-    if (k & 1) res = PolyMul(res, a), res.resize(n);
-    return res;
+// vector<int> PolyPow(vector<int> a, int k, int n) {
+//     if (k == 0) {
+//         vector<int> b(n);b[0] = 1;return b;
+//     }
+//     if (k == 1) return a;
+//     auto half = PolyExp(a, k / 2, n);
+//     auto res = PolyMul(half, half);res.resize(n);
+//     if (k & 1) res = PolyMul(res, a), res.resize(n);
+//     return res;
+// }
+vector<int> PolyPow(vector<int> a, int k) {
+    a = PolyLn(a);
+    for (int i = 0;i < a.size();i++) a[i] = a[i] * k % MOD;
+    a = PolyExp(a);
+    return a;
 }
 

@@ -1,0 +1,10 @@
+给定一个数组，以某个右端点为结尾的所有子数组，其中不同的 或/与/lcm/gcd 值至多只有 logU 个。（注意U指值域）
+
+对于 或/与/gcd 是显然的，而lcm不太显然，但是它可以在lcm大于值域时直接忽略，所以也可以看作这个级别。
+
+gcd
+
+https://codeforces.com/contest/2013/problem/E
+https://codeforces.com/contest/2005/problem/D
+https://codeforces.com/gym/526652/problem/E
+https://codeforces.com/contest/2038/problem/D

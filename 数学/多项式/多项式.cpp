@@ -423,3 +423,4 @@ Poly Stiring_1_col(int n, int m) {//SA(i,m)
 //记得Poly_init, 如果仅是乘法则不需要
 //Poly读入和初始化时,记得取模. f[i] = -1  ==> f[i] = MOD-1 
 //MTT的rev开lim大小,为方便一般3~4倍即可
+//做多项式逆元等操作之前记得是否需要resize到所需范围

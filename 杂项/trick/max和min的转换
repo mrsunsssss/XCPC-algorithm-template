@@ -1,0 +1,14 @@
+max(a,b) = a + b - min(a,b)
+min(a,b) = a + b - max(a,b)
+
+使用该式子可以化简一些难看的式子，简化思路。
+
+https://codeforces.com/contest/2038/problem/F
+
+运用经典trick：max(a,b) = a+b - min(a,b)
+
+得到max(min{a},min{b}) = min{a} +min{b} - min(min{a},min{b})
+
+令 c[i]  = min(a[i],b[i])，那么式子变成min{a} + min{b} - min{c}
+
+这三个式子对于该题来说可以分开计算。这个式子化简可以转换成一个多项式问题，这里不讨论。

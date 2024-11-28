@@ -129,7 +129,7 @@ namespace NTT {
     int mf(int x) { return (1ll * x << 32) / MOD; }
     void init(int n) {
         for (sz = 2; sz < n; sz <<= 1);
-        uint pr = qp(3, (MOD - 1) / sz);
+        uint pr = qp(3u, (MOD - 1) / sz);
         w[sz / 2] = 1; w_mf[sz / 2] = mf(1);
         for (int i = 1; i < sz / 2; i++)  w[sz / 2 + i] = mul(w[sz / 2 + i - 1], pr), w_mf[sz / 2 + i] = mf(w[sz / 2 + i]);
         for (int i = sz / 2 - 1; i; i--)  w[i] = w[i << 1], w_mf[i] = w_mf[i << 1];

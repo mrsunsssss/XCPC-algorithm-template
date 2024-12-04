@@ -61,7 +61,7 @@ inline void find(ll x) {
     while (x % p == 0) x /= p;
     find(p);find(x);
 }
-inline vector<int> Prime_factor(int x) {
+inline vector<int> Prime_factor(int x) {//可能重复，需要去重
     res.resize(0);
     find(x);
     return res;

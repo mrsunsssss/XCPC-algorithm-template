@@ -66,3 +66,22 @@ vector<int> Divisor(int x) {//获取所有因子
     }
     return ret;
 }
+int Divisor_cnt(int x) {
+    int res = 1;
+    while (x > 1) {
+        int P = minp[x], cnt = 0;
+        while (x % P == 0) x /= P, cnt++;
+        res *= cnt + 1;
+    }
+    return res;
+}
+int Divisor_sum(int x) {
+    int res = 1;
+    while (x > 1) {
+        int P = minp[x], pw = 1, sum = 1;
+        while (x % P == 0) x /= P, pw *= P, sum += pw;
+        res *= sum;
+    }
+    return res;
+}
+

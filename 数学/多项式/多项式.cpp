@@ -202,7 +202,7 @@ Poly operator- (Poly A, Poly B) {
     for (int i = 0; i < m; i++)  c[i] = Dec(c[i], B[i]);
     return c;
 }
-Poly operator*(Poly A, Poly B) {//MOD=998244353,..a*2^k+1
+Poly operator*(Poly A, Poly B) {//MOD=998244353,..a*2^k+1 , 2^k>deg
     int n = A.deg() + B.deg() + 1;
     int lim;for (lim = 1; lim < n; lim <<= 1); NTT::init(lim);
     A.resize(lim); B.resize(lim);
@@ -424,3 +424,5 @@ Poly Stiring_1_col(int n, int m) {//SA(i,m)
 //Poly读入和初始化时,记得取模. f[i] = -1  ==> f[i] = MOD-1 
 //MTT的rev开lim大小,为方便一般3~4倍即可
 //做多项式逆元等操作之前记得是否需要resize到所需范围
+//注意NTT中模数的2^k需要大于多项式的次数
+

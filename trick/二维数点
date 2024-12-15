@@ -1,0 +1,3 @@
+https://codeforces.com/problemset/problem/1899/G
+
+把节点在p中的下标看作横坐标，把节点在树中的dfs序视作纵坐标。这样询问就变成了二维数点问题。

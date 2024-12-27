@@ -1,9 +1,11 @@
 单调队列优化dp
+
 https://codeforces.com/contest/2027/problem/D2
 
 
 
 dp好题
+
 https://codeforces.com/contest/2039/problem/E
 
 这种题一开始完全没有思路很正常，但是最重要的就是克服恐惧。不断尝试就能找到一条通往胜利的路。
@@ -37,22 +39,32 @@ n=6：000001，000010，000101，001011，010111. 手动试一下n=5，6，7这�
 
 
 https://codeforces.com/contest/441/problem/E
+
 直接做保留末尾8位这种可以做，但是有些麻烦。仔细观察发现，如果操作n次乘2，至少需要2^n次加1才可以产生进位。我们可以在最开始的时候贷款，dp[i][j]表示操作i次之后的x，再加上j之后末尾0的期望。
+
 如果做加1操作，就可以转移dp[i+1][j-1]+=dp[i][j]. 若做乘2操作，就可以有转移dp[i+1][j*2]+=dp[i][j] .很妙的转移方程。
 
 
 https://codeforces.com/problemset/problem/1906/H
+
 s的每一种排列对应着等价的t'的排列，所以可以先求出sorted(s)的t'的方案数，再乘上多重集组合数求出答案。
+
 用A和B分别存下两个字符串对应的字符数量。用dp[i][j]表示到第i个字符，其中t使用了j个i字符，也就是说还需要A[i]-j个i+1字符。让dp[i][j]转移到dp[i+1][k]，也就是说需要满足A[i]-j+k<=B[i+1]。
+
 那么k<=B[i+1]+j-A[i] , j>=A[i]+k-B[i+1]. 发现是个连续的形式，如果刷表法需要树状数组优化，填表法直接后缀和即可。
+
 也就是固定dp[i+1][k]的k，对于所有j>=A[i]+k-B[i+1]的j，进行转移过来。
 
 
 
 背包dp
+
 https://atcoder.jp/contests/abc383/tasks/abc383_f
+
 很容易发现应该按分组分组之后处理。
+
 首先记录一下dp的关键信息：需要记录的是当前到第几组，装的物品的重量，装的物品的权值，该组是否已经装了物品。
+
 首先第一条信息可滚动数组忽略，第三条信息放入dp值中，那么状态就设计为重量和是否装了物品。
 
 
@@ -60,7 +72,11 @@ https://atcoder.jp/contests/abc383/tasks/abc383_f
 
 
 
+状压dp
 
+https://leetcode.cn/problems/find-minimum-time-to-finish-all-jobs/description/
+
+首先可以二分答案，然后枚举子集进行dp。这样复杂度是
 
 
 

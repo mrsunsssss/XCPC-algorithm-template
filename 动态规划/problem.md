@@ -78,6 +78,8 @@ https://leetcode.cn/problems/find-minimum-time-to-finish-all-jobs/description/
 
 首先可以二分答案，然后枚举子集进行dp。二分答案可以只枚举子集和中存在的值，于是这样复杂度是 $O(3^n log(2^n)) = O(n 3^n)$ 
 
+而枚举子集这个东西，一般可以用类似高维前缀和优化到 $ O(n2^n)$ ,这里维护一个pair，dp[i] 表示当前子集{用的人数，该人用掉的时间}，最小化该式即可，显然可以dp做到。
+
 
 
 

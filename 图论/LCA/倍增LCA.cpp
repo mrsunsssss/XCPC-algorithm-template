@@ -14,8 +14,8 @@ struct LCA {
             dfs(g, v, u);
         }
     }
-    void init(vector<vector<int>>& g) {
-        dfs(g, 1, 1);
+    void init(vector<vector<int>>& g, int rt = 1) {
+        dfs(g, rt, rt);//root
         for (int i = 1;i <= 20;i++) {
             for (int j = 1;j <= n;j++) {
                 dp[i][j] = dp[i - 1][dp[i - 1][j]];
@@ -36,5 +36,8 @@ struct LCA {
             }
         }
         return dp[0][u];
+    }
+    int dis(int u, int v) {
+        return dep[u] + dep[v] - 2 * dep[query(u, v)];
     }
 };

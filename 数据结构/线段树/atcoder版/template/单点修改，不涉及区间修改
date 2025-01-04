@@ -1,0 +1,25 @@
+const int inf = 1e18;
+struct S {
+    //...
+};
+S op(S l, S r) {
+    return S{
+       //...
+    };
+}
+S e() {
+    //...;
+}
+//单点修改，需要返回原本的S
+struct F {
+    int tag;
+};
+S mapping(F f, S x) {//x->f(x)
+    return x;
+}
+F composition(F f, F g) { // f(g(x))
+    return f;
+}
+F id() {//e of F
+    return F{ 0 };
+}

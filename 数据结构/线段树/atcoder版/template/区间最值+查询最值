@@ -1,6 +1,6 @@
 //op：区间最值
 //ask：区间最值
-const int inf = LLONG_MAX;
+const int inf = 1e18;
 struct S {
     int MAX, MIN;
 };

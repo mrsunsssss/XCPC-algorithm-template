@@ -6,8 +6,8 @@
 
 1.拉格朗日函数对于 $x_i$ 和 $b$ 求偏导都是 0
 
-2.$\lambda_i\ge 0$
+2. $\lambda_i\ge 0$
 
-3.$g_i\le 0$
+3. $g_i\le 0$
 
-4.$\lambda_ig_i(x) = 0$
+4. $\lambda_ig_i(x) = 0$

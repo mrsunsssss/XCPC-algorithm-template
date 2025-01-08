@@ -15,3 +15,6 @@ template <class... Args> void myout(const Args&... args) { ((cout << args), ...)
 
 ifstream fcin("C:/Users/Mrsuns/Desktop/in.txt");
 ofstream fcout("C:/Users/Mrsuns/Desktop/out.txt");
+
+
+#define _GLIBCXX_DEBUG //检查越界

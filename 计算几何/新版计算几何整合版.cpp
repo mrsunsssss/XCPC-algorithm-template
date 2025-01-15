@@ -26,8 +26,8 @@ namespace Tools {
     VI uv(PI u, PI v) { return { v[0] - u[0],v[1] - u[1] }; }
     VI add(VI u, VI v) { return { u[0] + v[0],u[1] + v[1] }; }
     int dis2(PI u, PI v) { return (u[0] - v[0]) * (u[0] - v[0]) + (u[1] - v[1]) * (u[1] - v[1]); }
-    int cross(VI u, VI v) { return u[0] * v[1] - u[1] * v[0]; }//角度，顺逆，sin，三角形面积
-    int dot(VI u, VI v) { return u[0] * v[0] + u[1] * v[1]; }//投影，cos
+    int cross(VI u, VI v) { return u[0] * v[1] - u[1] * v[0]; }//角度，顺逆时针，sin，三角形面积
+    int dot(VI u, VI v) { return u[0] * v[0] + u[1] * v[1]; }//投影，cos，余弦相似度
     int loca(PI u, PI v, PI w) { return sgn(cross(uv(u, v), uv(u, w))); }
     int locb(PI u, PI v, PI w) { return sgn(dot(uv(u, v), uv(u, w))); }
     VI rotate_90(VI l) { return { -l[1], l[0] }; }

@@ -23,24 +23,27 @@ struct BIT {
 };
 namespace CDQ {
     struct info {
-        int a, b, c;
-        int id, res;
-        int cnt;
+        int a, b, c;//三维的属性
+        int id, res;//原序列中的编号，
+        int cnt;//三维属性都相同的元素，合并后的数量
         bool friend operator <(const info& u, const info& v) {
-            if (u.a != v.a) return u.a < v.a;
-            if (u.b != v.b) return u.b < v.b;
-            return u.c < v.c;
+            if (u.a != v.a) return u.a < v.a;//a[i]<a[j]或a[i]<=a[j]
+            if (u.b != v.b) return u.b < v.b;//b[i]<b[j]或b[i]<=b[j]
+            return u.c < v.c;//c[i]<c[j]或c[i]<=c[j]
         }
         bool friend operator == (const info& u, const info& v) {
             return u.a == v.a && u.b == v.b && u.c == v.c;
         }
     };
     bool cmp(const info& u, const info& v) {
-        return u.b < v.b;
+        return u.b < v.b;//按第二个属性排序,b[i]<b[j]或b[i]<=b[j]
     }
-    const int MAXN = 2e5;
-    BIT tr(MAXN);
+    int MAXN = 2e5;
+    void set_max(int x) {
+        MAXN = x;
+    }
     auto run(vector<array<int, 3>> b) {
+        BIT tr(MAXN);
         int n = b.size();
         vector<info> a(n);
         for (int i = 0;i < n;i++) {
@@ -56,15 +59,16 @@ namespace CDQ {
             sort(a.begin() + mid + 1, a.begin() + r + 1, cmp);
             int i, j;
             for (i = l, j = mid + 1;j <= r;j++) {
-                while (i <= mid && a[i].b <= a[j].b) {
-                    tr.add(a[i].c, a[i].cnt);
+                while (i <= mid && a[i].b <= a[j].b) {//b[i]<=b[j]
+                    tr.add(a[i].c, a[i].cnt);//记录左边部分的贡献
                     i++;
                 }
-                a[j].res += tr.query(1, a[j].c);
+                a[j].res += tr.query(1, a[j].c);//将左边部分的贡献加给右边，c[i]<=c[j]
             }
-            for (int k = l;k < i;k++) tr.add(a[k].c, -a[k].cnt);
+            for (int k = l;k < i;k++) tr.add(a[k].c, -a[k].cnt);//撤销贡献
             };
         sort(a.begin(), a.end());
+        //合并相同元素
         int tot = 0;
         for (int i = 1;i < n;i++) {
             if (a[i] == a[tot]) a[tot].cnt += 1;

@@ -1,6 +1,6 @@
 https://www.cnblogs.com/YunQianQwQ/p/16364951.html  //当不存在相同元素时，可以O(nlogn)求解
 
-//cdq+树状数组
+//cdq+树状数组, 0-index
 struct BIT {
     int n;
     vector<int> tr;

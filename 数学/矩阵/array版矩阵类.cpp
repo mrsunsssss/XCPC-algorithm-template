@@ -58,12 +58,12 @@ matrix<T, n, m> operator+(const matrix<T, n, m>& A, const matrix<T, n, m>& B) {
 
 // 矩阵快速幂
 template <typename T, int n, int m>
-matrix<T, n, m> qp(matrix<T, n, m> A, int m_val) {
+matrix<T, n, m> qp(matrix<T, n, m> A, int k) {
     matrix<T, n, m> ans;
     ans.I();
-    while (m_val) {
-        if (m_val & 1) ans = ans * A;
-        m_val >>= 1;
+    while (k) {
+        if (k & 1) ans = ans * A;
+        k >>= 1;
         A = A * A;
     }
     return ans;

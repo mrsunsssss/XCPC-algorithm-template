@@ -22,7 +22,7 @@ template<class T> struct StaticTable {
             }
         }
     }
-    T query(int l, int r) {
+    T query(int l, int r) {//需要自行判l>r
         int k = __lg(r - l + 1);
         return func(dp[l][k], dp[r - (1 << k) + 1][k]);
     }

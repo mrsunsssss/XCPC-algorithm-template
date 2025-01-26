@@ -338,4 +338,4 @@ template <typename T> struct Treap {
 #undef rs 
 };
 template<typename T> typename Treap<T>::node Treap<T>::tr[N];
-//基本功能是维护集合(set),也可以用于维护序列(vector). 
+//基本功能是维护集合(set),也可以用于维护序列(vector) . 序列这里是0-index. 

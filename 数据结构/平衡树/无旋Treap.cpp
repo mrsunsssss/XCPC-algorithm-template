@@ -108,12 +108,12 @@ template <typename T> struct Treap {
     }
 
     //维护序列时的插入,选择插入到哪个位置
-    void insert_order(T val, int k) {
+    void insert_order(T val, int k) {//插入到k个元素的前面，即放在第k+1个位置
         split_order(root, k, T1, T2);
         root = merge(merge(T1, newnode(val)), T2);
     }
     //在某位置插入一段序列(插入了一整棵树),复杂度O(size(vec))
-    void INSERT_order(int k, const vector<T>& vec) {
+    void INSERT_order(int k, const vector<T>& vec) {//同上，将序列放在第k+1个位置
         split_order(root, k, T1, T2);
         root = merge(merge(T1, BUILD(vec)), T2);
     }
@@ -123,7 +123,7 @@ template <typename T> struct Treap {
     }
 
     //删除指定位置[l,r]的元素
-    void erase_order(int l, int r) {
+    void erase_order(int l, int r) {//1-index
         split_order(root, l - 1, T1, T2);
         split_order(T2, r - l + 1, T2, T3);
         auto del = [&](auto&& del, int u) {
@@ -137,7 +137,7 @@ template <typename T> struct Treap {
     }
 
     //查找中序遍历第k个元素
-    T kth_order(int k) {
+    T kth_order(int k) {//1-index
         split_order(root, k - 1, T1, T2);
         split_order(T2, 1, T2, T3);
         T res = tr[T2].val;
@@ -146,7 +146,7 @@ template <typename T> struct Treap {
     }
     /*
     //查找节点是中序遍历的第几个元素
-    int rank_order(int u) {
+    int rank_order(int u) {//1-index
         int res = tr[ls(u)].sz + 1;
         while (tr[u].fa) {
             if (rs(tr[u].fa) == u) res += tr[ls(tr[u].fa)].sz + 1;
@@ -338,4 +338,4 @@ template <typename T> struct Treap {
 #undef rs 
 };
 template<typename T> typename Treap<T>::node Treap<T>::tr[N];
-//基本功能是维护集合(set),也可以用于维护序列(vector) . 序列这里是0-index. 
+//基本功能是维护集合(set),也可以用于维护序列(vector) .

@@ -1,3 +1,5 @@
+const int N = 2e5 + 10;
+
 struct PST {
 #define ls(x) (tr[x].son[0])
 #define rs(x) (tr[x].son[1])
@@ -19,17 +21,15 @@ struct PST {
         idx = 0;
     }
     void init(const vector<int>& arr) {
-        vector<int> rk;
         int m = (int)arr.size() - 1;
-        rk.resize(m + 1);
         v = arr;
         sort(v.begin() + 1, v.end());
         v.erase(unique(v.begin() + 1, v.end()), v.end());
         n = v.size() - 1;
         build(root[0], 1, n);
         for (int i = 1;i <= m;i++) {
-            rk[i] = lower_bound(v.begin() + 1, v.end(), arr[i]) - v.begin();
-            insert(i, i - 1, rk[i]);
+            auto rk = lower_bound(v.begin() + 1, v.end(), arr[i]) - v.begin();
+            insert(i, i - 1, rk);
         }
     }
     void build(int& x, int l, int r) {
@@ -75,12 +75,19 @@ struct PST {
             };
         return run(run, root[x], 1, n, ql, qr);
     }
-    //数组l~r中值域[ql,qr]的数的数量
-    int query_range(int l, int r, int ql, int qr) {
-        if (l > r) return 0;
-        return query(r, ql, qr) - query(l - 1, ql, qr);
+    //数组vl~vr中值域[ql,qr]的数的数量
+    int query_range(int vl, int vr, int ql, int qr) {
+        if (ql > qr) return 0;
+        auto run = [&](auto&& run, int vl, int vr, int l, int r, int ql, int qr) {
+            if (l == ql && r == qr) return tr[vr].sum_cnt - tr[vl].sum_cnt;
+            int mid = l + r >> 1;
+            if (qr <= mid) return run(run, ls(vl), ls(vr), l, mid, ql, qr);
+            else if (mid < ql) return run(run, rs(vl), rs(vr), mid + 1, r, ql, qr);
+            else return run(run, ls(vl), ls(vr), l, mid, ql, mid) + run(run, rs(vl), rs(vr), mid + 1, r, mid + 1, qr);
+            };
+        return run(run, root[vl - 1], root[vr], 1, n, ql, qr);
     }
- 
+
     //数组前缀1~x中值域[ql,qr]的数的和
     int query_sum(int x, int ql, int qr) {
         if (ql > qr) return 0;
@@ -93,15 +100,22 @@ struct PST {
             };
         return run(run, root[x], 1, n, ql, qr);
     }
-    //数组l~r中值域[ql,qr]的数的和
-    int query_range_sum(int l, int r, int ql, int qr) {
-        if (l > r) return 0;
-        return query_sum(r, ql, qr) - query_sum(l - 1, ql, qr);
+    //数组vl~vr中值域[ql,qr]的数的和
+    int query_range_sum(int vl, int vr, int ql, int qr) {
+        if (ql > qr) return 0;
+        auto run = [&](auto&& run, int vl, int vr, int l, int r, int ql, int qr) {
+            if (l == ql && r == qr) return tr[vr].sum_val - tr[vl].sum_val;
+            int mid = l + r >> 1;
+            if (qr <= mid) return run(run, ls(vl), ls(vr), l, mid, ql, qr);
+            else if (mid < ql) return run(run, rs(vl), rs(vr), mid + 1, r, ql, qr);
+            else return run(run, ls(vl), ls(vr), l, mid, ql, mid) + run(run, rs(vl), rs(vr), mid + 1, r, mid + 1, qr);
+            };
+        return run(run, root[vl - 1], root[vr], 1, n, ql, qr);
     }
- 
-    //数组l~r内的第k小值
-    int kth_min(int l, int r, int k) {
-        if (l > r) return 0;
+
+    //数组vl~vr内的第k小值
+    int kth_min(int vl, int vr, int k) {
+        if (vl > vr) return 0;
         auto run = [&](auto&& run, int l, int r, int ql, int qr, int k) {
             if (l == r) return v[l];
             int mid = l + r >> 1;
@@ -109,11 +123,11 @@ struct PST {
             if (k <= s) return run(run, l, mid, ls(ql), ls(qr), k);
             else return run(run, mid + 1, r, rs(ql), rs(qr), k - s);
             };
-        return run(run, 1, n, root[l - 1], root[r], k);
+        return run(run, 1, n, root[vl - 1], root[vr], k);
     }
-    //数组l~r内的第k大值
-    int kth_max(int l, int r, int k) {
-        if (l > r) return 0;
+    //数组vl~vr内的第k大值
+    int kth_max(int vl, int vr, int k) {
+        if (vl > vr) return 0;
         auto run = [&](auto&& run, int l, int r, int ql, int qr, int k) {
             if (l == r) return v[l];
             int mid = l + r >> 1;
@@ -121,11 +135,11 @@ struct PST {
             if (k <= s) return run(run, mid + 1, r, rs(ql), rs(qr), k);
             else return run(run, l, mid, ls(ql), ls(qr), k - s);
             };
-        return run(run, 1, n, root[l - 1], root[r], k);
+        return run(run, 1, n, root[vl - 1], root[vr], k);
     }
-    //数组l~r之间前k小数之和
-    ll kth_min_sum(int l, int r, int k) {
-        if (l > r) return 0;
+    //数组vl~vr之间前k小数之和
+    ll kth_min_sum(int vl, int vr, int k) {
+        if (vl > vr) return 0;
         auto run = [&](auto&& run, int l, int r, int ql, int qr, int k) {
             if (l == r) return 1LL * k * v[l];
             int mid = l + r >> 1;
@@ -133,11 +147,11 @@ struct PST {
             if (k <= s) return run(run, l, mid, ls(ql), ls(qr), k);
             else return run(run, mid + 1, r, rs(ql), rs(qr), k - s) + (tr[ls(qr)].sum_val - tr[ls(ql)].sum_val);
             };
-        return run(run, 1, n, root[l - 1], root[r], k);
+        return run(run, 1, n, root[vl - 1], root[vr], k);
     }
-    //数组l~r之间前k大数之和
-    ll kth_max_sum(int l, int r, int k) {
-        if (l > r) return 0;
+    //数组vl~vr之间前k大数之和
+    ll kth_max_sum(int vl, int vr, int k) {
+        if (vl > vr) return 0;
         auto run = [&](auto&& run, int l, int r, int ql, int qr, int k) {
             if (l == r) return 1LL * k * v[l];
             int mid = l + r >> 1;
@@ -145,8 +159,8 @@ struct PST {
             if (k <= s) return run(run, mid + 1, r, rs(ql), rs(qr), k);
             else return run(run, l, mid, ls(ql), ls(qr), k - s) + (tr[rs(qr)].sum_val - tr[rs(ql)].sum_val);
             };
-        return run(run, 1, n, root[l - 1], root[r], k);
+        return run(run, 1, n, root[vl - 1], root[vr], k);
     }
- 
+
 };
 PST::node PST::tr[N << 5];

@@ -95,7 +95,7 @@ namespace sgt {
             dfs2(v, u);
             root[u] = merge(root[u], root[v], 1, N);
         }
-        tr[u].ans = tr[root[u]].sum ? tr[root[u]].ty : 0;
+        tr[u].ans = tr[root[u]].sum ? tr[root[u]].ty : 0;//及时保存答案以免被破坏
     }
 };
 

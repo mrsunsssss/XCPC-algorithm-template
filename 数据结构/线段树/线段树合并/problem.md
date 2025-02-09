@@ -1,7 +1,6 @@
 https://www.luogu.com.cn/problem/P4556
 
-cpp
-```
+```C++
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;

@@ -1,5 +1,6 @@
 https://www.luogu.com.cn/problem/P4556
 
+cpp
 ```
 #include <bits/stdc++.h>
 using namespace std;

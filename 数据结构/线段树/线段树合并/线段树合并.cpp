@@ -15,9 +15,15 @@ namespace sgt {
     int tot = 0, root[N];
     vector<int> g[N];
     int dp[N][21], dep[N];
-    void init() {
+    void init(int n) {
         for (int i = 1;i <= tot;i++) {
-            tr[i] = { 0,0,0,0,0 };
+            tr[i] = { 0,0,0,0 };
+            root[i] = 0;
+        }
+        for (int i = 0;i <= n;i++) {
+            g[i].clear();
+            dep[i] = 0;
+            for (int j = 0;j <= 20;j++) dp[i][j] = 0;
         }
         tot = 0;
     }

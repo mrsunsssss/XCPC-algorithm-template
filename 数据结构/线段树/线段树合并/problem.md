@@ -1,5 +1,7 @@
 https://www.luogu.com.cn/problem/P4556
 
+树上线段树合并 + 树上差分维护路径
+
 ```C++
 #include <bits/stdc++.h>
 using namespace std;

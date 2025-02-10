@@ -287,6 +287,150 @@ signed main() {
 ```
 
 
+https://www.luogu.com.cn/problem/P3899
+
+将询问离线后，再线段树合并。值域线段树维护深度dep作为下标和子树大小-1作为权值。
+
+如果先dfs后询问的话，就需要merge的时候新开节点，否则会对先前的节点有影响。但是这样空间复杂度稍大，应该会大一倍左右。
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+#define int long long 
+#define endl '\n'
+
+
+
+vector<int> res(300001);
+namespace sgt {
+    const int N = 3e5 + 10;
+    struct node {
+        int ls, rs;
+        int sum = 0;
+        int ans = 0;
+    }tr[N * 20];//NlogN
+    int tot = 0, root[N];
+    vector<int> g[N];
+    //int dp[N][21];
+    int dep[N], sz[N];
+    vector<array<int, 2>> evt[N];
+    void init(int n) {
+        for (int i = 1;i <= tot;i++) {
+            tr[i] = { 0,0,0,0 };
+            root[i] = 0;
+        }
+        for (int i = 0;i <= n;i++) {
+            g[i].clear();
+            dep[i] = 0;
+            sz[i] = 0;
+        }
+        tot = 0;
+    }
+    void dfs1(int u, int p = 0) {
+        dep[u] = dep[p] + 1;
+        for (auto v : g[u]) {
+            if (v == p) continue;
+            dfs1(v, u);
+            sz[u] += sz[v];
+        }
+        sz[u] += 1;
+    }
+    void pushup(int u) {
+        auto& ls = tr[u].ls, & rs = tr[u].rs;
+        tr[u].sum = tr[ls].sum + tr[rs].sum;
+    }
+    void apply(int& u, int p, int k, int l = 1, int r = N) {
+        if (!u) u = ++tot;//动态开点
+        if (l == r) {
+            tr[u].sum += k;
+            return;
+        }
+        int mid = l + r >> 1;
+        if (p <= mid) apply(tr[u].ls, p, k, l, mid);
+        else apply(tr[u].rs, p, k, mid + 1, r);
+        pushup(u);
+    }
+
+    int query(int u, int ql, int qr, int l = 1, int r = N) {
+        if (!u) return 0;
+        if (ql == l and qr == r) {
+            return tr[u].sum;
+        }
+        int mid = l + r >> 1;
+        int res = 0;
+        if (ql <= mid and tr[u].ls) {
+            res += query(tr[u].ls, ql, min(mid, qr), l, mid);
+        }
+        if (qr > mid and tr[u].rs) {
+            res += query(tr[u].rs, max(mid + 1, ql), qr, mid + 1, r);
+        }
+        return res;
+    }
+
+    int merge(int x, int y, int l, int r) {
+        if (!x or !y) return x + y;
+        if (l == r) {
+            tr[x].sum += tr[y].sum;
+            return x;
+        }
+        int mid = l + r >> 1;
+        tr[x].ls = merge(tr[x].ls, tr[y].ls, l, mid);
+        tr[x].rs = merge(tr[x].rs, tr[y].rs, mid + 1, r);
+        pushup(x);
+        return x;
+    }
+
+    void dfs2(int u, int p = 0) {
+        for (auto v : g[u]) {
+            if (v == p) continue;
+            dfs2(v, u);
+            root[u] = merge(root[u], root[v], 1, N);
+        }
+        //tr[u].ans = tr[root[u]].sum;
+        for (auto [k, id] : evt[u]) {
+            res[id] = min(k, sgt::dep[u] - 1) * (sgt::sz[u] - 1) + query(root[u], dep[u] + 1, dep[u] + k);
+        }
+    }
+};
+
+
+void Prework() {
+
+}
+void Solve() {
+    int n, q;cin >> n >> q;
+    res.resize(q + 1);
+    sgt::init(n);
+    for (int i = 1;i < n;i++) {
+        int u, v;cin >> u >> v;
+        sgt::g[u].push_back(v);
+        sgt::g[v].push_back(u);
+    }
+    sgt::dfs1(1);
+    for (int i = 1;i <= n;i++) {
+        sgt::apply(sgt::root[i], sgt::dep[i], sgt::sz[i] - 1);
+    }
+    for (int i = 1;i <= q;i++) {
+        int p, k;cin >> p >> k;
+        sgt::evt[p].push_back({ k,i });
+    }
+    sgt::dfs2(1);
+    for (int i = 1;i <= q;i++) {
+        cout << res[i] << endl;
+    }
+}
+
+signed main() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);cout.tie(0);
+    int T = 1;
+    //cin >> T;
+    Prework();
+    while (T--) Solve();
+}
+```
+
 
 
 

@@ -7,7 +7,7 @@ using ll = long long;
 namespace sgt {
     const int N = 1e5 + 10;
     struct node {
-        int l, r;
+        int ls, rs;
         int sum = 0;
         int ty = 0;
         int ans = 0;
@@ -53,7 +53,7 @@ namespace sgt {
         return dp[x][0];
     }
     void pushup(int u) {
-        auto& ls = tr[u].l, & rs = tr[u].r;
+        auto& ls = tr[u].ls, & rs = tr[u].rs;
         //tr[x].sum = tr[ls].sum + tr[rs].sum;
         if (tr[ls].sum >= tr[rs].sum) {
             tr[u].sum = tr[ls].sum;
@@ -72,8 +72,8 @@ namespace sgt {
             return;
         }
         int mid = l + r >> 1;
-        if (p <= mid) apply(tr[u].l, l, mid, p, k);
-        else apply(tr[u].r, mid + 1, r, p, k);
+        if (p <= mid) apply(tr[u].ls, l, mid, p, k);
+        else apply(tr[u].rs, mid + 1, r, p, k);
         pushup(u);
     }
 
@@ -84,8 +84,8 @@ namespace sgt {
             return x;
         }
         int mid = l + r >> 1;
-        tr[x].l = merge(tr[x].l, tr[y].l, l, mid);
-        tr[x].r = merge(tr[x].r, tr[y].r, mid + 1, r);
+        tr[x].ls = merge(tr[x].ls, tr[y].ls, l, mid);
+        tr[x].rs = merge(tr[x].rs, tr[y].rs, mid + 1, r);
         pushup(x);
         return x;
     }

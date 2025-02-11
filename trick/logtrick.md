@@ -14,6 +14,4 @@ https://codeforces.com/contest/2038/problem/D
 
 https://ac.nowcoder.com/acm/contest/95323/K  logtrick+主席树
 
-https://ac.nowcoder.com/acm/contest/95338/E 数据随机化下的max和min.以max为例,首先不妨固定左端点为1,其他左端点同理。前缀 $[1,i]$ 位置中，第 $i$ 个位置取得最大值的概率为 $\frac1i$ ,同时这为最大值种类的期望贡献了 $\frac1i$ .于是最终，最大值的种类数的期望是 $\sum\limits_{i=1}^{n}\frac1i$ ,这是调和级数，即 $\logn$
-
-
+https://ac.nowcoder.com/acm/contest/95338/E 数据随机化下的max和min.以max为例,首先不妨固定左端点为1,其他左端点同理。前缀 $[1,i]$ 位置中，第 $i$ 个位置取得最大值的概率为 $\frac1i$ ,同时这为最大值种类的期望贡献了 $\frac1i$ .于是最终，最大值的种类数的期望是 $\sum\limits_{i=1}^{n}\frac1i$ ,这是调和级数，即 $log n$ .故使用logtick即可。

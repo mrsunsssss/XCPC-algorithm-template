@@ -14,4 +14,5 @@ https://codeforces.com/contest/2038/problem/D
 
 https://ac.nowcoder.com/acm/contest/95323/K  logtrick+主席树
 
-https://ac.nowcoder.com/acm/contest/95338/E 数据随机化下的max和min.以max为例,首先不妨固定左端点为1,其他左端点同理。前缀$[1,i]$位置中，第$i$个位置取得最大值的概率为$\frac1i$,同时这为最大值种类的期望贡献了$\frac1i$.
+https://ac.nowcoder.com/acm/contest/95338/E 数据随机化下的max和min.以max为例,首先不妨固定左端点为1,其他左端点同理。前缀$[1,i]$位置中，
+

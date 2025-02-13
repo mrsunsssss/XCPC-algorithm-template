@@ -1,5 +1,7 @@
 //数字乘以9后的性质
 
+//可以出个构造，构造数字x满足长度刚好为n，x*9的数位和是9*m
+
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;

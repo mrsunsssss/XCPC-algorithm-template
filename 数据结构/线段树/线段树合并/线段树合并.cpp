@@ -9,7 +9,7 @@ namespace sgt {
     struct node {
         int ls, rs;
         int sum = 0;
-        int ty = 0;
+        int id = 0;
         int ans = 0;
     }tr[N * 50];
     int tot = 0, root[N];
@@ -54,26 +54,18 @@ namespace sgt {
     }
     void pushup(int u) {
         auto& ls = tr[u].ls, & rs = tr[u].rs;
-        //tr[x].sum = tr[ls].sum + tr[rs].sum;
-        if (tr[ls].sum >= tr[rs].sum) {
-            tr[u].sum = tr[ls].sum;
-            tr[u].ty = tr[ls].ty;
-        }
-        else {
-            tr[u].sum = tr[rs].sum;
-            tr[u].ty = tr[rs].ty;
-        }
+        tr[u].sum = tr[ls].sum + tr[rs].sum;
     }
-    void apply(int& u, int p, int k, int l = 1, int r = N) {
+    void apply(int& u, int p, int k, int id, int l = 1, int r = N) {
         if (!u) u = ++tot;//动态开点
         if (l == r) {
             tr[u].sum += k;
-            tr[u].ty = p;
+            tr[u].id = id;
             return;
         }
         int mid = l + r >> 1;
-        if (p <= mid) apply(tr[u].ls, p, k, l, mid);
-        else apply(tr[u].rs, p, k, mid + 1, r);
+        if (p <= mid) apply(tr[u].ls, p, k, id, l, mid);
+        else apply(tr[u].rs, p, k, id, mid + 1, r);
         pushup(u);
     }
     int query(int u, int ql, int qr, int l = 1, int r = N) {
@@ -90,6 +82,14 @@ namespace sgt {
             res += query(tr[u].rs, max(mid + 1, ql), qr, mid + 1, r);
         }
         return res;
+    }
+    int kth(int u, int k, int l = 1, int r = N) {
+        if (l == r) {
+            return tr[u].id;
+        }
+        int mid = l + r >> 1;
+        if (k <= tr[tr[u].ls].sum) return kth(tr[u].ls, k, l, mid);
+        else return kth(tr[u].rs, k - tr[tr[u].ls].sum, mid + 1, r);
     }
     int merge(int x, int y, int l = 1, int r = N) {
         if (!x or !y) return x + y;

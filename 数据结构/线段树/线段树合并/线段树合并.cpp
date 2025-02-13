@@ -64,7 +64,7 @@ namespace sgt {
             tr[u].ty = tr[rs].ty;
         }
     }
-    void apply(int& u, int l, int r, int p, int k) {//版本u的p值的数量+=k
+    void apply(int& u, int p, int k, int l = 1, int r = N) {
         if (!u) u = ++tot;//动态开点
         if (l == r) {
             tr[u].sum += k;
@@ -72,11 +72,25 @@ namespace sgt {
             return;
         }
         int mid = l + r >> 1;
-        if (p <= mid) apply(tr[u].ls, l, mid, p, k);
-        else apply(tr[u].rs, mid + 1, r, p, k);
+        if (p <= mid) apply(tr[u].ls, p, k, l, mid);
+        else apply(tr[u].rs, p, k, mid + 1, r);
         pushup(u);
     }
-
+    int query(int u, int ql, int qr, int l = 1, int r = N) {
+        if (!u) return 0;
+        if (ql == l and qr == r) {
+            return tr[u].sum;
+        }
+        int mid = l + r >> 1;
+        int res = 0;
+        if (ql <= mid and tr[u].ls) {
+            res += query(tr[u].ls, ql, min(mid, qr), l, mid);
+        }
+        if (qr > mid and tr[u].rs) {
+            res += query(tr[u].rs, max(mid + 1, ql), qr, mid + 1, r);
+        }
+        return res;
+    }
     int merge(int x, int y, int l, int r) {
         if (!x or !y) return x + y;
         if (l == r) {
@@ -104,9 +118,10 @@ namespace sgt {
 void Prework() {
 
 }
+
 void Solve() {
-    sgt::init();
     int n, m;cin >> n >> m;
+    sgt::init(n);
     for (int i = 1;i < n;i++) {
         int u, v;cin >> u >> v;
         sgt::g[u].push_back(v);
@@ -115,11 +130,11 @@ void Solve() {
     sgt::dfs1(1);
     for (int i = 1;i <= m;i++) {
         int x, y, z;cin >> x >> y >> z;
-        sgt::apply(sgt::root[x], 1, sgt::N, z, 1);
-        sgt::apply(sgt::root[y], 1, sgt::N, z, 1);
+        sgt::apply(sgt::root[x], z, 1);
+        sgt::apply(sgt::root[y], z, 1);
         int f = sgt::lca(x, y);
-        sgt::apply(sgt::root[f], 1, sgt::N, z, -1);
-        sgt::apply(sgt::root[sgt::dp[f][0]], 1, sgt::N, z, -1);
+        sgt::apply(sgt::root[f], z, -1);
+        sgt::apply(sgt::root[sgt::dp[f][0]], z, -1);
     }
     sgt::dfs2(1);
     for (int i = 1;i <= n;i++) {

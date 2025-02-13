@@ -91,7 +91,7 @@ namespace sgt {
         }
         return res;
     }
-    int merge(int x, int y, int l, int r) {
+    int merge(int x, int y, int l = 1, int r = N) {
         if (!x or !y) return x + y;
         if (l == r) {
             tr[x].sum += tr[y].sum;

@@ -119,7 +119,7 @@ void Prework() {
 
 }
 
-void Solve() {
+void Solve1() {
     int n, m;cin >> n >> m;
     sgt::init(n);
     for (int i = 1;i < n;i++) {
@@ -130,17 +130,55 @@ void Solve() {
     sgt::dfs1(1);
     for (int i = 1;i <= m;i++) {
         int x, y, z;cin >> x >> y >> z;
-        sgt::apply(sgt::root[x], z, 1);
-        sgt::apply(sgt::root[y], z, 1);
+        sgt::apply(sgt::root[x], z, 1, 0);
+        sgt::apply(sgt::root[y], z, 1, 0);
         int f = sgt::lca(x, y);
-        sgt::apply(sgt::root[f], z, -1);
-        sgt::apply(sgt::root[sgt::dp[f][0]], z, -1);
+        sgt::apply(sgt::root[f], z, -1, 0);
+        sgt::apply(sgt::root[sgt::dp[f][0]], z, -1, 0);
     }
     sgt::dfs2(1);
     for (int i = 1;i <= n;i++) {
         cout << sgt::tr[i].ans << endl;
     }
 }
+
+void Solve2() {
+    int n, m;cin >> n >> m;
+    sgt::init(n);
+    vector<int> a(n + 1);for (int i = 1;i <= n;i++) cin >> a[i];
+    for (int i = 1;i <= n;i++) {
+        sgt::apply(sgt::root[i], a[i], 1, i);
+    }
+    DSU d(n + 1);
+    for (int i = 1;i <= m;i++) {
+        int u, v;cin >> u >> v;
+        u = d.find(u);v = d.find(v);
+        if (u == v) continue;
+        d.merge(u, v);
+        sgt::root[u] = sgt::merge(sgt::root[u], sgt::root[v]);
+    }
+    int q;cin >> q;
+    while (q--) {
+        char op;cin >> op;
+        int x, y;cin >> x >> y;
+        if (op == 'B') {
+            x = d.find(x);
+            y = d.find(y);
+            if (x == y) continue;
+            d.merge(x, y);
+            sgt::root[x] = sgt::merge(sgt::root[x], sgt::root[y]);
+        }
+        else {
+            x = d.find(x);
+            if (d.size(x) < y) cout << -1 << endl;
+            else {
+                int res = sgt::kth(sgt::root[x], y);
+                cout << res << endl;
+            }
+        }
+    }
+}
+
 
 signed main() {
     ios::sync_with_stdio(0);

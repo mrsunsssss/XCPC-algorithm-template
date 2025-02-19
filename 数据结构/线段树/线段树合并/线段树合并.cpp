@@ -56,7 +56,17 @@ namespace sgt {
         auto& ls = tr[u].ls, & rs = tr[u].rs;
         tr[u].sum = tr[ls].sum + tr[rs].sum;
     }
-    void apply(int& u, int p, int k, int id, int l = 1, int r = N) {
+    void split(int x, int& y, int k) {//<=k的部分归x，>k的部分归y
+        if (!x) return;
+        y = ++tot;
+        int s = tr[tr[x].ls].sum;
+        if (k <= s) split(tr[x].ls, tr[y].ls, k), swap(tr[x].rs, tr[y].rs);
+        else split(tr[x].rs, tr[y].rs, k - s);
+        tr[y].sum = tr[x].sum - k;
+        tr[x].sum = k;
+    }
+
+    void apply(int& u, int p, int k, int id, int l = 1, int r = N) {//点修
         if (!u) u = ++tot;//动态开点
         if (l == r) {
             tr[u].sum += k;
@@ -68,7 +78,7 @@ namespace sgt {
         else apply(tr[u].rs, p, k, id, mid + 1, r);
         pushup(u);
     }
-    int query(int u, int ql, int qr, int l = 1, int r = N) {
+    int query(int u, int ql, int qr, int l = 1, int r = N) {//区查
         if (!u) return 0;
         if (ql == l and qr == r) {
             return tr[u].sum;
@@ -83,7 +93,7 @@ namespace sgt {
         }
         return res;
     }
-    int kth(int u, int k, int l = 1, int r = N) {
+    int kth(int u, int k, int l = 1, int r = N) {//第k小
         if (l == r) {
             return tr[u].id;
         }
@@ -103,6 +113,14 @@ namespace sgt {
         pushup(x);
         return x;
     }
+    void split(int x, int y, int l, int r) {//[l,r]部分归y，其余归x。该操作不用加root
+        int c1 = query(root[x], 1, r);
+        int c2 = query(root[x], l, r);
+        int t = 0;
+        split(root[x], root[y], c1 - c2);
+        split(root[y], t, c2);
+        root[x] = merge(root[x], t);
+    }
 
     void dfs2(int u, int p = 0) {
         for (auto v : g[u]) {
@@ -113,6 +131,8 @@ namespace sgt {
         tr[u].ans = tr[root[u]].sum ? tr[root[u]].ty : 0;//及时保存答案
     }
 };
+//除特殊说明，操作加上root[]
+
 
 
 void Prework() {

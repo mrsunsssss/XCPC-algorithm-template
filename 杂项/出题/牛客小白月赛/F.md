@@ -16,14 +16,15 @@
 
 读入：
 
-读入T，表示数据组数。每组T中，读入n， x，y，lim。
+读入T，表示数据组数。每组T中，读入n,x,y,lim。
+其中 $1\le T \le 1e5$ , $1\le n \le 1e9$
 
 输出：
 
 对于每组T，输出山鸡王最多可以获得的充能数目。
 
 
-
+```C++
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -74,3 +75,4 @@ signed main() {
     Prework();
     while (T--) Solve();
 }
+```

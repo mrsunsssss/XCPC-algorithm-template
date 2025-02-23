@@ -55,6 +55,9 @@ namespace Tools {
         return { l[0] * cosa - l[1] * sina, l[0] * sina + l[1] * cosa };
     }
     VD rotate_90(VD l) { return { -l[1], l[0] }; }
+    int greater_equal_to(ld x, ld y) { return x + eps >= y; }//x>y or equal_to(x,y)
+    int less_equal_to(ld x, ld y) { return x <= y + eps; }//x<y or equal_to(x,y)
+    int equal_to(ld x, ld y) { return abs(x - y) <= eps; }
 }
 
 namespace Segments {

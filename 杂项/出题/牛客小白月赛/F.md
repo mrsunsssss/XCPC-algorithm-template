@@ -17,7 +17,7 @@
 读入：
 
 读入 $T$ ，表示数据组数。每组 $T$ 中，读入 $n$ , $lim$ , $x$ , $y$ 。
-其中 $1\le T \le 2e6$ , $1\le n,lim,x,y \le 1e9$
+其中 $1\le T \le 2e6$ , $1\le n,lim,x,y \le 1e9$ , $x\le lim$
 
 输出：
 

@@ -10,24 +10,21 @@ int qp(int a, int n) {
 int inv(int x) {
     return qp(x, MOD - 2);
 }
-int comb(int a, int b) {
+int comb(int a, int b) {//MOD为质数, a,b<=N
     if (a < 0 || b < 0 || a < b) return 0;
     return 1LL * fact[a] * infact[b] % MOD * infact[a - b] % MOD;
 }
-int _comb(int a, int b) {
+int _comb(int a, int b) {//MOD为质数, a较大,b<=N
     if (a < 0 || b < 0 || a < b) return 0;
     int res = infact[b];
     for (int i = 0;i < b;i++) res = 1LL * res * (a - i) % MOD;
     return res;
 }
-int __comb(int a, int b) {
+
+int comb(int a, int b, int P) {
     if (a < 0 || b < 0 || a < b) return 0;
-    int res = 1;
-    for (int i = 1; i <= b; i++) {
-        res = 1LL * res * (a - (b - i)) % MOD;
-        res = 1LL * res * infact[i] % MOD * fact[i - 1] % MOD;
-    }
-    return res;
+    if (a < P and b < P) return 1LL * fact[a] * infact[b] % MOD * infact[a - b] % MOD;
+    return comb(a / P, b / P, P) * comb(a % P, b % P, P) % MOD;
 }
 int norm(int x) {
     return (x % MOD + MOD) % MOD;

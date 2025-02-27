@@ -10,18 +10,18 @@ int qp(int a, int n) {
 int inv(int x) {
     return qp(x, MOD - 2);
 }
-int comb(int a, int b) {//MOD为质数, a,b<=N
+int comb(int a, int b) {//MOD is prime, a,b<=N
     if (a < 0 || b < 0 || a < b) return 0;
     return 1LL * fact[a] * infact[b] % MOD * infact[a - b] % MOD;
 }
-int __comb(int a, int b) {//MOD为质数, a较大,b<=N
+int __comb(int a, int b) {//MOD is prime, a=1e9,b<=N
     if (a < 0 || b < 0 || a < b) return 0;
     int res = infact[b];
     for (int i = 0;i < b;i++) res = 1LL * res * (a - i) % MOD;
     return res;
 }
 
-int comb(int a, int b, int P) {
+int comb(int a, int b, int P) {//lucas: a<=N,b<=N
     if (a < 0 || b < 0 || a < b) return 0;
     if (a < P and b < P) return 1LL * fact[a] * infact[b] % MOD * infact[a - b] % MOD;
     return comb(a / P, b / P, P) * comb(a % P, b % P, P) % MOD;

@@ -12,5 +12,5 @@ int exgcd(int a, int b, int& x, int& y) {
 int inv(int a, int b = MOD) {// gcd(a,b)=1;
     int x, y;
     exgcd(a, b, x, y);
-    return (x % MOD + MOD) % MOD;
+    return (x % b + b) % b;
 }

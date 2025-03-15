@@ -15,7 +15,7 @@ int exgcd(int a, int b, int& x, int& y) {
     x = y1, y = x1 - a / b * y1;
     return d;
 }
-int calc1(int a, int b, int c, int& mnx, int& mny, int& mxx, int& mxy) {//ax+by=c的正整数解
+int calc(int a, int b, int c, int& mnx, int& mny, int& mxx, int& mxy) {//ax+by=c的正整数解
     int x, y;
     int d = exgcd(a, b, x, y);
     if (c % d) {
@@ -39,7 +39,7 @@ void Prework() {
 void Solve() {
     int a, b, c;cin >> a >> b >> c;
     int mnx, mny, mxx, mxy;
-    int res = calc1(a, b, c, mnx, mny, mxx, mxy);
+    int res = calc(a, b, c, mnx, mny, mxx, mxy);
     if (res == -1) cout << res << endl;
     else {
         if (res == 0) {

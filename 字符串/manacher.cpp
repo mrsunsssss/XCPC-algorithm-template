@@ -32,8 +32,8 @@ struct Manacher {
             if (i + rad[i] > k + rad[k]) k = i;
         }
     }
-    int radius(int i) {
-        return rad[i];
+    int Max(int i) {
+        return rad[i] - 1;
     }
 };
 //注意添加 s=' '+s;

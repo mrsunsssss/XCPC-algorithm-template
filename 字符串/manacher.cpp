@@ -2,11 +2,10 @@ struct Manacher {
     int n;//扩展后的长度
     string s;//扩展后的回文串
     vector<int> rad;//i为中心的最大回文半径
-    
+
     char operator[](int k)const { return s[k]; }
     char& operator[](int k) { return s[k]; }
-    
-    vector<int> rad;//i为中心的最大回文半径
+
     Manacher(string S) {
         int len = S.size() - 1;
         n = 2 * len + 1;
@@ -33,6 +32,8 @@ struct Manacher {
             if (i + rad[i] > k + rad[k]) k = i;
         }
     }
+    int radius(int i) {
+        return rad[i];
+    }
 };
 //注意添加 s=' '+s;
-

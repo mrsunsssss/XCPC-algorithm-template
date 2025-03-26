@@ -39,5 +39,5 @@ struct String {
 ull merge(ull h1, ull h2, int len2) {
     return add(mul(h1, power[len2]), h2);
 }
-
+//init()
 //1-index

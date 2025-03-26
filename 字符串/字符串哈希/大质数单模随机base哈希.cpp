@@ -26,9 +26,9 @@ struct String {
     vector<ull> h;
     String(string S) :s(S) {
         int sz = s.size();
-        h.resize(sz + 1);
-        for (int i = 0;i < sz;i++) {
-            h[i + 1] = add(mul(h[i], base), s[i]);
+        h.resize(sz);
+        for (int i = 1;i < sz;i++) {
+            h[i] = add(mul(h[i - 1], base), s[i]);
         }
     }
     ull subs(int l, int r)const {
@@ -40,5 +40,4 @@ ull merge(ull h1, ull h2, int len2) {
     return add(mul(h1, power[len2]), h2);
 }
 
-//构造：0-index
-//使用：1-index
+//1-index

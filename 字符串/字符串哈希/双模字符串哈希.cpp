@@ -10,31 +10,31 @@ int NextPrime(int n) {
     return n;
 }
 template<int M>
-struct StringHash {//位权法: 倒序计算 如174855可以看作是558471,子串748即(558470-550000)/xp[1]
+struct StringHash {
     static array<int, M> mod;
     static array<int, M> base;
     vector<array<int, M>> xp, h;
     StringHash() = default;
     StringHash(const string& s) {
-        int n = s.size();
+        int n = s.size() - 1;
         xp.resize(n + 1);
-        h.resize(n + 2);
+        h.resize(n + 1);
         for (int i = 0;i < M;i++) xp[0][i] = 1;
         for (int i = 1;i <= n;i++) {
             for (int j = 0;j < M;j++) {
                 xp[i][j] = 1LL * xp[i - 1][j] * base[j] % mod[j];
             }
         }
-        for (int i = n;i >= 1;i--) {
+        for (int i = 1;i <= n;i++) {
             for (int j = 0;j < M;j++) {
-                h[i][j] = (1LL * h[i + 1][j] * base[j] + s[i - 1]) % mod[j];
+                h[i][j] = (1LL * h[i - 1][j] * base[j] + s[i]) % mod[j];
             }
         }
     }
     array<int, M> subs(int l, int r) {
         array<int, M> ret;
         for (int i = 0;i < M;i++) {
-            ret[i] = (h[l][i] - 1LL * h[r + 1][i] * xp[r - l + 1][i] % mod[i] + mod[i]) % mod[i];
+            ret[i] = (h[r][i] - 1LL * h[l - 1][i] * xp[r - l + 1][i] % mod[i] + mod[i]) % mod[i];
         }
         return ret;
     }
@@ -53,7 +53,7 @@ array<int, M> add(const StringHash<M>& u, int a, int b, const StringHash<M>& v, 
     auto h1 = u.subs(a, b);
     auto h2 = v.subs(c, d);
     for (int i = 0;i < M;i++) {
-        ret[i] = (h1[i] + 1LL * h2[i] * (b - a + 1)) % StringHash<2>::mod[i];
+        ret[i] = (1LL * h1[i] * (b - a + 1) + h2[i]) % StringHash<2>::mod[i];
     }
     return ret;
 }
@@ -61,7 +61,5 @@ ll ptoll(array<int, 2> a) {
     ll ret = ((1LL * a[0]) << 30) | a[1];
     return ret;
 }
-//0-index:初始化
-//1-index:subs
 
-
+//1-index

@@ -53,7 +53,7 @@ array<int, M> add(const StringHash<M>& u, int a, int b, const StringHash<M>& v, 
     auto h1 = u.subs(a, b);
     auto h2 = v.subs(c, d);
     for (int i = 0;i < M;i++) {
-        ret[i] = (1LL * h1[i] * xp[(b - a + 1)][i] + h2[i]) % StringHash<2>::mod[i];
+        ret[i] = (1LL * h1[i] * xp[(b - a + 1)][i] + h2[i]) % StringHash<2>::mod[i];//这里init没写，懒得补了
     }
     return ret;
 }

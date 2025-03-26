@@ -20,3 +20,4 @@ vector<int> Z_function(const string& s, const string& t, vector<int>& z) {//先�
     return p;
 }
 //s=' '+s;
+//从第i位开始与字符串的最长公共前缀

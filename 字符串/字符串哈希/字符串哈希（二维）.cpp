@@ -27,8 +27,10 @@ struct String2D {
     vector<vector<int>> s;
     vector<vector<int>> H;
     String2D(vector<string>& S) {
-        int n = s.size() - 1, m = s[1].size() - 1;
+        int n = S.size() - 1, m = S[1].size() - 1;
+        s.resize(n + 1);
         for (int i = 1;i <= n;i++) {
+            s[i].resize(m + 1);
             for (int j = 1;j <= m;j++) {
                 s[i][j] = S[i][j];
             }

@@ -119,8 +119,9 @@ namespace MTT {//任意模数多项式乘法
 
 int Add(int x, int y) { return (x + y >= MOD) ? x + y - MOD : x + y; }
 int Dec(int x, int y) { return (x - y < 0) ? x - y + MOD : x - y; }
-int mul(int x, int y) { return 1ll * x * y % MOD; }
+int mul(int x, int y) { return 1LL * x * y % MOD; }
 uint qp(uint a, int b) { uint res = 1; for (; b; b >>= 1, a = mul(a, a))  if (b & 1)  res = mul(res, a); return res; }
+int qp(int a, int b) { int res = 1; for (; b; b >>= 1, a = mul(a, a))  if (b & 1)  res = mul(res, a); return res; }
 
 
 namespace NTT {
@@ -163,9 +164,9 @@ namespace NTT {
     }
 }
 int _inv[N];
-void Poly_init(int mod = MOD) {
+void Poly_init(int n = N - 10) {
     _inv[1] = 1;
-    for (int i = 2;i < N;i++) _inv[i] = 1llu * _inv[MOD % i] * (MOD - MOD / i) % MOD;
+    for (int i = 2;i <= n;i++) _inv[i] = 1llu * _inv[MOD % i] * (MOD - MOD / i) % MOD;
 }
 struct Poly {
     vector<uint> p;
@@ -420,9 +421,18 @@ Poly Stiring_1_col(int n, int m) {//SA(i,m)
     return A;
 }
 
+Poly Falling_Factorial(Poly A, Poly B) {//下降幂多项式乘法
+    int n = A.deg() + B.deg() + 1;
+    Poly C(n);C[0] = 1;for (int i = 1;i < n;i++) C[i] = mul(C[i - 1], _inv[i]);
+    A = (A * C).extend(n), B = (B * C).extend(n);
+    for (int i = 0;i < n;i++) if (i & 1) C[i] = Dec(MOD, C[i]);
+    for (int i = 0, fact_i = 1;i < n;i++, fact_i = mul(fact_i, i)) A[i] = mul(mul(A[i], B[i]), fact_i);
+    A = (A * C).extend(n);
+    return A;
+}
+
 //记得Poly_init, 如果仅是乘法则不需要
 //Poly读入和初始化时,记得取模. f[i] = -1  ==> f[i] = MOD-1 
 //MTT的rev开lim大小,为方便一般3~4倍即可
 //做多项式逆元等操作之前记得是否需要resize到所需范围
 //注意NTT中模数的2^k需要大于多项式的次数，所以尽量不要对6e6次数以上的多项式用（需要改很多类型为i128防止乘爆，常数很大）
-

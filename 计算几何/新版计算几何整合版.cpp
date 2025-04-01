@@ -30,6 +30,7 @@ namespace Tools {
     int dot(VI u, VI v) { return u[0] * v[0] + u[1] * v[1]; }//投影，cos，余弦相似度
     int loca(PI u, PI v, PI w) { return sgn(cross(uv(u, v), uv(u, w))); }
     int locb(PI u, PI v, PI w) { return sgn(dot(uv(u, v), uv(u, w))); }
+    int point_equal(PI u, PI v) { return u[0] == v[0] and u[1] == v[1]; }
     VI rotate_90(VI l) { return { -l[1], l[0] }; }
 
     //double
@@ -58,6 +59,7 @@ namespace Tools {
     int greater_equal_to(ld x, ld y) { return x + eps >= y; }//x>y or equal_to(x,y)
     int less_equal_to(ld x, ld y) { return x <= y + eps; }//x<y or equal_to(x,y)
     int equal_to(ld x, ld y) { return abs(x - y) <= eps; }
+    int point_equal(PD u, PD v) { return equal_to(u[0], v[0]) and equal_to(u[1], v[1]); }
 }
 
 namespace Segments {
@@ -140,34 +142,30 @@ namespace Convex_Hull {
         ret.pop_back();
         return ret;
     }
-    array<int, 2> in_convex(P p, const C& a) {//{no | strictly yes | yes,where}
+    //0:在外面, 1:在边上, 2:在内部 
+    int in_convex(P p, const C& a) {//二分检查p是否在a[i],a[i+1],a[0]形成的三角形上
         int n = a.size();
-        if (n == 1) {
-            return { sgn(p[0] - a[0][0]) == 0 && sgn(p[1] - a[0][0]) == 0,0 };
-        }
-        if (n == 2) {
-            return { point_on_segment(p, { a[0],a[1] }),0 };
-        }
+        if (a.size() == 1) return point_equal(p, a[0]);
+        if (a.size() == 2) return point_on_segment(p, { a[0],a[1] });
+        if (point_equal(a[0], p)) return 1;//在a[0]上
+        if (loca(a[0], a[1], p) < 0 or loca(a[0], a.back(), p) > 0) return 0;
+        if (loca(a[1], a[0], p) == 0) return 1;//在a[0]和a[1]的边上
+        if (loca(a[n - 1], a[0], p) == 0) return 1;//在a[0]和a[n-1]的边上
         int l = 1, r = n - 2;
         while (l <= r) {
             int mid = l + r >> 1;
             int u = loca(a[0], a[mid], p);
             int v = loca(a[0], a[mid + 1], p);
             if (u >= 0 && v <= 0) {
-                if (loca(a[mid], a[mid + 1], p) >= 0) {
-                    {//在凸包的边上
-                        if (loca(a[mid], a[mid + 1], p) == 0) return { 2,mid };
-                        if (mid == 1 && loca(a[mid], a[0], p) == 0) return { 2,0 };
-                        if (mid + 1 == n - 1 && loca(a[mid + 1], a[0], p) == 0) return { 2,n - 1 };
-                    }
-                    return { 1,mid };
-                }
-                return { 0,0 };
+                int t = loca(a[mid], a[mid + 1], p);
+                if (t == 0) return 1;//在a[mid]和a[mid+1]的边上
+                else if (t > 0) return 2;//在a[0],a[mid],a[mid+1]的三角形内部
+                return 0;
             }
             if (u < 0) r = mid - 1;
             else l = mid + 1;
         }
-        return { 0,0 };
+        return 0;
     }
 
     ty_g diam2(const C& a) {//直径平方

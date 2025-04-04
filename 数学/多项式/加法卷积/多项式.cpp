@@ -431,6 +431,29 @@ Poly Falling_Factorial(Poly A, Poly B) {//下降幂多项式乘法
     return A;
 }
 
+Poly Circular_Convolution(Poly A, Poly B) {//循环卷积(deg_A,deg_B=n-1,c[(i+j)%n]=a[i]+b[j])，其实就是扩展2n的长度，之后再弄回来算答案
+    int n = A.size();
+    int n2 = 2 * n - 1;
+    int lim = 1;while (lim < n2) lim <<= 1;
+    NTT::init(lim);
+    A.resize(lim); B.resize(lim);
+    NTT::ntt(A.p, lim); NTT::ntt(B.p, lim);
+    for (int i = 0; i < lim; i++) A[i] = mul(A[i], B[i]);
+    NTT::intt(A.p, lim);
+    for (int i = n; i < lim; i++) A[i % n] = Add(A[i % n], A[i]);
+    return A.extend(n);
+}
+
+Poly Circular_Convolution_Qpow(Poly A, int k) {//循环卷积快速幂，普通卷积快速幂对它显然是不生效的
+    int n = A.size();
+    Poly res(n);res[0] = 1;
+    while (k) {
+        if (k & 1) res = Circular_Convolution(res, A);
+        A = Circular_Convolution(A, A);k >>= 1;
+    }
+    return res;
+}
+
 //记得Poly_init, 如果仅是乘法则不需要
 //Poly读入和初始化时,记得取模. f[i] = -1  ==> f[i] = MOD-1 
 //MTT的rev开lim大小,为方便一般3~4倍即可

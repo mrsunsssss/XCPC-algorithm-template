@@ -444,7 +444,7 @@ Poly Circular_Convolution(Poly A, Poly B) {//循环卷积(deg_A,deg_B=n-1,c[(i+j
     return A.extend(n);
 }
 
-Poly Circular_Convolution_Qpow(Poly A, int k) {//循环卷积快速幂，普通卷积快速幂对它显然是不生效的
+Poly Circular_Convolution_Qpow(Poly A, ll k) {//循环卷积快速幂，普通卷积快速幂对它显然是不生效的
     int n = A.size();
     Poly res(n);res[0] = 1;
     while (k) {

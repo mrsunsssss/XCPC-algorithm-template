@@ -89,3 +89,28 @@ vector<int> PolyPow(vector<int> a, int k) {
     return a;
 }
 
+//循环卷积
+vector<int> PolyMul_loop(const vector<int>& a, const vector<int>& b) {
+    int n = a.size();
+    vector<int> c(n);
+    for (int i = 0;i < a.size();i++) {
+        for (int j = 0;j < b.size();j++) {
+            int k = (i + j) % n;
+            c[k] += a[i] * b[j] % MOD;
+            if (c[k] >= MOD) c[k] -= MOD;
+        }
+    }
+    return c;
+}
+
+//循环卷积快速幂
+vector<int> qp(vector<int> a, int n) {
+    vector<int> res(a.size());
+    res[0] = 1;
+    while (n) {
+        if (n & 1) res = PolyMul_loop(res, a);
+        a = PolyMul_loop(a, a), n >>= 1;
+    }
+    return res;
+}
+

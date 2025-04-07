@@ -60,6 +60,31 @@ namespace Tools {
     int less_equal_to(ld x, ld y) { return x <= y + eps; }//x<y or equal_to(x,y)
     int equal_to(ld x, ld y) { return abs(x - y) <= eps; }
     int point_equal(PD u, PD v) { return equal_to(u[0], v[0]) and equal_to(u[1], v[1]); }
+
+    //int -> ld
+    ld convert(int x) {
+        return static_cast<ld>(x);
+    }
+
+    // PI -> PD
+    PD convert(const PI& a) {
+        return PD{ convert(a[0]), convert(a[1]) };
+    }
+
+    // LI -> LD
+    LD convert(const LI& a) {
+        return LD{ convert(a[0]), convert(a[1]) };
+    }
+
+    // CI -> CD
+    CD convert(const CI& a) {
+        CD res;
+        res.reserve(a.size());
+        for (const auto& p : a) {
+            res.push_back(convert(p));
+        }
+        return res;
+    }
 }
 
 namespace Segments {
@@ -84,7 +109,7 @@ namespace Segments {
 
 namespace Lines {
     using namespace Tools;
-    PD line_inter(LD a, LD b) {//两点式
+    PD line_inter(LD a, LD b) {//两点式，要求直线不平行
         VD v1 = uv(a[0], a[1]), v2 = uv(b[0], b[1]);
         return add(a[0], mul(v1, cross(v2, uv(b[0], a[0])) / cross(v1, v2)));
     }

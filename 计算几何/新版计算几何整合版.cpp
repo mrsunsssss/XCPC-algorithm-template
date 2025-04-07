@@ -61,28 +61,13 @@ namespace Tools {
     int equal_to(ld x, ld y) { return abs(x - y) <= eps; }
     int point_equal(PD u, PD v) { return equal_to(u[0], v[0]) and equal_to(u[1], v[1]); }
 
-    //int -> ld
-    ld convert(int x) {
-        return static_cast<ld>(x);
-    }
-
-    // PI -> PD
-    PD convert(const PI& a) {
-        return PD{ convert(a[0]), convert(a[1]) };
-    }
-
-    // LI -> LD
-    LD convert(const LI& a) {
-        return LD{ convert(a[0]), convert(a[1]) };
-    }
-
-    // CI -> CD
-    CD convert(const CI& a) {
-        CD res;
-        res.reserve(a.size());
-        for (const auto& p : a) {
-            res.push_back(convert(p));
-        }
+    //int -> double
+    ld convert(int x) { return static_cast<ld>(x); }//int -> ld
+    PD convert(const PI& a) { return PD{ convert(a[0]), convert(a[1]) }; }// PI -> PD
+    LD convert(const LI& a) { return LD{ convert(a[0]), convert(a[1]) }; }// LI -> LD
+    CD convert(const CI& a) {// CI -> CD
+        CD res;res.reserve(a.size());
+        for (const auto& p : a) res.push_back(convert(p));
         return res;
     }
 }

@@ -11,10 +11,10 @@ using LD = array<PD, 2>;
 using CD = vector<PD>;
 
 using ty_g = int;
-using P = PI;
-using V = VI;
-using L = LI;
-using C = CI;
+using P = array<ty_g, 2>;
+using V = array<ty_g, 2>;
+using L = array<P, 2>;
+using C = vector<P>;
 
 const ld eps = 1e-9;
 const ld Pi = 3.14159265357;

@@ -60,6 +60,14 @@ namespace Tools {
     int less_equal_to(ld x, ld y) { return x <= y + eps; }//x<y or equal_to(x,y)
     int equal_to(ld x, ld y) { return abs(x - y) <= eps; }
     int point_equal(PD u, PD v) { return equal_to(u[0], v[0]) and equal_to(u[1], v[1]); }
+    ld calc_angle_dif(P u, P v) {//[0,2*Pi)
+        auto a = atan2(cross(u, v), dot(u, v));/*arctan(uv*sin/uv*cos)*/
+        return a < 0 ? a + 2 * Pi : a;
+    }
+    ld calc_angle(P u) {//ou与ox坐标轴的夹角.[0,2*Pi),推荐直接用atan2
+        auto a = atan2(u[1], u[0]);//(-Pi,Pi]
+        return a < 0 ? a + 2 * Pi : a;
+    }
 
     //int -> double
     ld convert(int x) { return static_cast<ld>(x); }//int -> ld
@@ -378,6 +386,11 @@ namespace Other {
             int c = quad(a), d = quad(b);
             if (c != d) return c < d;
             return sgn(cross(a, b)) > 0;
+        }
+    };
+    struct _argcmp {//直接计算角度极角排序
+        bool operator()(const P& a, const P& b)const {
+            return calc_angle(a) < calc_angle(b);
         }
     };
 }

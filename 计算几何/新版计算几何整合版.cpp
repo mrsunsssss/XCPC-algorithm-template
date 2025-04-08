@@ -9,13 +9,15 @@ using PD = array<ld, 2>;
 using VD = array<ld, 2>;
 using LD = array<PD, 2>;
 using CD = vector<PD>;
-const ld eps = 1e-9;
 
 using ty_g = int;
 using P = PI;
 using V = VI;
 using L = LI;
 using C = CI;
+
+const ld eps = 1e-9;
+const ld Pi = 3.14159265357;
 
 namespace Tools {
     int prev(int i, int n) { return i == 0 ? n - 1 : i - 1; }

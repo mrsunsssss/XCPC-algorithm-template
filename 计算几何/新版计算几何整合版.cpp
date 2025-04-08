@@ -388,7 +388,7 @@ namespace Other {
             return sgn(cross(a, b)) > 0;
         }
     };
-    struct _argcmp {//直接计算角度极角排序
+    struct _argcmp {//直接计算角度极角排序，可能有误差
         bool operator()(const P& a, const P& b)const {
             return calc_angle(a) < calc_angle(b);
         }

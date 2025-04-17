@@ -412,8 +412,8 @@ namespace Half_Plane { //半平面交
     using namespace Sorting;
     vector<LD> half_plane(vector<LD> a) {//eps设置低一点
         int n = a.size();
-        vector<LD> q(n + 1);
-        vector<PD> p(n + 1);
+        vector<LD> q(n + 1);//直线集
+        vector<PD> p(n + 1);//交点集
         sort(a.begin(), a.end(), argcmp_line());
         int l = 0, r = 0;
         q[0] = a[0];
@@ -425,8 +425,8 @@ namespace Half_Plane { //半平面交
             if (l < r) p[r] = line_inter(q[r], q[r - 1]);
         }
         while (l < r and loca(q[l][0], q[l][1], p[r]) < 0) r--; //删除多余元素
-        p[l] = line_inter(q[l], q[r]);//交点集
-        return vector(q.begin() + l, q.begin() + r + 1);//线段集
+        p[l] = line_inter(q[l], q[r]);
+        return vector(q.begin() + l, q.begin() + r + 1);
     }
 }
 

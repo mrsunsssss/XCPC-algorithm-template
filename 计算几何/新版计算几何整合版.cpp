@@ -61,18 +61,18 @@ namespace Tools {
         return { l[0] * cosa - l[1] * sina, l[0] * sina + l[1] * cosa };
     }
     VD rotate_90(VD l) { return { -l[1], l[0] }; }
-    int greater_equal_to(ld x, ld y) { return x + eps >= y; }//x>y or equal_to(x,y)
-    int less_equal_to(ld x, ld y) { return x <= y + eps; }//x<y or equal_to(x,y)
-    int equal_to(ld x, ld y) { return abs(x - y) <= eps; }
-    int point_equal(PD u, PD v) { return equal_to(u[0], v[0]) and equal_to(u[1], v[1]); }
     ld calc_angle_dif(PD u, PD v) {//[0,2*Pi)
         auto a = atan2(cross(u, v), dot(u, v));/*arctan(uv*sin/uv*cos)*/
         return a < 0 ? a + 2 * Pi : a;
     }
     ld angle(PD u) { return atan2(u[1], u[0]); }//ou与ox正方向的夹角.(-Pi,Pi]
     ld angle(LD u) { return atan2(u[1][1] - u[0][1], u[1][0] - u[0][0]); }//直线u与ox正方向的夹角.(-Pi,Pi]
+    int greater_equal_to(ld x, ld y) { return x + eps >= y; }//x>y or equal_to(x,y)
+    int less_equal_to(ld x, ld y) { return x <= y + eps; }//x<y or equal_to(x,y)
+    int equal_to(ld x, ld y) { return abs(x - y) <= eps; }
+    int point_equal(PD u, PD v) { return equal_to(u[0], v[0]) and equal_to(u[1], v[1]); }
 
-
+                                 
     //int -> double
     ld convert(int x) { return static_cast<ld>(x); }//int -> ld
     PD convert(const PI& a) { return PD{ convert(a[0]), convert(a[1]) }; }// PI -> PD

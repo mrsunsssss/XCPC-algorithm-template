@@ -66,9 +66,8 @@ namespace Tools {
         auto a = atan2(cross(u, v), dot(u, v));/*arctan(uv*sin/uv*cos)*/
         return a < 0 ? a + 2 * Pi : a;
     }
-    ld calc_angle(P u) {//ou与ox坐标轴的夹角.[0,2*Pi),推荐直接用atan2
-        auto a = atan2(u[1], u[0]);//(-Pi,Pi]
-        return a < 0 ? a + 2 * Pi : a;
+    ld angle(P u) {//ou与ox正方向的夹角.(-Pi,Pi]
+        return atan2(u[1], u[0]);
     }
 
     //int -> double
@@ -392,7 +391,7 @@ namespace Other {
     };
     struct _argcmp {//直接计算角度极角排序，可能有误差
         bool operator()(const P& a, const P& b)const {
-            return calc_angle(a) < calc_angle(b);
+            return angle(a) < angle(b);
         }
     };
 }

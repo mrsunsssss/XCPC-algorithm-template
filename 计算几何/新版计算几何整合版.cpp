@@ -406,7 +406,7 @@ namespace Sorting {
     };
 }
 
-namespace Half_Plane {
+namespace Half_Plane { //半平面交
     using namespace Tools;
     using namespace Lines;
     using namespace Sorting;

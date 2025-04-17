@@ -34,6 +34,9 @@ namespace Tools {
     int locb(PI u, PI v, PI w) { return sgn(dot(uv(u, v), uv(u, w))); }
     int point_equal(PI u, PI v) { return u[0] == v[0] and u[1] == v[1]; }
     VI rotate_90(VI l) { return { -l[1], l[0] }; }
+    ld angle(PI u) { return atan2(u[1], u[0]); }//ou与ox正方向的夹角.(-Pi,Pi]
+    ld angle(LI u) { return atan2(u[1][1] - u[0][1], u[1][0] - u[0][0]); }//直线u与ox正方向的夹角.(-Pi,Pi]
+    
 
     //double
     ld sgn(ld x) { return x > eps ? 1 : (x < -eps ? -1 : 0); }

@@ -410,7 +410,7 @@ namespace Half_Plane { //半平面交
     using namespace Tools;
     using namespace Lines;
     using namespace Sorting;
-    vector<PD> half_plane(vector<LD> a) {//eps设置低一点
+    vector<LD> half_plane(vector<LD> a) {//eps设置低一点
         int n = a.size();
         vector<LD> q(n + 1);
         vector<PD> p(n + 1);
@@ -419,14 +419,14 @@ namespace Half_Plane { //半平面交
         q[0] = a[0];
         for (int i = 1;i < n;i++) {
             if (angle(a[i]) - angle(a[i - 1]) < eps) continue;
-            while (l < r and loca(a[i][0], a[i][1], p[r]) < 0) r--; //队尾交点在向量右侧则弹出队尾
-            while (l < r and loca(a[i][0], a[i][1], p[l + 1]) < 0) l++; //队首交点在向量右侧则弹出队首
+            while (l < r and loca(a[i][0], a[i][1], p[r]) < 0) r--; //队尾交点在向量右侧(也可以改为<=表示在线上)则弹出队尾
+            while (l < r and loca(a[i][0], a[i][1], p[l + 1]) < 0) l++; //队首交点在向量右侧(也可以改为<=表示在线上)则弹出队首
             q[++r] = a[i];
             if (l < r) p[r] = line_inter(q[r], q[r - 1]);
         }
         while (l < r and loca(q[l][0], q[l][1], p[r]) < 0) r--; //删除多余元素
-        p[l] = line_inter(q[l], q[r]);
-        return vector(p.begin() + l, p.begin() + r + 1);
+        p[l] = line_inter(q[l], q[r]);//交点集
+        return vector(q.begin() + l, q.begin() + r + 1);//线段集
     }
 }
 

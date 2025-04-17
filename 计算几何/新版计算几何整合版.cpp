@@ -17,7 +17,7 @@ using L = array<P, 2>;
 using C = vector<P>;
 
 const ld eps = 1e-9;
-const ld Pi = 3.14159265357;
+const ld Pi = 3.14159265357;//acos(-1)
 
 namespace Tools {
     int prev(int i, int n) { return i == 0 ? n - 1 : i - 1; }

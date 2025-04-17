@@ -408,14 +408,28 @@ namespace Sorting {
 
 namespace Half_Plane {
     using namespace Tools;
-    int half_plane(vector<L> a) {
+    using namespace Lines;
+    using namespace Sorting;
+    vector<PD> half_plane(vector<LD> a) {
         int n = a.size();
+        vector<LD> q(n + 1);
+        vector<PD> p(n + 1);
         sort(a.begin(), a.end(), argcmp_line());
+        int l = 0, r = 0;
+        q[0] = a[0];
         for (int i = 1;i < n;i++) {
-            if(ld_equal(angle(a[i]),angle(a[i-1])))
+            if (angle(a[i]) - angle(a[i - 1]) < eps) continue;
+            while (l < r and loca(a[i][0], a[i][1], p[r]) < 0) r--; //队尾交点在向量右侧则弹出队尾
+            while (l < r and loca(a[i][0], a[i][1], p[l + 1]) < 0) l++; //队首交点在向量右侧则弹出队首
+            q[++r] = a[i];
+            if (l < r) p[r] = line_inter(q[r], q[r - 1]);
         }
+        while (l < r and loca(q[l][0], q[l][1], p[r]) < 0) r--; //删除多余元素
+        p[l] = line_inter(q[l], q[r]);
+        return vector(p.begin() + l, p.begin() + r + 1);
     }
 }
+
 
 
 

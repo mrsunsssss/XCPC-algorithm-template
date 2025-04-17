@@ -410,7 +410,7 @@ namespace Half_Plane { //半平面交
     using namespace Tools;
     using namespace Lines;
     using namespace Sorting;
-    vector<PD> half_plane(vector<LD> a) {
+    vector<PD> half_plane(vector<LD> a) {//eps设置低一点
         int n = a.size();
         vector<LD> q(n + 1);
         vector<PD> p(n + 1);

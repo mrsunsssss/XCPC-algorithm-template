@@ -88,7 +88,78 @@ https://leetcode.cn/problems/find-minimum-time-to-finish-all-jobs/description/
 
 
 
+决策单调性优化dp
+![image](https://github.com/user-attachments/assets/0a243c3e-86df-4e95-b0ec-a91e893db68c)
 
+决策单调性显然。由于只有上层向下层的转移，使用分治即可。
+
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+#define int long long 
+#define endl '\n'
+
+using ld = double;
+
+void Prework() {
+
+}
+void Solve() {
+    int n, k;cin >> n >> k;
+    vector<ld> a(n + 1);
+    for (int i = 1; i <= n; i++) cin >> a[i];
+    sort(a.begin() + 1, a.end());
+    vector<ld> s(n + 1);
+    for (int i = 1; i <= n; i++) s[i] = s[i - 1] + a[i];
+    vector<vector<ld>> w(n + 1, vector<ld>(n + 1, 0.0));
+    for (int l = 1; l <= n; l++) {
+        for (int r = l; r <= n; r++) {
+            int m = (l + r) / 2;
+            int mid = a[m];
+            ld x = mid * 1.0 * (m - l + 1) - (s[m] - s[l - 1]);
+            ld y = (s[r] - s[m]) - mid * 1.0 * (r - m);
+            w[l][r] = x + y;
+        }
+    }
+    const int inf = 1e18;
+    vector<ld> dp(n + 1, inf);
+    for (int i = 0; i <= n; i++) dp[i] = w[1][i];
+    for (int i = 2; i <= k; i++) {
+        vector<ld> ndp(n + 1, inf);
+        auto dfs = [&](auto&& dfs, int l, int r, int L, int R) {
+            if (l > r) return;
+            int mid = (l + r) / 2;
+            ld best = inf;
+            int pos = -1;
+            for (int j = L; j <= min(R, mid - 1); j++) {
+                ld cur = dp[j] + w[j + 1][mid];
+                if (cur < best) {
+                    best = cur;
+                    pos = j;
+                }
+            }
+            if (pos == -1) return;
+            ndp[mid] = best;
+            dfs(dfs, l, mid - 1, L, pos);
+            dfs(dfs, mid + 1, r, pos, R);
+            };
+        dfs(dfs, i, n, i, n);
+        swap(ndp, dp);
+    }
+
+    cout << fixed << std::setprecision(4) << dp[n] << endl;
+}
+
+signed main() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);cout.tie(0);
+    int T = 1;
+    //cin >> T;
+    Prework();
+    while (T--) Solve();
+}
+```
 
 
 

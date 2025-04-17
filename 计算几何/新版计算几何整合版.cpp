@@ -23,6 +23,7 @@ namespace Tools {
     int prev(int i, int n) { return i == 0 ? n - 1 : i - 1; }
     int next(int i, int n) { return i == n - 1 ? 0 : i + 1; }
 
+
     //int
     int sgn(int x) { return x > 0 ? 1 : (x < 0 ? -1 : 0); }
     VI uv(PI u, PI v) { return { v[0] - u[0],v[1] - u[1] }; }
@@ -36,7 +37,7 @@ namespace Tools {
     VI rotate_90(VI l) { return { -l[1], l[0] }; }
     ld angle(PI u) { return atan2(u[1], u[0]); }//ou与ox正方向的夹角.(-Pi,Pi]
     ld angle(LI u) { return atan2(u[1][1] - u[0][1], u[1][0] - u[0][0]); }//直线u与ox正方向的夹角.(-Pi,Pi]
-    
+
 
     //double
     ld sgn(ld x) { return x > eps ? 1 : (x < -eps ? -1 : 0); }
@@ -69,10 +70,10 @@ namespace Tools {
     ld angle(LD u) { return atan2(u[1][1] - u[0][1], u[1][0] - u[0][0]); }//直线u与ox正方向的夹角.(-Pi,Pi]
     int greater_equal_to(ld x, ld y) { return x + eps >= y; }//x>y or equal_to(x,y)
     int less_equal_to(ld x, ld y) { return x <= y + eps; }//x<y or equal_to(x,y)
-    int equal_to(ld x, ld y) { return abs(x - y) <= eps; }
-    int point_equal(PD u, PD v) { return equal_to(u[0], v[0]) and equal_to(u[1], v[1]); }
+    int ld_equal(ld x, ld y) { return abs(x - y) <= eps; }
+    int point_equal(PD u, PD v) { return ld_equal(u[0], v[0]) and ld_equal(u[1], v[1]); }
 
-                                 
+
     //int -> double
     ld convert(int x) { return static_cast<ld>(x); }//int -> ld
     PD convert(const PI& a) { return PD{ convert(a[0]), convert(a[1]) }; }// PI -> PD
@@ -379,7 +380,7 @@ namespace Polygon {
     }
 }
 
-namespace Other {
+namespace Sorting {
     using namespace Tools;
     struct argcmp {//极角排序
         inline static int DS[4] = { 1,2,4,3 };
@@ -397,7 +398,26 @@ namespace Other {
             return angle(a) < angle(b);
         }
     };
+    struct argcmp_line {//对直线极角排序,极角相等左侧优先
+        bool operator()(const L& a, const L& b)const {
+            auto A = angle(a), B = angle(b);
+            return abs(A - B) > eps ? A < B : loca(a[0], a[1], b[0]) < 0;
+        }
+    };
 }
+
+namespace Half_Plane {
+    using namespace Tools;
+    int half_plane(vector<L> a) {
+        int n = a.size();
+        sort(a.begin(), a.end(), argcmp_line());
+        for (int i = 1;i < n;i++) {
+            if(ld_equal(angle(a[i]),angle(a[i-1])))
+        }
+    }
+}
+
+
 
 using namespace Tools;
 using namespace Segments;
@@ -406,4 +426,5 @@ using namespace Circles;
 using namespace Convex_Hull;
 using namespace Dynamic_Convex_Hull;
 using namespace Polygon;
-using namespace Other;
+using namespace Sorting;
+using namespace Half_Plane;

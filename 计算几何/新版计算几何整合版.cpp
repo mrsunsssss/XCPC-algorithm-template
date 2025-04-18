@@ -410,7 +410,7 @@ namespace Half_Plane { //半平面交
     using namespace Tools;
     using namespace Lines;
     using namespace Sorting;
-    vector<LD> half_plane(vector<LD> a) {//eps设置低一点
+    vector<LD> half_plane(vector<LD> a) {//eps设置低一点，1e9 -> 1e-18
         int n = a.size();
         vector<LD> q(n + 1);//deque存直线集
         vector<PD> p(n + 1);//deque存交点集

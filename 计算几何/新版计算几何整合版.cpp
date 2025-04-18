@@ -430,6 +430,17 @@ namespace Half_Plane { //半平面交
     }
 }
 
+namespace Print {
+    void print(P u) {
+        cout << "(" << u[0] << "," << u[1] << ")" << endl;
+    }
+    void print(L u) {
+        cout << "{";
+        cout << "(" << u[0][0] << "," << u[0][1] << "),";
+        cout << "(" << u[1][0] << "," << u[1][1] << ")";
+        cout << "}\n";
+    }
+}
 
 
 
@@ -442,3 +453,5 @@ using namespace Dynamic_Convex_Hull;
 using namespace Polygon;
 using namespace Sorting;
 using namespace Half_Plane;
+using namespace Print;
+

@@ -109,6 +109,7 @@ namespace Lines {
     using namespace Tools;
     PD line_inter(LD a, LD b) {//两点式，要求直线不平行
         VD v1 = uv(a[0], a[1]), v2 = uv(b[0], b[1]);
+        if (cross(v1, v2) == 0) return { nan(""),nan("") };
         return add(a[0], mul(v1, cross(v2, uv(b[0], a[0])) / cross(v1, v2)));
     }
     bool inter_judge(L a, L b) {

@@ -12,20 +12,19 @@ struct DSU {
     bool same(int x, int y) {
         return find(x) == find(y);
     }
-    bool merge(int x, int y, int z) {
+    bool merge(int x, int y, int z) {//z表示x指向y的关系，并且将y并入x。
         int fx = find(x);
         int fy = find(y);
         if (fx == fy) {
-            if (val[x] - val[y] == z) cout << "Accpet\n";
+            if (val[x] - val[y] == z) return 1;
             else {
-                cout << "Bug Detected " << val[x] - val[y] << endl;
+                return 0;//合并失败
             }
         }
         else {
             val[fy] = -val[y] - z + val[x];
-            cout << "Accept\n";
-        }
-
+            return 1;
+        }\
         p[fy] = fx;
         return 1;
     }

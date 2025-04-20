@@ -12,7 +12,7 @@ struct DSU {
     bool same(int x, int y) {
         return find(x) == find(y);
     }
-    bool merge(int x, int y, int z) {//z表示x指向y的关系，并且将y并入x。
+    bool merge(int x, int y, int z) {//z表示x指向y的关系，并且将y并入x。如果启发式合并需要注意z是否需要*=-1
         int fx = find(x);
         int fy = find(y);
         if (fx == fy) {

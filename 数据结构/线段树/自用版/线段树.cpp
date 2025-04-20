@@ -1,5 +1,4 @@
 const int MOD = 998244353;
-
 template<class Info, class Tag>
 struct Segtree {
     int n;
@@ -58,6 +57,27 @@ struct Segtree {
         return prod(1, 1, n, l, r);
     }
 
+    void set(int p, int l, int r, int pos, const Info& v) {
+        if (l == r) {
+            info[p] = v;
+            return;
+        }
+        int m = l + r >> 1;
+        down(p, l, r);
+        if (pos <= m) {
+            set(2 * p, l, m, pos, v);
+        }
+        else {
+            set(2 * p + 1, m + 1, r, pos, v);
+        }
+        up(p);
+    }
+
+    void set(int pos, const Info& v) {
+        set(1, 1, n, pos, v);
+    }
+
+    
     void apply(int p, int l, int r, int ql, int qr, const Tag& v) {
         if (l > qr or r < ql) {
             return;
@@ -124,6 +144,7 @@ struct Segtree {
         return findLast(1, 1, n, l, r, pred);
     }
 };
+
 
 struct Tag {
     int add = 0, mul = 1;

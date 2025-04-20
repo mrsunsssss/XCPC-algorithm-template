@@ -24,7 +24,7 @@ struct DSU {
         else {
             val[fy] = -val[y] - z + val[x];
             return 1;
-        }\
+        }
         p[fy] = fx;
         return 1;
     }

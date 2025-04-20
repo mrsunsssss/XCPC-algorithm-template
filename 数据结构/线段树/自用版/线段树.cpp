@@ -147,7 +147,7 @@ struct Segtree {
 
 
 struct Tag {
-    int add = 0, mul = 1;
+    int add, mul;
     Tag(int add = 0, int mul = 1) : add(add), mul(mul) {};
     void tagging(Tag o) {
         add = (add * o.mul + o.add) % MOD;
@@ -155,7 +155,7 @@ struct Tag {
     }
 };
 struct Info {
-    int sum = 0;
+    int sum;
     Info(int sum = 0) : sum(sum) {}
     void tagging(Tag t, int len) {
         sum = (sum * t.mul + len * t.add) % MOD;

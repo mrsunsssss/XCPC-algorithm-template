@@ -50,7 +50,7 @@ struct Segtree {
             return info[p];
         }
         int m = l + r >> 1;
-        push(p, l, r);
+        down(p, l, r);
         return prod(2 * p, l, m, ql, qr) + prod(2 * p + 1, m + 1, r, ql, qr);
     }
 
@@ -63,7 +63,7 @@ struct Segtree {
             return;
         }
         if (ql <= l and r <= qr) {
-            apply(p, v, l, r);
+            tagging(p, v, l, r);
             return;
         }
         int m = l + r >> 1;
@@ -89,7 +89,7 @@ struct Segtree {
             return l;
         }
         int m = l + r >> 1;
-        push(p);
+        down(p, l, r);
         int res = findFirst(2 * p, l, m, ql, qr, pred);
         if (res == -1) {
             res = findFirst(2 * p + 1, m + 1, r, ql, qr, pred);
@@ -112,7 +112,7 @@ struct Segtree {
             return l;
         }
         int m = l + r >> 1;
-        push(p);
+        down(p, l, r);
         int res = findLast(2 * p + 1, m + 1, r, ql, qr, pred);
         if (res == -1) {
             res = findLast(2 * p, l, m, ql, qr, pred);
@@ -120,8 +120,7 @@ struct Segtree {
         return res;
     }
 
-    template<class F>
-    int findLast(int l, int r, F&& pred) {
+    template<class F> int findLast(int l, int r, F&& pred) {
         return findLast(1, 1, n, l, r, pred);
     }
 };

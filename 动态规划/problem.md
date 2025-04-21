@@ -164,6 +164,75 @@ signed main() {
 
 
 
+![f6e4d56b46475b5ea5002ca26ee0291](https://github.com/user-attachments/assets/e13e62cf-ca15-4559-ab33-f7e926bba9f7)
+
+```C++
+void Solve() {
+    auto merge = [&](vector<array<int, 2>> a, vector<array<int, 2>> b) ->vector<array<int, 2>> {
+        int n = a.size(), m = b.size();
+        vector<int> sa(n + 1), sb(m + 1);
+        for (int i = 1;i <= n;i++) sa[i] = sa[i - 1] + a[i - 1][1];
+        for (int i = 1;i <= m;i++) sb[i] = sb[i - 1] + b[i - 1][1];
+        vector dp(n + 1, vector<int>(m + 1, inf));
+        dp[0][0] = 0;
+        for (int i = 1;i <= n;i++) {
+            dp[i][0] = dp[i - 1][0] + a[i - 1][0] * sa[i];
+        }
+        for (int i = 1;i <= m;i++) {
+            dp[0][i] = dp[0][i - 1] + b[i - 1][0] * sb[i];
+        }
+        for (int i = 1;i <= n;i++) {
+            for (int j = 1;j <= m;j++) {
+                int s = sa[i] + sb[j];
+                dp[i][j] = min(dp[i - 1][j] + a[i - 1][0] * s, dp[i][j - 1] + b[j - 1][0] * s);
+            }
+        }
+        vector<array<int, 2>> res;
+        int i = n, j = m;
+        while (1) {
+            if (i == 0 and j == 0) break;
+            int t = sa[i] + sb[j];
+            if (i > 0 and dp[i][j] == dp[i - 1][j] + a[i - 1][0] * t) {
+                res.push_back(a[i - 1]);
+                i--;
+            }
+            else {
+                res.push_back(b[j - 1]);
+                j--;
+            }
+        }
+        return vector<array<int, 2>>(res.rbegin(), res.rend());
+        };
+    int n;cin >> n;
+    vector<array<int, 2>> a(n + 1);
+    for (int i = 1;i <= n;i++) {
+        cin >> a[i][0] >> a[i][1];
+    }
+    int m;cin >> m;
+    vector<vector<array<int, 2>>> b(m + 1);
+    for (int i = 1;i <= m;i++) {
+        int k;cin >> k;
+        while (k--) {
+            int x;cin >> x;
+            b[i].push_back(a[x]);
+        }
+    }
+    auto q = b[1];
+    for (int i = 2;i <= m;i++) {
+        q = merge(q, b[i]);
+    }
+    int s = 0, res = 0;
+    for (auto [W, T] : q) {
+        s += T;
+        res += s * W;
+    }
+    cout << res << endl;
+}
+```
+
+虽然这题满足邻项交换法，但是实则是dp，因为还需要额外满足它一定顺序，邻项交换法可能失效。
+
+
 
 
 

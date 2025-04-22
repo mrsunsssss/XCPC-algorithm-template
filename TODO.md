@@ -1,4 +1,4 @@
-https://www.cnblogs.com/Point-King/p/15691552.html   NTT优化树上背包
+https://www.cnblogs.com/Point-King/p/15691552.html   NTT优化树上背包。这里是普通的树上背包，如果是要求所有可能的状态的话直接卷积是显然的。
 
 https://www.cnblogs.com/FLY-lai/p/18445829 背包的凸优化
 

@@ -20,3 +20,5 @@ https://www.luogu.com/article/vx7a76on  决策单调性优化dp
 https://atcoder.jp/contests/abc373/tasks/abc373_f 决策单调/斜率优化练习
 
 https://atcoder.jp/contests/dp/tasks  dp题单
+
+https://www.luogu.com.cn/article/vyvrgzea

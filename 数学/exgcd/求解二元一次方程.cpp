@@ -24,7 +24,7 @@ int last_small(int x, int k, int r) { // x + k * t <= r , k > 0
     return x;
 }
 
-//ax + by = c 的解的数量,要求 l1<=x<=r1,l2<=y<=r2 .(inf和-inf表示无限制)
+//ax + by = c 的解的数量,要求 l1<=x<=r1,l2<=y<=r2 .(inf和-inf表示无限制) ， a,b,c > 0
 int calc(int a, int b, int c, int& mnx, int& mny, int& mxx, int& mxy, int l1, int r1, int l2, int r2) {
     int x, y;
     int d = exgcd(a, b, x, y);

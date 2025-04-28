@@ -9,16 +9,16 @@ int exgcd(int a, int b, int& x, int& y) {
     x = y1, y = x1 - a / b * y1;
     return d;
 }
-int first_big(int x, int k, int l) {
+int first_big(int x, int k, int l) { // x + k * t >= l , k > 0
     if (l == -inf) return -inf;
-    x = (l - x) / k * k + x - k;
+    x = (l - x) / k * k + x;
     while (x < l) x += k;
     while (x - k >= l) x -= k;
     return x;
 }
-int last_small(int x, int k, int r) {
+int last_small(int x, int k, int r) { // x + k * t <= r , k > 0
     if (r == inf) return inf;
-    x = (r - x) / k * k + x - k;
+    x = (r - x) / k * k + x;
     while (x + k <= r) x += k;
     while (x > r) x -= k;
     return x;

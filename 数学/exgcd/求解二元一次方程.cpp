@@ -1,4 +1,6 @@
 const int inf = 1e18;
+//using Int = long long;
+using Int = __int128;
 int exgcd(int a, int b, int& x, int& y) {
     if (b == 0) {
         x = 1, y = 0;
@@ -24,8 +26,8 @@ int last_small(int x, int k, int r) { // x + k * t <= r , k > 0
     return x;
 }
 
-//ax + by = c 的解的数量,要求 l1<=x<=r1,l2<=y<=r2 .(inf和-inf表示无限制) ， a,b,c > 0
-int calc(int a, int b, int c, int& mnx, int& mny, int& mxx, int& mxy, int l1, int r1, int l2, int r2) {
+//ax + by = c 的解的数量,要求 l1<=x<=r1,l2<=y<=r2 .(inf和-inf表示无限制)
+Int calc(int a, int b, int c, int& mnx, int& mny, int& mxx, int& mxy, int l1, int r1, int l2, int r2) {
     int x, y;
     int d = exgcd(a, b, x, y);
     if (a == 0 and b == 0) {
@@ -33,7 +35,7 @@ int calc(int a, int b, int c, int& mnx, int& mny, int& mxx, int& mxy, int l1, in
         mnx = l1, mxx = r1;
         mny = l2, mxy = r2;
         if (mnx == -inf or mny == -inf or mxx == inf or mxy == inf) return inf;
-        return (r1 - l1 + 1) * (r2 - l2 + 1);
+        return ((Int)r1 - l1 + 1) * ((Int)r2 - l2 + 1);//注意溢出
     }
     if (a == 0) {
         if (c % b) return -1;
@@ -41,7 +43,7 @@ int calc(int a, int b, int c, int& mnx, int& mny, int& mxx, int& mxy, int l1, in
         if (y < l2 or y > r2) return 0;
         mnx = l1, mxx = r1;
         mny = mxy = y;
-        return r1 - l1 + 1;
+        return (Int)r1 - l1 + 1;//注意溢出
     }
     if (b == 0) {
         if (c % a) return -1;
@@ -49,7 +51,7 @@ int calc(int a, int b, int c, int& mnx, int& mny, int& mxx, int& mxy, int l1, in
         if (x < l1 or x > r1) return 0;
         mny = l2, mxy = r2;
         mnx = mxx = x;
-        return r2 - l2 + 1;
+        return (Int)r2 - l2 + 1;//注意溢出
     }
     if (c % d) return -1;
 
@@ -61,11 +63,12 @@ int calc(int a, int b, int c, int& mnx, int& mny, int& mxx, int& mxy, int l1, in
     mny = first_big(y, A, l2);
     mxy = last_small(y, A, r2);
 
-    if (mny != -inf) mxx = min((c - b * mny) / a, mxx);
-    if (mnx != -inf) mxy = min((c - a * mnx) / b, mxy);
-    if (mxy != inf) mnx = max((c - b * mxy) / a, mnx);
-    if (mxx != inf) mny = max((c - a * mxx) / b, mny);
+    if (mny != -inf) mxx = min((c - (Int)b * mny) / a, (Int)mxx);
+    if (mnx != -inf) mxy = min((c - (Int)a * mnx) / b, (Int)mxy);
+    if (mxy != inf) mnx = max((c - (Int)b * mxy) / a, (Int)mnx);
+    if (mxx != inf) mny = max((c - (Int)a * mxx) / b, (Int)mny);
 
     if (mxy < mny) return 0;
-    return (mxy - mny) / A + 1;//(mxx - mnx) / B + 1
+
+    return ((Int)mxy - mny) / A + 1;//(mxx - mnx) / B + 1
 }

@@ -189,14 +189,14 @@ struct Poly {
         cout << endl;
     }
 };
-Poly operator+ (Poly A, Poly B) {
+Poly operator+(Poly A, Poly B) {
     int n = A.size(), m = B.size();
     Poly c(max(n, m));
     for (int i = 0; i < n; i++)  c[i] = A[i];
     for (int i = 0; i < m; i++)  c[i] = Add(c[i], B[i]);
     return c;
 }
-Poly operator- (Poly A, Poly B) {
+Poly operator-(Poly A, Poly B) {
     int n = A.size(), m = B.size();
     Poly c(max(n, m));
     for (int i = 0; i < n; i++)  c[i] = A[i];

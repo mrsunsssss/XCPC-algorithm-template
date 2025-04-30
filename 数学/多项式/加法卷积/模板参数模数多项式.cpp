@@ -429,7 +429,7 @@ template<int MOD> Poly<MOD> Stiring_1_col(int n, int m) {//SA(i,m)
 
 template<int MOD> Poly<MOD> Falling_Factorial(Poly<MOD> A, Poly<MOD> B) {//下降幂多项式乘法
     int n = A.deg() + B.deg() + 1;
-    Poly C(n);C[0] = 1;for (int i = 1;i < n;i++) C[i] = mul<MOD>(C[i - 1], INV<MOD>::_inv[i]);
+    Poly<MOD> C(n);C[0] = 1;for (int i = 1;i < n;i++) C[i] = mul<MOD>(C[i - 1], INV<MOD>::_inv[i]);
     A = (A * C).extend(n), B = (B * C).extend(n);
     for (int i = 0;i < n;i++) if (i & 1) C[i] = Dec<MOD>(MOD, C[i]);
     for (int i = 0, fact_i = 1;i < n;i++, fact_i = mul<MOD>(fact_i, i)) A[i] = mul<MOD>(mul<MOD>(A[i], B[i]), fact_i);
@@ -452,7 +452,7 @@ template<int MOD> Poly<MOD> Circular_Convolution(Poly<MOD> A, Poly<MOD> B) {//�
 
 template<int MOD> Poly<MOD> Circular_Convolution_Qpow(Poly<MOD> A, ll k) {//循环卷积快速幂，普通卷积快速幂对它显然是不生效的
     int n = A.size();
-    Poly res(n);res[0] = 1;
+    Poly<MOD> res(n);res[0] = 1;
     while (k) {
         if (k & 1) res = Circular_Convolution(res, A);
         A = Circular_Convolution(A, A);k >>= 1;
@@ -465,5 +465,6 @@ template<int MOD> Poly<MOD> Circular_Convolution_Qpow(Poly<MOD> A, ll k) {//循�
 //MTT的rev开lim大小,为方便一般3~4倍即可
 //做多项式逆元等操作之前记得是否需要resize到所需范围
 //注意NTT中模数的2^k需要大于多项式的次数，所以尽量不要对6e6次数以上的多项式用（需要改很多类型为i128防止乘爆，常数很大）
+
 
 const int MOD = 998244353;

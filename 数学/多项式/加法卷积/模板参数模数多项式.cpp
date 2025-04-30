@@ -24,7 +24,7 @@ template<int MOD> struct Cipolla {
         spc_Cp(int x, int y) : x(x), y(y) {}
         inline spc_Cp operator * (const spc_Cp& t) const { return (spc_Cp) { (mul<MOD>(x, t.x) + mul<MOD>(mul<MOD>(y, t.y), sqr_i)) % MOD, (mul<MOD>(x, t.y) + mul<MOD>(y, t.x)) % MOD }; }
     };
-    static spc_Cp qp(spc_Cp a, int b) {
+    static spc_Cp qp_cp(spc_Cp a, int b) {
         spc_Cp res = spc_Cp(1, 0);
         while (b) {
             if (b & 1) res = res * a;
@@ -39,7 +39,7 @@ template<int MOD> struct Cipolla {
         ll t = mul<MOD>(rand(), rand());
         while (qp<MOD>((mul<MOD>(t, t) - n) % MOD + MOD, MOD >> 1) == 1) t = 1ll * rand() * rand() % MOD;//找到非二次剩余的数,期望循环次数为2
         sqr_i = ((mul<MOD>(t, t) - n) % MOD + MOD) % MOD;
-        int res = qp(spc_Cp(t, 1), MOD + 1 >> 1).x;
+        int res = qp_cp(spc_Cp(t, 1), MOD + 1 >> 1).x;
         //return res;//返回任何一个解
         return min(res, MOD - res);//返回较小解
     }
@@ -465,3 +465,5 @@ template<int MOD> Poly<MOD> Circular_Convolution_Qpow(Poly<MOD> A, ll k) {//循�
 //MTT的rev开lim大小,为方便一般3~4倍即可
 //做多项式逆元等操作之前记得是否需要resize到所需范围
 //注意NTT中模数的2^k需要大于多项式的次数，所以尽量不要对6e6次数以上的多项式用（需要改很多类型为i128防止乘爆，常数很大）
+
+const int MOD = 998244353;

@@ -290,18 +290,6 @@ template<int MOD> Poly<MOD> Exp(Poly<MOD> A) {//多项式指数
     for (int i = 0; i < n; i++)  C[i] = Dec<MOD>(A[i], C[i]); C[0] = Add<MOD>(C[0], 1);
     return (B * C).extend(n);
 }
-template<int MOD> Poly<MOD> __Exp(Poly<MOD> A) {//任意首项多项式指数
-    int n = A.size();
-    if (n == 1) return A[0] = 1, A;
-    Poly B = A;B.resize((n + 1) >> 1); B = __Exp(B).extend(n);
-    Poly C = Ln(B);
-    Poly<MOD> D(1), E(1);
-    MTT::conv(B.p, C.p, D.p, MOD);D.resize(n);
-    MTT::conv(B.p, A.p, E.p, MOD);E.resize(n);
-    for (int i = 0;i < n;i++) B[i] = Add<MOD>(Dec<MOD>(B[i], D[i]), E[i]);
-    return B.extend(n);
-}
-
 //保证[x ^ 0]f(x) = 1
 template<int MOD> Poly<MOD> Sqrt(Poly<MOD> A) {//多项式开根
     int n = A.size();

@@ -228,8 +228,6 @@ template<int MOD> struct Poly {
     // }
 };
 
-
-
 template<int MOD> Poly<MOD> Dev(Poly<MOD> A) {//多项式求导
     int n = A.size();
     for (int i = 1;i < n;i++) A[i - 1] = mul<MOD>(A[i], i);
@@ -241,25 +239,27 @@ template<int MOD> Poly<MOD> Int(Poly<MOD> A) {//多项式求积分
     //for (int i = n - 1;i >= 1;i--) A[i] = mul(A[i - 1], qp(i, MOD - 2));//直接求逆元
     return A[0] = 0, A;
 }
-template<int MOD> Poly<MOD> Inv(Poly<MOD> A) {//多项式乘法逆元
-    int n = A.size();
-    if (n == 1)  return A[0] = qp<MOD>(A[0], MOD - 2), A;
-    Poly B = A; B.resize((n + 1) >> 1); B = Inv(B);
-    int lim; for (lim = 1; lim < (n << 1); lim <<= 1); NTT<MOD>::init(lim);
-    A.resize(lim); B.resize(lim);
-    NTT<MOD>::ntt(A.p, lim); NTT<MOD>::ntt(B.p, lim);
-    for (int i = 0; i < lim; i++)  A[i] = mul<MOD>(Dec<MOD>(2, mul<MOD>(A[i], B[i])), B[i]);
-    NTT<MOD>::intt(A.p, lim); return A.extend(n);
-}
-template<int MOD> Poly<MOD> __Inv(Poly<MOD> A) {//任意模数多项式乘法逆元
-    int n = A.size();
-    if (n == 1) return A[0] = qp(A[0], MOD - 2), A;
-    Poly B = A;B.resize((n + 1) >> 1); B = __Inv(B).extend(n);
-    Poly C(1), D(1);
-    MTT::conv(A.p, B.p, C.p, MOD);C.resize(n);
-    MTT::conv(C.p, B.p, D.p, MOD);D.resize(n);
-    for (int i = 0;i < n;i++) B[i] = Dec<MOD>(Add<MOD>(B[i], B[i]), D[i]);
-    return B.extend(n);
+template<int MOD> Poly<MOD> Inv(Poly<MOD> A) {
+    if constexpr (is_ntt_mod<MOD>()) {//多项式乘法逆元
+        int n = A.size();
+        if (n == 1)  return A[0] = qp<MOD>(A[0], MOD - 2), A;
+        Poly B = A; B.resize((n + 1) >> 1); B = Inv(B);
+        int lim; for (lim = 1; lim < (n << 1); lim <<= 1); NTT<MOD>::init(lim);
+        A.resize(lim); B.resize(lim);
+        NTT<MOD>::ntt(A.p, lim); NTT<MOD>::ntt(B.p, lim);
+        for (int i = 0; i < lim; i++)  A[i] = mul<MOD>(Dec<MOD>(2, mul<MOD>(A[i], B[i])), B[i]);
+        NTT<MOD>::intt(A.p, lim); return A.extend(n);
+    }
+    else {//任意模数多项式乘法逆元
+        int n = A.size();
+        if (n == 1) return A[0] = qp<MOD>(A[0], MOD - 2), A;
+        Poly<MOD> B = A;B.resize((n + 1) >> 1); B = Inv(B).extend(n);
+        Poly<MOD> C(1), D(1);
+        MTT::conv(A.p, B.p, C.p, MOD);C.resize(n);
+        MTT::conv(C.p, B.p, D.p, MOD);D.resize(n);
+        for (int i = 0;i < n;i++) B[i] = Dec<MOD>(Add<MOD>(B[i], B[i]), D[i]);
+        return B.extend(n);
+    }
 }
 template<int MOD> Poly<MOD> operator/(Poly<MOD> A, Poly<MOD> B) {
     A.rev(), B.rev();
@@ -290,6 +290,7 @@ template<int MOD> Poly<MOD> Exp(Poly<MOD> A) {//多项式指数
     for (int i = 0; i < n; i++)  C[i] = Dec<MOD>(A[i], C[i]); C[0] = Add<MOD>(C[0], 1);
     return (B * C).extend(n);
 }
+
 //保证[x ^ 0]f(x) = 1
 template<int MOD> Poly<MOD> Sqrt(Poly<MOD> A) {//多项式开根
     int n = A.size();
@@ -314,15 +315,17 @@ template<int MOD> Poly<MOD> Sqrt_pro(Poly<MOD> A) {//任意首项多项式开根
     return C.extend(n);
 }
 
-// template<int MOD> Poly<MOD> qp(Poly<MOD> A, ll k) {//朴素的卷积快速幂
-//     int n = A.size();
-//     Poly res(n);res[0] = 1;
-//     while (k) {
-//         if (k & 1) res = res * A;
-//         A = A * A;k >>= 1;
-//     }
-//     return res;
-// }
+template<int MOD> Poly<MOD> qp(Poly<MOD> A, ll k, int lim) {//朴素的卷积快速幂
+    int n = A.size();
+    Poly res(n);res[0] = 1;
+    while (k) {
+        if (k & 1) res = res * A;
+        A = A * A;k >>= 1;
+        if (res.size() > lim) res.resize(lim);
+        if (A.deg() > lim) A.resize(lim);
+    }
+    return res;
+}
 
 //保证[x ^ 0]f(x) = 1
 //k很大时,可以计算前对k模p (注意数论中是费马小定理,模p-1)
@@ -331,6 +334,7 @@ template<int MOD> Poly<MOD> Qpow(Poly<MOD> A, int k) {//多项式快速幂
     for (int i = 0;i < n;i++) B[i] = mul<MOD>(B[i], k);
     return Exp(B);
 }
+
 //k很大时,可以计算前对k模p和p-1记录在k1和k2(注意数论中是费马小定理,模p-1)
 template<int MOD> Poly<MOD> Qpow_pro(Poly<MOD> a, int k) {//任意首项多项式快速幂
     int k1 = k % MOD, k2 = k % (MOD - 1);
@@ -461,7 +465,3 @@ template<int MOD> Poly<MOD> Circular_Convolution_Qpow(Poly<MOD> A, ll k) {//循�
 //MTT的rev开lim大小,为方便一般3~4倍即可
 //做多项式逆元等操作之前记得是否需要resize到所需范围
 //注意NTT中模数的2^k需要大于多项式的次数，所以尽量不要对6e6次数以上的多项式用（需要改很多类型为i128防止乘爆，常数很大）
-
-
-const int MOD = 998244353;
-//const int MOD2 = 1004535809;

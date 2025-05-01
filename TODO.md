@@ -14,11 +14,14 @@ https://zhuanlan.zhihu.com/p/604377422 单位根反演   例题：https://loj.ac
 
 wqs二分，斜率优化dp，李超树，网络流
 
+线段树分治
 
 https://www.luogu.com/article/vx7a76on  决策单调性优化dp
 
 https://atcoder.jp/contests/abc373/tasks/abc373_f 决策单调/斜率优化练习
 
 https://atcoder.jp/contests/dp/tasks  dp题单
+
+https://atcoder.jp/contests/tdpc/tasks  dp题单2号
 
 https://www.luogu.com.cn/article/vyvrgzea

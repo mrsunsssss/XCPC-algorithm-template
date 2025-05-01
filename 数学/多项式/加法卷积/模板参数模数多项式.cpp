@@ -283,12 +283,25 @@ template<int MOD> Poly<MOD> Ln(Poly<MOD> A) {//多项式对数
 }
 //保证[x ^ 0]f(x) = 0
 template<int MOD> Poly<MOD> Exp(Poly<MOD> A) {//多项式指数
-    int n = A.size();
-    if (n == 1) return A[0] = 1, A;
-    Poly B = A; B.resize((n + 1) >> 1); B = Exp(B).extend(n);
-    Poly C = Ln(B);
-    for (int i = 0; i < n; i++)  C[i] = Dec<MOD>(A[i], C[i]); C[0] = Add<MOD>(C[0], 1);
-    return (B * C).extend(n);
+    if constexpr (is_ntt_mod<MOD>()) {
+        int n = A.size();
+        if (n == 1) return A[0] = 1, A;
+        Poly B = A; B.resize((n + 1) >> 1); B = Exp(B).extend(n);
+        Poly C = Ln(B);
+        for (int i = 0; i < n; i++)  C[i] = Dec<MOD>(A[i], C[i]); C[0] = Add<MOD>(C[0], 1);
+        return (B * C).extend(n);
+    }
+    else {
+        int n = A.size();
+        if (n == 1) return A[0] = 1, A;
+        Poly B = A;B.resize((n + 1) >> 1); B = Exp(B).extend(n);
+        Poly C = Ln(B);
+        Poly<MOD> D(1), E(1);
+        MTT::conv(B.p, C.p, D.p, MOD);D.resize(n);
+        MTT::conv(B.p, A.p, E.p, MOD);E.resize(n);
+        for (int i = 0;i < n;i++) B[i] = Add<MOD>(Dec<MOD>(B[i], D[i]), E[i]);
+        return B.extend(n);
+    }
 }
 
 template<int MOD> Poly<MOD> Sqrt(Poly<MOD> A) {
@@ -307,16 +320,13 @@ template<int MOD> Poly<MOD> Sqrt(Poly<MOD> A) {
     else {//任意首项多项式开根
         int n = A.size();
         if (n == 1) return A[0] = Cipolla<MOD>::solve(A[0]), A;
-        Poly B = A;B.resize((n + 1) >> 1); B = Pow(B).extend(n);
+        Poly B = A;B.resize((n + 1) >> 1); B = Sqrt(B).extend(n);
         Poly C = (B * B).extend(n);
         for (int i = 0;i < n;i++) B[i] = mul<MOD>(2, B[i]);
         for (int i = 0;i < n;i++) C[i] = Add<MOD>(C[i], A[i]);
         C = C * Inv(B);
         return C.extend(n);
     }
-}
-template<int MOD> Poly<MOD> Sqrt_pro(Poly<MOD> A) {
-    
 }
 
 template<int MOD> Poly<MOD> qp(Poly<MOD> A, ll k, int lim) {//朴素的卷积快速幂
@@ -330,7 +340,7 @@ template<int MOD> Poly<MOD> qp(Poly<MOD> A, ll k, int lim) {//朴素的卷积快
     }
     return res;
 }
-
+//k过大时，直接在外面得到k1=k%MOD,k2=k%(MOD-1)传入参数即可，上半部分的k取k1即可。
 template<int MOD> Poly<MOD> Pow(Poly<MOD> A, int k) {
     if (A[0] == 1) {//多项式快速幂,要求 [x ^ 0]f(x) = 1
         k %= MOD;
@@ -468,3 +478,9 @@ template<int MOD> Poly<MOD> Circular_Convolution_Qpow(Poly<MOD> A, ll k) {//循�
 //MTT的rev开lim大小,即第一个2的幂 >= a.size() + b.size() = 2 * 卷积长度，一般3~4倍即可。_inv的N开其一半的大小或者相同大小。
 //做多项式逆元等操作之前记得是否需要resize到所需范围
 //注意NTT中模数的2^k需要大于多项式的次数，所以尽量不要对6e6次数以上的多项式用（需要改很多类型为i128防止乘爆，常数很大）
+
+
+const int MOD = 998244353;
+//const int MOD = 167772161;
+//const int MOD = 1004535809;
+//const int MOD = 1e9 + 7;

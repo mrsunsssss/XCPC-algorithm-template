@@ -322,7 +322,7 @@ template<int MOD> Poly<MOD> Qpow(Poly<MOD> A, ll k, int lim) {//朴素的卷积�
         if (k & 1) res = res * A;
         A = A * A;k >>= 1;
         if (res.size() > lim) res.resize(lim);
-        if (A.deg() > lim) A.resize(lim);
+        if (A.size() > lim) A.resize(lim);
     }
     return res;
 }

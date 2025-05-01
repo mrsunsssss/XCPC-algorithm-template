@@ -291,28 +291,32 @@ template<int MOD> Poly<MOD> Exp(Poly<MOD> A) {//多项式指数
     return (B * C).extend(n);
 }
 
-//保证[x ^ 0]f(x) = 1
-template<int MOD> Poly<MOD> Sqrt(Poly<MOD> A) {//多项式开根
-    int n = A.size();
-    if (n == 1) return A[0] = 1, A;
-    Poly B = A;B.resize((n + 1) >> 1); B = Sqrt(B).extend(n);
-    Poly C = Inv(B).extend(n);
-    int lim; for (lim = 1; lim < (n << 1); lim <<= 1); NTT<MOD>::init(lim);
-    A.resize(lim); B.resize(lim);C.resize(lim);
-    NTT<MOD>::ntt(A.p, lim);NTT<MOD>::ntt(B.p, lim);NTT<MOD>::ntt(C.p, lim);
-    for (int i = 0;i < lim;i++) B[i] = mul<MOD>(mul<MOD>(Add<MOD>(mul<MOD>(B[i], B[i]), A[i]), INV<MOD>::_inv[2]), C[i]);
-    NTT<MOD>::intt(B.p, lim);
-    return B.extend(n);
+template<int MOD> Poly<MOD> Sqrt(Poly<MOD> A) {
+    if (A[0] == 1) {//多项式开根,要求 [x ^ 0]f(x) = 1
+        int n = A.size();
+        if (n == 1) return A[0] = 1, A;
+        Poly B = A;B.resize((n + 1) >> 1); B = Sqrt(B).extend(n);
+        Poly C = Inv(B).extend(n);
+        int lim; for (lim = 1; lim < (n << 1); lim <<= 1); NTT<MOD>::init(lim);
+        A.resize(lim); B.resize(lim);C.resize(lim);
+        NTT<MOD>::ntt(A.p, lim);NTT<MOD>::ntt(B.p, lim);NTT<MOD>::ntt(C.p, lim);
+        for (int i = 0;i < lim;i++) B[i] = mul<MOD>(mul<MOD>(Add<MOD>(mul<MOD>(B[i], B[i]), A[i]), INV<MOD>::_inv[2]), C[i]);
+        NTT<MOD>::intt(B.p, lim);
+        return B.extend(n);
+    }
+    else {//任意首项多项式开根
+        int n = A.size();
+        if (n == 1) return A[0] = Cipolla<MOD>::solve(A[0]), A;
+        Poly B = A;B.resize((n + 1) >> 1); B = Pow(B).extend(n);
+        Poly C = (B * B).extend(n);
+        for (int i = 0;i < n;i++) B[i] = mul<MOD>(2, B[i]);
+        for (int i = 0;i < n;i++) C[i] = Add<MOD>(C[i], A[i]);
+        C = C * Inv(B);
+        return C.extend(n);
+    }
 }
-template<int MOD> Poly<MOD> Sqrt_pro(Poly<MOD> A) {//任意首项多项式开根
-    int n = A.size();
-    if (n == 1) return A[0] = Cipolla<MOD>::solve(A[0]), A;
-    Poly B = A;B.resize((n + 1) >> 1); B = Sqrt_pro(B).extend(n);
-    Poly C = (B * B).extend(n);
-    for (int i = 0;i < n;i++) B[i] = mul<MOD>(2, B[i]);
-    for (int i = 0;i < n;i++) C[i] = Add<MOD>(C[i], A[i]);
-    C = C * Inv(B);
-    return C.extend(n);
+template<int MOD> Poly<MOD> Sqrt_pro(Poly<MOD> A) {
+    
 }
 
 template<int MOD> Poly<MOD> qp(Poly<MOD> A, ll k, int lim) {//朴素的卷积快速幂
@@ -421,7 +425,7 @@ template<int MOD> Poly<MOD> Stiring_2_row(int n) {//SC(n,i)
 template<int MOD> Poly<MOD> Stiring_1_col(int n, int m) {//SA(i,m)
     int infact_m = 1;for (int i = 1;i <= m;i++) infact_m = mul<MOD>(infact_m, INV<MOD>::_inv[i]);
     Poly<MOD> A(n + 1);for (int i = 0;i <= n;i++) A[i] = qp<MOD>(i, MOD - 2);
-    A = Qpow_pro(A, m);
+    A = Pow(A, m);
     for (int i = 0, fact_i = 1;i <= n;i++, fact_i = mul<MOD>(fact_i, i)) A[i] = mul<MOD>(mul<MOD>(A[i], infact_m), fact_i);
     return A;
 }
@@ -464,9 +468,3 @@ template<int MOD> Poly<MOD> Circular_Convolution_Qpow(Poly<MOD> A, ll k) {//循�
 //MTT的rev开lim大小,即第一个2的幂 >= a.size() + b.size() = 2 * 卷积长度，一般3~4倍即可。_inv的N开其一半的大小或者相同大小。
 //做多项式逆元等操作之前记得是否需要resize到所需范围
 //注意NTT中模数的2^k需要大于多项式的次数，所以尽量不要对6e6次数以上的多项式用（需要改很多类型为i128防止乘爆，常数很大）
-
-
-const int MOD = 998244353;
-//const int MOD = 167772161;
-//const int MOD = 1e9 + 7;
-//const int MOD = 1004535809;

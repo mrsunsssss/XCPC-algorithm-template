@@ -132,7 +132,7 @@ namespace MTT {//任意模数多项式乘法
 
 template<int MOD> struct NTT {
     inline static int sz;
-    inline static uint w[2500005], w_mf[2500005];//开2的幂次且大于等于卷积长度即可。
+    inline static uint w[2500005], w_mf[2500005];//第一个大于等于卷积长度的2的幂次的大小即可。
     static int mf(int x) { return (1ll * x << 32) / MOD; }
     static void init(int n) {
         for (sz = 2; sz < n; sz <<= 1);

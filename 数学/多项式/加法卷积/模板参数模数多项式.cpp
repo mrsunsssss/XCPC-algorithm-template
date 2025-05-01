@@ -239,17 +239,28 @@ template<int MOD> Poly<MOD> Int(Poly<MOD> A) {//多项式求积分
     //for (int i = n - 1;i >= 1;i--) A[i] = mul(A[i - 1], qp(i, MOD - 2));//直接求逆元
     return A[0] = 0, A;
 }
-
-//保证[x ^ 0]f(x) = 0
-template<int MOD> Poly<MOD> Exp(Poly<MOD> A) {//多项式指数
-    int n = A.size();
-    if (n == 1) return A[0] = 1, A;
-    Poly B = A; B.resize((n + 1) >> 1); B = Exp(B).extend(n);
-    Poly C = Ln(B);
-    for (int i = 0; i < n; i++)  C[i] = Dec<MOD>(A[i], C[i]); C[0] = Add<MOD>(C[0], 1);
-    return (B * C).extend(n);
+template<int MOD> Poly<MOD> Inv(Poly<MOD> A) {
+    if constexpr (is_ntt_mod<MOD>()) {//多项式乘法逆元
+        int n = A.size();
+        if (n == 1)  return A[0] = qp<MOD>(A[0], MOD - 2), A;
+        Poly B = A; B.resize((n + 1) >> 1); B = Inv(B);
+        int lim; for (lim = 1; lim < (n << 1); lim <<= 1); NTT<MOD>::init(lim);
+        A.resize(lim); B.resize(lim);
+        NTT<MOD>::ntt(A.p, lim); NTT<MOD>::ntt(B.p, lim);
+        for (int i = 0; i < lim; i++)  A[i] = mul<MOD>(Dec<MOD>(2, mul<MOD>(A[i], B[i])), B[i]);
+        NTT<MOD>::intt(A.p, lim); return A.extend(n);
+    }
+    else {//任意模数多项式乘法逆元
+        int n = A.size();
+        if (n == 1) return A[0] = qp<MOD>(A[0], MOD - 2), A;
+        Poly<MOD> B = A;B.resize((n + 1) >> 1); B = Inv(B).extend(n);
+        Poly<MOD> C(1), D(1);
+        MTT::conv(A.p, B.p, C.p, MOD);C.resize(n);
+        MTT::conv(C.p, B.p, D.p, MOD);D.resize(n);
+        for (int i = 0;i < n;i++) B[i] = Dec<MOD>(Add<MOD>(B[i], B[i]), D[i]);
+        return B.extend(n);
+    }
 }
-
 template<int MOD> Poly<MOD> operator/(Poly<MOD> A, Poly<MOD> B) {
     A.rev(), B.rev();
     int n = A.size(), m = B.size();
@@ -258,7 +269,6 @@ template<int MOD> Poly<MOD> operator/(Poly<MOD> A, Poly<MOD> B) {
     Poly C = A * B;C.resize(n - m + 1);C.rev();
     return C;
 }
-
 template<int MOD> Poly<MOD> operator%(Poly<MOD> A, Poly<MOD> B) {
     Poly C = A / B;
     return (A - (B * C).extend(A.size())).extend((int)B.size() - 1);
@@ -273,25 +283,12 @@ template<int MOD> Poly<MOD> Ln(Poly<MOD> A) {//多项式对数
 }
 //保证[x ^ 0]f(x) = 0
 template<int MOD> Poly<MOD> Exp(Poly<MOD> A) {//多项式指数
-    if constexpr (is_ntt_mod<MOD>()) {
-        int n = A.size();
-        if (n == 1) return A[0] = 1, A;
-        Poly B = A; B.resize((n + 1) >> 1); B = Exp(B).extend(n);
-        Poly C = Ln(B);
-        for (int i = 0; i < n; i++)  C[i] = Dec<MOD>(A[i], C[i]); C[0] = Add<MOD>(C[0], 1);
-        return (B * C).extend(n);
-    }
-    else {
-        int n = A.size();
-        if (n == 1) return A[0] = 1, A;
-        Poly B = A;B.resize((n + 1) >> 1); B = Exp(B).extend(n);
-        Poly C = Ln(B);
-        Poly<MOD> D(1), E(1);
-        MTT::conv(B.p, C.p, D.p, MOD);D.resize(n);
-        MTT::conv(B.p, A.p, E.p, MOD);E.resize(n);
-        for (int i = 0;i < n;i++) B[i] = Add<MOD>(Dec<MOD>(B[i], D[i]), E[i]);
-        return B.extend(n);
-    }
+    int n = A.size();
+    if (n == 1) return A[0] = 1, A;
+    Poly B = A; B.resize((n + 1) >> 1); B = Exp(B).extend(n);
+    Poly C = Ln(B);
+    for (int i = 0; i < n; i++)  C[i] = Dec<MOD>(A[i], C[i]); C[0] = Add<MOD>(C[0], 1);
+    return (B * C).extend(n);
 }
 
 template<int MOD> Poly<MOD> Sqrt(Poly<MOD> A) {

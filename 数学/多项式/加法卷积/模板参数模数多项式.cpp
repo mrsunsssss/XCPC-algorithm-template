@@ -315,7 +315,7 @@ template<int MOD> Poly<MOD> Sqrt_pro(Poly<MOD> A) {//任意首项多项式开根
     return C.extend(n);
 }
 
-template<int MOD> Poly<MOD> Qpow(Poly<MOD> A, ll k, int lim) {//朴素的卷积快速幂
+template<int MOD> Poly<MOD> qp(Poly<MOD> A, ll k, int lim) {//朴素的卷积快速幂
     int n = A.size();
     Poly<MOD> res(n);res[0] = 1;
     while (k) {
@@ -327,36 +327,35 @@ template<int MOD> Poly<MOD> Qpow(Poly<MOD> A, ll k, int lim) {//朴素的卷积�
     return res;
 }
 
-//保证[x ^ 0]f(x) = 1
-//k很大时,可以计算前对k模p (注意数论中是费马小定理,模p-1)
-template<int MOD> Poly<MOD> Qpow(Poly<MOD> A, int k) {//多项式快速幂
-    int n = A.size();Poly B = Ln(A);
-    for (int i = 0;i < n;i++) B[i] = mul<MOD>(B[i], k);
-    return Exp(B);
-}
-
-//k很大时,可以计算前对k模p和p-1记录在k1和k2(注意数论中是费马小定理,模p-1)
-template<int MOD> Poly<MOD> Qpow_pro(Poly<MOD> a, int k) {//任意首项多项式快速幂
-    int k1 = k % MOD, k2 = k % (MOD - 1);
-    int n = a.size();
-    int shift = 0;
-    for (int i = 0;i < n && a[i] == 0;i++) shift++;
-    if (1ll * shift * k1 >= n) {
-        for (int i = 0;i < n;i++) a[i] = 0;
-        return a;
+template<int MOD> Poly<MOD> Pow(Poly<MOD> A, int k) {
+    if (A[0] == 1) {//多项式快速幂,要求 [x ^ 0]f(x) = 1
+        k %= MOD;
+        int n = A.size();Poly B = Ln(A);
+        for (int i = 0;i < n;i++) B[i] = mul<MOD>(B[i], k);
+        return Exp(B);
     }
-    int inv_first = qp<MOD>(a[shift], MOD - 2);int t = qp<MOD>(a[shift], k2);
-    for (int i = 0;i < n;i++) {
-        if (i + shift < n) a.p[i] = mul<MOD>(a[i + shift], inv_first);
-        else a[i] = 0;
+    else {//任意首项多项式快速幂
+        int k1 = k % MOD, k2 = k % (MOD - 1);
+        int n = A.size();
+        int shift = 0;
+        for (int i = 0;i < n && A[i] == 0;i++) shift++;
+        if (1ll * shift * k1 >= n) {
+            for (int i = 0;i < n;i++) A[i] = 0;
+            return A;
+        }
+        int inv_first = qp<MOD>(A[shift], MOD - 2);int t = qp<MOD>(A[shift], k2);
+        for (int i = 0;i < n;i++) {
+            if (i + shift < n) A[i] = mul<MOD>(A[i + shift], inv_first);
+            else A[i] = 0;
+        }
+        A = Ln(A);
+        for (int i = 0;i < n;i++) A[i] = mul<MOD>(A[i], k1);
+        A = Exp(A);
+        shift *= k1;
+        for (int i = n - 1;i >= shift;i--) A[i] = mul<MOD>(A[i - shift], t);
+        for (int i = 0;i < shift;i++) A[i] = 0;
+        return A;
     }
-    a = Ln(a);
-    for (int i = 0;i < n;i++) a[i] = mul<MOD>(a[i], k1);
-    a = Exp(a);
-    shift *= k1;
-    for (int i = n - 1;i >= shift;i--) a[i] = mul<MOD>(a[i - shift], t);
-    for (int i = 0;i < shift;i++) a[i] = 0;
-    return a;
 }
 
 //i^2=-1(mod p),对-1用二次剩余算出i

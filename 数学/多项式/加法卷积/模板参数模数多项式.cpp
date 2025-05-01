@@ -315,9 +315,9 @@ template<int MOD> Poly<MOD> Sqrt_pro(Poly<MOD> A) {//任意首项多项式开根
     return C.extend(n);
 }
 
-template<int MOD> Poly<MOD> qp(Poly<MOD> A, ll k, int lim) {//朴素的卷积快速幂
+template<int MOD> Poly<MOD> Qpow(Poly<MOD> A, ll k, int lim) {//朴素的卷积快速幂
     int n = A.size();
-    Poly res(n);res[0] = 1;
+    Poly<MOD> res(n);res[0] = 1;
     while (k) {
         if (k & 1) res = res * A;
         A = A * A;k >>= 1;

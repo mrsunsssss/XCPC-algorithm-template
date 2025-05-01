@@ -14,7 +14,7 @@ template<int MOD> struct INV {
 };
 
 template<int MOD> constexpr bool is_ntt_mod() {
-    return MOD == 998244353 or MOD == 469762049 or MOD == 1004535809 or MOD == 3221225473;
+    return MOD == 998244353 or MOD == 469762049 or MOD == 1004535809 or MOD == 3221225473 or MOD == 167772161;
 }
 template<int MOD> struct Cipolla {
     inline static int sqr_i;
@@ -413,15 +413,15 @@ template<int MOD> Poly<MOD> Arctan(Poly<MOD> A) {
 }
 
 template<int MOD> Poly<MOD> Stiring_2_row(int n) {//SC(n,i)
-    Poly A(n + 1);for (int i = 0, infact_i = 1;i <= n;i++, infact_i = mul<MOD>(infact_i, INV<MOD>::_inv[i])) A[i] = mul<MOD>(((i & 1) ? MOD - 1 : 1), infact_i);
-    Poly B(n + 1);for (int i = 0, infact_i = 1;i <= n;i++, infact_i = mul<MOD>(infact_i, INV<MOD>::_inv[i])) B[i] = mul(qp<MOD>(i, n), infact_i);
+    Poly<MOD> A(n + 1);for (int i = 0, infact_i = 1;i <= n;i++, infact_i = mul<MOD>(infact_i, INV<MOD>::_inv[i])) A[i] = mul<MOD>(((i & 1) ? MOD - 1 : 1), infact_i);
+    Poly<MOD> B(n + 1);for (int i = 0, infact_i = 1;i <= n;i++, infact_i = mul<MOD>(infact_i, INV<MOD>::_inv[i])) B[i] = mul<MOD>(qp<MOD>(i, n), infact_i);
     A = A * B;
     return A;
 }
 
 template<int MOD> Poly<MOD> Stiring_1_col(int n, int m) {//SA(i,m)
     int infact_m = 1;for (int i = 1;i <= m;i++) infact_m = mul<MOD>(infact_m, INV<MOD>::_inv[i]);
-    Poly A(n + 1);for (int i = 0;i <= n;i++) A[i] = qp<MOD>(i, MOD - 2);
+    Poly<MOD> A(n + 1);for (int i = 0;i <= n;i++) A[i] = qp<MOD>(i, MOD - 2);
     A = Qpow_pro(A, m);
     for (int i = 0, fact_i = 1;i <= n;i++, fact_i = mul<MOD>(fact_i, i)) A[i] = mul<MOD>(mul<MOD>(A[i], infact_m), fact_i);
     return A;
@@ -468,3 +468,6 @@ template<int MOD> Poly<MOD> Circular_Convolution_Qpow(Poly<MOD> A, ll k) {//å¾ªç
 
 
 const int MOD = 998244353;
+//const int MOD = 167772161;
+//const int MOD = 1e9 + 7;
+//const int MOD = 1004535809;

@@ -462,7 +462,7 @@ template<int MOD> Poly<MOD> Circular_Convolution_Qpow(Poly<MOD> A, ll k) {//循�
 
 //记得INV<MOD>::init(), 如果仅是乘法则不需要
 //Poly读入和初始化时,记得取模. f[i] = -1  ==> f[i] = MOD-1 
-//MTT的rev开lim大小,为方便一般3~4倍即可
+//MTT的rev开lim大小,即第一个2的幂 >= a.size() + b.size() = 2 * 卷积长度，一般3~4倍即可。_inv的N开其一半的大小或者相同大小。
 //做多项式逆元等操作之前记得是否需要resize到所需范围
 //注意NTT中模数的2^k需要大于多项式的次数，所以尽量不要对6e6次数以上的多项式用（需要改很多类型为i128防止乘爆，常数很大）
 

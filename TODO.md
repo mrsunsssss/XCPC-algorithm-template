@@ -25,3 +25,6 @@ https://atcoder.jp/contests/dp/tasks  dp题单
 https://atcoder.jp/contests/tdpc/tasks  dp题单2号
 
 https://www.luogu.com.cn/article/vyvrgzea
+
+
+https://codeforces.com/problemset/problem/1866/K  凸包优化，灵茶2025.4.18

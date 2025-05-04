@@ -14,7 +14,9 @@ https://zhuanlan.zhihu.com/p/604377422 单位根反演   例题：https://loj.ac
 
 wqs二分，斜率优化dp，李超树，网络流
 
-线段树分治
+线段树分治，整体二分
+
+前后缀优化建图，线段树优化建图
 
 https://www.luogu.com/article/vx7a76on  决策单调性优化dp
 

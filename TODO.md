@@ -12,7 +12,7 @@ https://zhuanlan.zhihu.com/p/604377422 单位根反演   例题：https://loj.ac
 
 线性基 插入 check0 计算rk 求kth 求maxmin 用猫树优化 可持久化（时间戳）
 
-wqs二分，斜率优化dp，李超树，网络流
+wqs二分，斜率优化（凸包优化）dp，李超树，网络流
 
 线段树分治，整体二分
 

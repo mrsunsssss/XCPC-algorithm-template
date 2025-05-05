@@ -8,6 +8,8 @@ https://zhuanlan.zhihu.com/p/600776343  生成函数递推转封闭形式
 
 https://zhuanlan.zhihu.com/p/604377422 单位根反演   例题：https://loj.ac/p/6718  https://loj.ac/p/6247
 
+https://www.cnblogs.com/Dreamerkk/p/17639178.html  dp的凸优化博客
+
 笛卡尔树上启发式合并 ，猫树，笛卡尔树 ， 拉格朗日插值/多项式拉插
 
 线性基 插入 check0 计算rk 求kth 求maxmin 用猫树优化 可持久化（时间戳）

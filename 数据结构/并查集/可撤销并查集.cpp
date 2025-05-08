@@ -2,6 +2,7 @@ struct Rollback_DSU {
     vector<int> p, siz;
     vector<array<int, 2>> his;
     int n;
+    Rollback_DSU() {}
     Rollback_DSU(int n) :n(n), p(n), siz(n, 1) { iota(p.begin(), p.end(), 0); }
     int find(int x) {
         while (p[x] != x) x = p[x];

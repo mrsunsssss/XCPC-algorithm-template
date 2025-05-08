@@ -63,31 +63,22 @@ namespace sgt {
     void insert(int ql, int qr, array<int, 2> x) {
         insert(1, 1, n, ql, qr, x);
     }
-    void solve(int u, int l, int r, int N) {
-        int flag = 1, tim = d.time();
+    void solve(int u, int l, int r) {
+        int tim = d.time();
         for (auto [x, y] : tr[u]) {
-            d.merge(x, y + N);
-            d.merge(y, x + N);
-            if (d.find(x) == d.find(y)) {
-                flag = 0;
-                for (int i = l;i <= r;i++) cout << "No\n";
-                break;
-            }
-
+            d.merge(x, y);
         }
-        if (flag) {
-            if (l == r) {
-                cout << "Yes\n";
-            }
-            else {
-                int m = l + r >> 1;
-                solve(u * 2, l, m, N);
-                solve(u * 2 + 1, m + 1, r, N);
-            }
+        if (l == r) {
+            ;
+        }
+        else {
+            int m = l + r >> 1;
+            solve(u * 2, l, m);
+            solve(u * 2 + 1, m + 1, r);
         }
         d.rollback(tim);
     }
-    void solve(int N) {
-        solve(1, 1, n, N);
+    void solve() {
+        solve(1, 1, n);
     }
 }

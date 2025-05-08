@@ -1,55 +1,39 @@
-https://codeforces.com/contest/2069/submission/306759050
-抄的还没看
-
-struct RollbackDSU 
-{
-    vector <int> par;
-    stack <pair <int,int>> history;
-    int cntcomp;
-    RollbackDSU(int n) 
-    {
-        par.assign(n + 1, -1);
-        cntcomp = n;
+struct Rollback_DSU {
+    vector<int> p, siz;
+    vector<array<int, 2>> his;
+    int n;
+    Rollback_DSU(int n) :n(n), p(n), siz(n, 1) { iota(p.begin(), p.end(), 0); }
+    int find(int x) {
+        while (p[x] != x) x = p[x];
+        return x;
     }
-    
-    int find(int v) 
-    {
-        while(par[v] >= 0) v = par[v];
-        return v;
+    bool same(int x, int y) {
+        return find(x) == find(y);
     }
- 
-    bool unite(int a, int b) 
-    {
-        a = find(a);
-        b = find(b);
-        if(a == b) 
-        {
-            history.push({-1, -1});
-            return false;
+    bool merge(int x, int y) {
+        x = find(x);
+        y = find(y);
+        if (x == y) return 0;
+        if (siz[x] < siz[y]) {
+            swap(x, y);
         }
-        if(par[a] > par[b]) swap(a,b);
-        history.push({a, par[a]});
-        history.push({b, par[b]});
-        par[a] += par[b];
-        par[b] = a;
-        cntcomp--;
-        return true;
+        his.push_back({ x,y });
+        siz[x] += siz[y];
+        p[y] = x;
+        return 1;
     }
- 
-    void rollback() 
-    {
-        auto top1 = history.top(); 
-        history.pop();
-        if(top1.first == -1 && top1.second == -1) 
-        {
-            return;
+    int time() {
+        return his.size();
+    }
+    int size(int x) {
+        return siz[find(x)];
+    }
+    void rollback(int tim) {
+        while (his.size() > tim) {
+            auto [x, y] = his.back();
+            his.pop_back();
+            p[y] = y;
+            siz[x] -= siz[y];
         }
-        auto top2 = history.top(); 
-        history.pop();
-        int b = top1.first, bpar = top1.second;
-        int a = top2.first, apar = top2.second;
-        par[a] = apar;
-        par[b] = bpar;
-        cntcomp++;
     }
 };

@@ -5,7 +5,7 @@ struct RMQ_LCA {
     inline static int f[21][N];
     inline static int dep[N];
     int getmin(int x, int y) { return dfn[x] < dfn[y] ? x : y; }
-
+    RMQ_LCA() {}
     RMQ_LCA(int n, vector<vector<int>>& adj, int root) :n(n), adj(adj), idx(0) {
         for (int j = 0, lgn = __lg(n);j <= lgn;j++) {
             for (int i = 0;i <= n;i++) f[j][i] = 0;

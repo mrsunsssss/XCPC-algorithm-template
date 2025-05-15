@@ -7,17 +7,15 @@ struct RMQ_LCA {
     int getmin(int x, int y) { return dfn[x] < dfn[y] ? x : y; }
 
     RMQ_LCA(int n, vector<vector<int>>& adj, int root) :n(n), adj(adj), idx(0) {
+        for (int j = 0, lgn = __lg(n);j <= lgn;j++) {
+            for (int i = 0;i <= n;i++) f[j][i] = 0;
+        }
         dfn.resize(n + 1);
         dfs(root);
         for (int j = 1, lgn = __lg(n); j <= lgn; j++) {
             for (int i = 1; i + (1 << j) - 1 <= n; i++) {
                 f[j][i] = getmin(f[j - 1][i], f[j - 1][i + (1 << (j - 1))]);
             }
-        }
-    }
-    ~RMQ_LCA() {
-        for (int j = 0, lgn = __lg(n);j <= lgn;j++) {
-            for (int i = 0;i <= n;i++) f[j][i] = 0;
         }
     }
 

@@ -425,6 +425,73 @@ template<int MOD> Poly<MOD> Sqrt(Poly<MOD> A) {
     }
 }
 
+template<int MOD> Poly<MOD> Sqrt_faster(Poly<MOD> A) {
+    int n = A.size();
+    if (n == 1) return A[0] = Cipolla<MOD>::sqrt(A[0]), A;
+    const int R = 16;
+    const uint inv2 = qp<MOD>(2u, MOD - 2);
+    int m = 1;while (m < (n + R - 1) / R) m <<= 1;
+
+    Poly<MOD> x = Sqrt_faster(A.cut(m));
+    x.resize(n);
+
+    Poly<MOD> h = Inv_faster(x.cut(m));
+    h.resize(2 * m);
+
+    vector<Poly<MOD>> ng(R);
+
+    NTT<MOD>::init(2 * m);
+    h.ntt(2 * m);
+    if (m > 0) {
+        ng[0] = x.cut(m).ntt(2 * m);
+    }
+    for (int k = 1; k * m < n; k++) {
+        ng[k - 1] = x.cut(m, (k - 1) * m).ntt(2 * m);
+
+        Poly<MOD> psi(2 * m, 0);
+        for (int j = 0; j < k; j++) {
+            if (j >= 1) {
+                for (int i = 0;i < m;i++) {
+                    uint a = Add<MOD>(ng[k - j][i], ng[k - 1 - j][i]);
+                    psi[i] = Dec<MOD>(psi[i], mul<MOD>(a, ng[j][i]));
+                }
+                for (int i = m;i < 2 * m;i++) {
+                    uint a = Dec<MOD>(ng[k - j][i], ng[k - 1 - j][i]);
+                    psi[i] = Dec<MOD>(psi[i], mul<MOD>(a, ng[j][i]));
+                }
+            }
+            else {
+                for (int i = 0;i < m;i++) {
+                    psi[i] = Dec<MOD>(psi[i], mul<MOD>(ng[j][i], ng[k - 1 - j][i]));
+                }
+                for (int i = m;i < 2 * m;i++) {
+                    psi[i] = Add<MOD>(psi[i], mul<MOD>(ng[j][i], ng[k - 1 - j][i]));
+                }
+            }
+        }
+
+        psi.intt(2 * m);
+        for (int i = m; i < 2 * m; i++) psi[i] = 0;
+
+        for (int i = 0; i < m and (k * m + i < n); i++) {
+            psi[i] = Add<MOD>(psi[i], A[k * m + i]);
+        }
+
+        psi.ntt(2 * m);
+        for (int i = 0; i < 2 * m; i++) {
+            psi[i] = mul<MOD>(psi[i], h[i]);
+        }
+        psi.intt(2 * m);
+        for (int i = m; i < 2 * m; i++) psi[i] = 0;
+
+        for (int i = 0; i < m && (k * m + i < n); i++) {
+            x[k * m + i] = mul<MOD>(psi[i], inv2);
+        }
+    }
+
+    return x;
+}
+
 template<int MOD> Poly<MOD> qp(Poly<MOD> A, ll k, int lim) {//朴素的卷积快速幂
     int n = A.size();
     Poly<MOD> res(n);res[0] = 1;

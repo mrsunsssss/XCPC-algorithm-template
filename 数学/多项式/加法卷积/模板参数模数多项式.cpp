@@ -333,6 +333,73 @@ template<int MOD> Poly<MOD> Exp(Poly<MOD> A) {//多项式指数
     return (B * C).extend(n);
 }
 
+template<int MOD> Poly<MOD> Exp_faster(Poly<MOD> A) {
+    int n = A.size();
+    if (n == 1) return A[0] = 1, A;
+
+    const int R = 16;
+    int m = 1;
+    while (m < (n + R - 1) / R) m <<= 1;
+
+    Poly<MOD> x = Exp_faster(A.cut(m));
+    x.resize(n);
+
+    Poly<MOD> u = Inv_faster(x.cut(m));
+    u.resize(2 * m);
+
+    vector<Poly<MOD>> nf(R), ng(R);
+
+    Poly<MOD> df(n);
+    for (int i = 0; i < n; i++) df[i] = mul<MOD>(A[i], i);
+    NTT<MOD>::init(2 * m);
+    u.ntt(2 * m);
+    nf[0] = df.cut(m).ntt(2 * m);
+
+    for (int k = 1; k * m < n; k++) {
+        nf[k] = df.cut(m, k * m).ntt(2 * m);
+        ng[k - 1] = x.cut(m, (k - 1) * m).ntt(2 * m);
+
+        Poly<MOD> psi(2 * m);
+        for (int j = 0; j < k; j++) {
+            for (int i = 0; i < m; i++) {
+                uint a = Add<MOD>(nf[k - j][i], nf[k - 1 - j][i]);
+                psi[i] = Add<MOD>(psi[i], mul<MOD>(a, ng[j][i]));
+            }
+            for (int i = m; i < 2 * m; i++) {
+                uint a = Dec<MOD>(nf[k - j][i], nf[k - 1 - j][i]);
+                psi[i] = Add<MOD>(psi[i], mul<MOD>(a, ng[j][i]));
+            }
+        }
+
+        psi.intt(2 * m);
+        for (int i = m; i < 2 * m; i++) psi[i] = 0;
+
+        psi.ntt(2 * m);
+        for (int i = 0; i < 2 * m; i++) {
+            psi[i] = mul<MOD>(psi[i], u[i]);
+        }
+        psi.intt(2 * m);
+        for (int i = m; i < 2 * m; i++) psi[i] = 0;
+
+        for (int i = 0; i < m; i++) {
+            psi[i] = mul<MOD>(psi[i], INV<MOD>::_inv[m * k + i]);
+        }
+
+        psi.ntt(2 * m);
+        for (int i = 0; i < 2 * m; i++) {
+            psi[i] = mul<MOD>(psi[i], ng[0][i]);
+        }
+        psi.intt(2 * m);
+
+        for (int i = 0; i < m and (k * m + i) < n; ++i) {
+            x[k * m + i] = psi[i];
+        }
+    }
+
+    return x;
+}
+
+
 template<int MOD> Poly<MOD> Sqrt(Poly<MOD> A) {
     if (A[0] == 1) {//多项式开根,要求 [x ^ 0]f(x) = 1
         int n = A.size();

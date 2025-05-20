@@ -183,6 +183,9 @@ template<int MOD> struct Poly {
     void resize(int n) { p.resize(n); }
     int size() { return p.size(); }
     void rev() { reverse(p.begin(), p.end()); }
+    Poly cut(int x, int l = 0) { Poly c = *this;c.p = vector<uint>(c.p.begin() + l, c.p.begin() + min((int)c.p.size(), l + x));return c; }
+    Poly& ntt(int n) { NTT<MOD>::ntt(this->p, n);return *this; }
+    Poly& intt(int n) { NTT<MOD>::intt(this->p, n);return *this; }
     void DebugPoly() {
         for (int i = 0;i < p.size();i++) {
             cout << p[i] << "x^" << i;
@@ -261,6 +264,45 @@ template<int MOD> Poly<MOD> Inv(Poly<MOD> A) {
         return B.extend(n);
     }
 }
+
+template<int MOD> Poly<MOD> Inv_faster(Poly<MOD> A) {
+    int n = A.size();
+    if (n == 1)  return A[0] = qp<MOD>(A[0], MOD - 2), A;
+    const int R = 16;
+    int m = 1;while (m < (n + R - 1) / R) m <<= 1;
+    Poly<MOD> x = Inv_faster(A.cut(m));
+    x.resize(n);
+    vector<Poly<MOD>> nf(R), ng(R);
+    NTT<MOD>::init(m * 2);
+    nf[0] = A.cut(m).extend(2 * m).ntt(2 * m);
+    for (int k = 1; k * m < n; k++) {
+        nf[k] = A.cut(m, k * m).extend(2 * m).ntt(2 * m);
+        ng[k - 1] = x.cut(m, (k - 1) * m).extend(2 * m).ntt(2 * m);
+        Poly<MOD> psi(m * 2);
+        for (int j = 0; j < k; j++) {
+            for (int i = 0; i < m; i++) {
+                uint a = Add<MOD>(nf[k - j][i], nf[k - 1 - j][i]);
+                uint b = ng[j][i];
+                psi[i] = Add<MOD>(psi[i], mul<MOD>(a, b));
+            }
+            for (int i = m; i < 2 * m; i++) {
+                uint a = Dec<MOD>(nf[k - j][i], nf[k - 1 - j][i]);
+                uint b = ng[j][i];
+                psi[i] = Add<MOD>(psi[i], mul<MOD>(a, b));
+            }
+        }
+        psi.intt(2 * m);
+        for (int i = m; i < 2 * m; i++) psi[i] = 0;
+        psi.ntt(2 * m);
+        for (int i = 0; i < 2 * m; i++) psi[i] = mul<MOD>(psi[i], ng[0][i]);
+        psi.intt(2 * m);
+        for (int i = 0; i < m and k * m + i < n; i++) {
+            x[k * m + i] = Dec<MOD>(0, psi[i]);
+        }
+    }
+    return x;
+}
+
 template<int MOD> Poly<MOD> operator/(Poly<MOD> A, Poly<MOD> B) {
     A.rev(), B.rev();
     int n = A.size(), m = B.size();

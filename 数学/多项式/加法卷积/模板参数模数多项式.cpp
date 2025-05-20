@@ -33,7 +33,7 @@ template<int MOD> struct Cipolla {
         return res;
     }
     //解是res和MOD-res
-    static int solve(int n) {
+    static int sqrt(int n) {
         srand(time(NULL));
         if (qp<MOD>(n, MOD >> 1) == MOD - 1) return -1;
         ll t = mul<MOD>(rand(), rand());
@@ -415,7 +415,7 @@ template<int MOD> Poly<MOD> Sqrt(Poly<MOD> A) {
     }
     else {//任意首项多项式开根
         int n = A.size();
-        if (n == 1) return A[0] = Cipolla<MOD>::solve(A[0]), A;
+        if (n == 1) return A[0] = Cipolla<MOD>::sqrt(A[0]), A;
         Poly B = A;B.resize((n + 1) >> 1); B = Sqrt(B).extend(n);
         Poly C = (B * B).extend(n);
         for (int i = 0;i < n;i++) B[i] = mul<MOD>(2, B[i]);

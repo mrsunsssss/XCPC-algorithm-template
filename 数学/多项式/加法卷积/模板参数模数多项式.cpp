@@ -184,8 +184,8 @@ template<int MOD> struct Poly {
     int size() { return p.size(); }
     void rev() { reverse(p.begin(), p.end()); }
     Poly cut(int x, int l = 0) { Poly c = *this;c.p = vector<uint>(c.p.begin() + l, c.p.begin() + min((int)c.p.size(), l + x));return c; }
-    Poly& ntt(int n) { NTT<MOD>::ntt(this->p, n);return *this; }
-    Poly& intt(int n) { NTT<MOD>::intt(this->p, n);return *this; }
+    Poly& ntt(int n) { this->p.resize(n); NTT<MOD>::ntt(this->p, n);return *this; }
+    Poly& intt(int n) { this->p.resize(n);NTT<MOD>::intt(this->p, n);return *this; }
     void DebugPoly() {
         for (int i = 0;i < p.size();i++) {
             cout << p[i] << "x^" << i;

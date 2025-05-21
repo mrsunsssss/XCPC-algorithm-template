@@ -1,5 +1,5 @@
 struct Barrett {
-    using u32 = unsigned int;
+    using u32 = unsigned;
     using u64 = unsigned long long;
     using u128 = unsigned __int128;
     static constexpr u128 s = u128(1) << 96;
@@ -25,7 +25,7 @@ static Barrett fast_mod(MAX_LEN);
 // // 支持整数、pair、tuple,array等哈希组合
 struct MyHash {
     using u64 = unsigned long long;
-    using u32 = unsigned int;
+    using u32 = unsigned;
 
     // 随机扰动，防止哈希碰撞
     static u64 split(u64 x) {

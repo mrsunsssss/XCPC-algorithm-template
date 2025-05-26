@@ -319,7 +319,7 @@ template<int MOD> Poly<MOD> operator%(Poly<MOD> A, Poly<MOD> B) {
 template<int MOD> Poly<MOD> Ln(Poly<MOD> A) {//多项式对数
     Poly<MOD> B; int n = A.size(); B.resize(n);
     for (int i = 1; i < n; i++)  B[i - 1] = mul<MOD>(A[i], i); B[n - 1] = 0;
-    B = (B * Inv(A)).extend(n);
+    B = (B * Inv(A)).extend(n);//后缀faster加速
     B = Int(B);
     return B;
 }
@@ -509,7 +509,7 @@ template<int MOD> Poly<MOD> Pow(Poly<MOD> A, int k) {
         k %= MOD;
         int n = A.size();Poly B = Ln(A);
         for (int i = 0;i < n;i++) B[i] = mul<MOD>(B[i], k);
-        return Exp(B);
+        return Exp(B);//后缀faster加速
     }
     else {//任意首项多项式快速幂
         int k1 = k % MOD, k2 = k % (MOD - 1);
@@ -527,7 +527,7 @@ template<int MOD> Poly<MOD> Pow(Poly<MOD> A, int k) {
         }
         A = Ln(A);
         for (int i = 0;i < n;i++) A[i] = mul<MOD>(A[i], k1);
-        A = Exp(A);
+        A = Exp(A);//后缀faster加速
         shift *= k1;
         for (int i = n - 1;i >= shift;i--) A[i] = mul<MOD>(A[i - shift], t);
         for (int i = 0;i < shift;i++) A[i] = 0;
@@ -551,7 +551,7 @@ template<int MOD> Poly<MOD> Sin(Poly<MOD> A) {//多项式sin
 template<int MOD> Poly<MOD> Cos(Poly<MOD> A) {//多项式cos
     int n = A.size();
     for (int i = 0;i < n;i++) A[i] = mul<MOD>(A[i], I);
-    Poly B = Exp(A), C = Inv(B);
+    Poly B = Exp(A), C = Inv(B);//后缀faster加速
     for (int i = 0;i < n;i++) B[i] = mul<MOD>(Add<MOD>(B[i], C[i]), INV<MOD>::_inv[2]);
     return B;
 }
@@ -561,8 +561,8 @@ template<int MOD> Poly<MOD> Arcsin(Poly<MOD> A) {
     Poly B = Dev(A);
     A = (A * A).extend(n);
     for (int i = 0;i < n;i++) A[i] = Dec<MOD>(0, A[i]);A[0] = Add<MOD>(1, A[0]);
-    A = Sqrt(A);
-    B = (B * Inv(A)).extend(n);
+    A = Sqrt(A);//后缀faster加速
+    B = (B * Inv(A)).extend(n);//后缀faster加速
     B = Int(B);
     return B;
 }
@@ -572,8 +572,8 @@ template<int MOD> Poly<MOD> Arccos(Poly<MOD> A) {
     Poly B = Dev(A);for (int i = 0;i < n;i++) B[i] = Dec<MOD>(0, B[i]);
     A = (A * A).extend(n);
     for (int i = 0;i < n;i++) A[i] = Dec<MOD>(0, A[i]);A[0] = Add<MOD>(1, A[0]);
-    A = Sqrt(A);
-    B = (B * Inv(A)).extend(n);
+    A = Sqrt(A);//后缀faster加速
+    B = (B * Inv(A)).extend(n);//后缀faster加速
     B = Int(B);
     return B;
 }
@@ -583,7 +583,7 @@ template<int MOD> Poly<MOD> Arctan(Poly<MOD> A) {
     Poly B = Dev(A);
     A = (A * A).extend(n);
     A[0] = Add<MOD>(1, A[0]);
-    B = (B * Inv(A)).extend(n);
+    B = (B * Inv(A)).extend(n);//后缀faster加速
     B = Int(B);
     return B;
 }

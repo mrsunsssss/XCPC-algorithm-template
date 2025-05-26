@@ -311,8 +311,62 @@ template<int MOD> Poly<MOD> operator/(Poly<MOD> A, Poly<MOD> B) {
     Poly C = A * B;C.resize(n - m + 1);C.rev();
     return C;
 }
+template<int MOD> Poly<MOD> div_faster(Poly<MOD> A, Poly<MOD> B) {
+    A.rev(), B.rev();
+    auto dfs = [&](auto&& dfs, Poly<MOD> A, Poly<MOD> B) {
+        int n = A.size();
+        if (n == 1)  return A[0] = mul<MOD>(A[0], qp<MOD>(B[0], MOD - 2)), A;
+        B.resize(n);
+        const int R = 16;
+        int m = 1;while (m < (n + R - 1) / R) m <<= 1;
+        Poly<MOD> x = dfs(dfs, A.cut(m), B.cut(m));
+        x.resize(n);
+
+        Poly<MOD> h = Inv_faster(B.cut(m));
+
+        vector<Poly<MOD>> nf(R), ng(R);
+        NTT<MOD>::init(m * 2);
+        h.ntt(2 * m);
+        nf[0] = B.cut(m).ntt(2 * m);
+        for (int k = 1; k * m < n; k++) {
+            nf[k] = B.cut(m, k * m).ntt(2 * m);
+            ng[k - 1] = x.cut(m, (k - 1) * m).ntt(2 * m);
+            Poly<MOD> psi(m * 2);
+            for (int j = 0; j < k; j++) {
+                for (int i = 0; i < m; i++) {
+                    uint a = Add<MOD>(nf[k - j][i], nf[k - 1 - j][i]);
+                    uint b = ng[j][i];
+                    psi[i] = Add<MOD>(psi[i], mul<MOD>(a, b));
+                }
+                for (int i = m; i < 2 * m; i++) {
+                    uint a = Dec<MOD>(nf[k - j][i], nf[k - 1 - j][i]);
+                    uint b = ng[j][i];
+                    psi[i] = Add<MOD>(psi[i], mul<MOD>(a, b));
+                }
+            }
+            psi.intt(2 * m);
+            for (int i = m; i < 2 * m; i++) psi[i] = 0;
+            for (int i = 0; i < min(m, n - m * k); i++) psi[i] = Dec<MOD>(psi[i], A[m * k + i]);
+            psi.ntt(2 * m);
+            for (int i = 0; i < 2 * m; i++) psi[i] = mul<MOD>(psi[i], h[i]);
+            psi.intt(2 * m);
+            for (int i = 0; i < m and k * m + i < n; i++) {
+                x[k * m + i] = Dec<MOD>(0, psi[i]);
+            }
+        }
+        return x;
+        };
+    auto C = dfs(dfs, A, B);
+    C.resize((int)A.size() - (int)B.size() + 1);
+    C.rev();
+    return C;
+}
 template<int MOD> Poly<MOD> operator%(Poly<MOD> A, Poly<MOD> B) {
     Poly C = A / B;
+    return (A - (B * C).extend(A.size())).extend((int)B.size() - 1);
+}
+template<int MOD> Poly<MOD> Modular_faster(Poly<MOD> A, Poly<MOD> B) {
+    Poly C = div_faster(A, B);
     return (A - (B * C).extend(A.size())).extend((int)B.size() - 1);
 }
 //保证[x ^ 0]f(x) = 1

@@ -274,10 +274,10 @@ template<int MOD> Poly<MOD> Inv_faster(Poly<MOD> A) {
     x.resize(n);
     vector<Poly<MOD>> nf(R), ng(R);
     NTT<MOD>::init(m * 2);
-    nf[0] = A.cut(m).extend(2 * m).ntt(2 * m);
+    nf[0] = A.cut(m).ntt(2 * m);
     for (int k = 1; k * m < n; k++) {
-        nf[k] = A.cut(m, k * m).extend(2 * m).ntt(2 * m);
-        ng[k - 1] = x.cut(m, (k - 1) * m).extend(2 * m).ntt(2 * m);
+        nf[k] = A.cut(m, k * m).ntt(2 * m);
+        ng[k - 1] = x.cut(m, (k - 1) * m).ntt(2 * m);
         Poly<MOD> psi(m * 2);
         for (int j = 0; j < k; j++) {
             for (int i = 0; i < m; i++) {

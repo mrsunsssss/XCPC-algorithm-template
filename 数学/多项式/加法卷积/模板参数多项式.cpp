@@ -597,7 +597,7 @@ template<int MOD> Poly<MOD> Sin(Poly<MOD> A) {//多项式sin
     int n = A.size();
     int inv_2i = qp<MOD>(mul<MOD>(2, I), MOD - 2);
     for (int i = 0;i < n;i++) A[i] = mul<MOD>(A[i], I);
-    Poly B = Exp(A), C = Inv(B);
+    Poly B = Exp(A), C = Inv(B);//后缀faster加速
     for (int i = 0;i < n;i++) B[i] = mul<MOD>(Dec<MOD>(B[i], C[i]), inv_2i);
     return B;
 }

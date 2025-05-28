@@ -36,3 +36,6 @@ https://codeforces.com/problemset/problem/1866/K  凸包优化，灵茶2025.4.18
 
 
 某个trick：https://www.luogu.com.cn/problem/P7961 ，https://www.luogu.com.cn/problem/P3188，https://leetcode.cn/problems/find-sum-of-array-product-of-magical-sequences/description/
+
+
+https://codeforces.com/blog/entry/124286?#comment-1103422

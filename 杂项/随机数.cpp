@@ -1,5 +1,4 @@
-mt19937 gen(random_device{}());
-auto getrd(int l, int r) {
-    uniform_int_distribution<int> dis(l, r);
-    return dis(gen);
+int rd(int l, int r) {
+    static mt19937_64 gen(random_device{}());
+    return uniform_int_distribution<int>(l, r)(gen);
 }

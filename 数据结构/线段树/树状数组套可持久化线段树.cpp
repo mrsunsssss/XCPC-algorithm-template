@@ -154,4 +154,27 @@ struct PST {
         for (int i = ql - 1;i;i -= lbt(i)) t2[++n2] = root[i];
         return less_equall_x_cnt(l, r, k);
     }
+    int query(int x, int l, int r, int ql, int qr) {//版本x的值域为[ql,qr]的数字数量
+        if (l == ql && r == qr) return  tr[x].sum_cnt;
+        int mid = l + r >> 1;
+        if (qr <= mid) return query(ls(x), l, mid, ql, qr);
+        else if (mid < ql) return query(rs(x), mid + 1, r, ql, qr);
+        else return query(ls(x), l, mid, ql, mid) + query(rs(x), mid + 1, r, mid + 1, qr);
+    }
+    int BIT_query(int l, int r, int ql, int qr) {//版本[ql,qr]的值域为[l,r]的数字数量
+        if (ql > qr or l > r) return 0;
+        n1 = n2 = 0;
+        for (int i = qr; i; i -= lbt(i)) t1[++n1] = root[i];
+        for (int i = ql - 1; i; i -= lbt(i)) t2[++n2] = root[i];
+        int s1 = 0;
+        for (int i = 1; i <= n1; i++) {
+            s1 += query(t1[i], 1, tot, l, r);
+        }
+
+        int s2 = 0;
+        for (int i = 1; i <= n2; i++) {
+            s2 += query(t2[i], 1, tot, l, r);
+        }
+        return s1 - s2;
+    }
 };

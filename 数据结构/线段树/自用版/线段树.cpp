@@ -7,7 +7,7 @@ struct Segtree {
     Segtree() : n(0) {}
     Segtree(int n, Info a = Info()) { init(n, a); }
     template<class T> Segtree(vector<T> a) { init(a); }
-    void init(int n, Info v = Info()) { init(vector(n, v)); }
+    void init(int n, Info v = Info()) { init(vector(n + 1, v)); }
     template<class T> void init(vector<T> a) {
         n = a.size() - 1;
         info.assign(4 << __lg(n), Info());

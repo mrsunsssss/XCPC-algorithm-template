@@ -1,3 +1,20 @@
+常用积性函数的$f(p^e)$
+
+恒等函数 $id_k(n) = n^k$ ， $id_k(p^e) = p^{ek}$
+
+莫比乌斯函数 $\mu(n)$ :  $\mu(p^e)=\begin{cases}-1 & e=1 \\0 &e>1\\  \end{cases} $
+
+欧拉函数 $\varphi(n)$ :  $\varphi(p^e) = p^e-p^{e-1}$
+
+约数个数函数 $d(n)$ : $d(p^e) = e+1$
+
+约数和函数 $\sigma(n)$ : $\sigma(p^e) = \sum\limits_{i=0}^{e}p^i = \frac{p^{e+1}-1}{p-1}$
+
+广义约数和函数 $\sigma_k(n)$ : $\sigma_k(p^k) = $
+
+$\sigma_k(p^e)=\begin{cases}\sum\limits_{i=0}^{e} p^{ik} = \frac{p^{k(e+1) - 1}}{p^k-1} & k\ne 0 \\e+1 &k=0   \end{cases} $
+
+```c++
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -130,3 +147,4 @@ signed main() {
     Prework();
     while (T--) Solve();
 }
+```

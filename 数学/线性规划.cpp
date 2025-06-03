@@ -1,3 +1,4 @@
+https://uoj.ac/problem/179 有时间测一下这道题！！！
 const int maxn = 500, maxm = 500;//约束数目上限,变量数目上限
 const double INF = 1e100, eps = 1e-10;
 struct Simplex {//单纯形法

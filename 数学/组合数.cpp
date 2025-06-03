@@ -39,3 +39,14 @@ void Prework(int n = N - 10) {
         infact[i - 1] = 1LL * infact[i] * i % MOD;
     }
 }
+
+int C[N][N];
+void Prework(int n = N - 10) {
+    C[0][0] = 1;
+    for (int i = 0;i < n;i++) {
+        C[i][0] = 1;
+        for (int j = 1;j <= i;j++) {
+            C[i][j] = (C[i - 1][j] + C[i - 1][j - 1]) % MOD;
+        }
+    }
+}

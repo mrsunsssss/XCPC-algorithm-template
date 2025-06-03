@@ -104,7 +104,7 @@ namespace min25 {
         return Add(sieve(n, 1, n), 1LL);
     }
 }
-
+//注意多项式中系数中，需要将负数先取模转为正数再放入
 const int MOD = 1e9 + 7;
 
 void Prework() {

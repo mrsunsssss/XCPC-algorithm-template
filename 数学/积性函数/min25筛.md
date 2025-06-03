@@ -2,7 +2,12 @@
 
 恒等函数 $id_k(n) = n^k$  ， $id_k(p^e) = p^{ek}$
 
-莫比乌斯函数 $\mu(n)$ :  $\mu(p^e)=\begin{cases} -1 & e=1 \\ 0 & e>1  \end{cases}$
+莫比乌斯函数 $\mu(n)$ :  $$
+\mu(p^e) = \begin{cases}
+-1 & e=1 \\
+0  & e>1
+\end{cases}
+$$
 
 欧拉函数 $\varphi(n)$ :  $\varphi(p^e) = p^e-p^{e-1}$
 

@@ -1,3 +1,4 @@
+const int N = 1e5 + 10;
 int mu[N];int phi[N];
 int np[N];vector<int> p;
 void Prework(int n = N - 10) {

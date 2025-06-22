@@ -23,7 +23,7 @@ void Prework(int n = N - 10) {//线性筛积性函数
 }
 
 
-
+const int N = 1e5 + 10;
 int np[N], minp[N];
 vector<int> p;
 void Prework(int n = N - 10) {//欧拉筛最小质因子
@@ -40,6 +40,16 @@ void Prework(int n = N - 10) {//欧拉筛最小质因子
             if (i % j == 0) break;
         }
     }
+}
+
+vector<int> Factor(int x) {
+    vector<int> a;
+    while (x > 1) {
+        int t = minp[x];
+        while (x % t == 0) x /= t;
+        a.push_back(t);
+    }
+    return a;
 }
 
 vector<int> Divisor(int x) {//获取所有因子
@@ -84,4 +94,3 @@ int Divisor_sum(int x) {
     }
     return res;
 }
-

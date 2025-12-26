@@ -1,14 +1,14 @@
-    vector<int> tr(4 * n + 10), tag(4 * n + 10);
-    auto apply = [&](int u, int len, int v) {
-        tr[u] += len * v;
+vector<int> tr(4 * n + 10), tag(4 * n + 10);
+    auto apply = [&](int u, int l, int r, int v) {
+        tr[u] += (r - l + 1) * v;
         tag[u] += v;
         };
 
     auto down = [&](int u, int l, int r) {
         if (tag[u]) {
             int mid = (l + r) / 2;
-            apply(u * 2, mid - l + 1, tag[u]);
-            apply(u * 2 + 1, r - mid, tag[u]);
+            apply(u * 2, l, mid, tag[u]);
+            apply(u * 2 + 1, mid + 1, r, tag[u]);
             tag[u] = 0;
         }
         };
@@ -16,7 +16,7 @@
     auto _upd = [&](auto&& _upd, int u, int l, int r, int ql, int qr, int v) -> void {
         if (l > qr or r < ql) return;
         if (ql <= l and r <= qr) {
-            apply(u, r - l + 1, v);
+            apply(u, l, r, v);
             return;
         }
         down(u, l, r);

@@ -196,27 +196,27 @@ void Solve() {
         edg[i] = { u, v, w };
     }
     HLD hld(g, 1);
-
-    auto qr = [&](int x, int y) {
-        return sgt::ask(x, y);
+    auto modify_V = [&](int u, int v) {//修改u的权值为v
+        sgt::set(hld.dfn[u], v);
         };
-    for (int i = 1;i <= n - 1;i++) {
-        auto [u, v, w] = edg[i];
-        if (hld.dep[u] < hld.dep[v]) sgt::upd(hld.dfn[v], w);
-        else sgt::upd(hld.dfn[u], w);
-    }
-    int q;cin >> q;
-    while (q--) {
-        int op, u, v;cin >> op >> u >> v;
-        if (op == 1) {
-            int x = edg[u][0], y = edg[u][1];
-            if (hld.dep[x] < hld.dep[y]) swap(x, y);
-            sgt::set(hld.dfn[x], v);
+    auto query_V = [&](int u, int v) {//查询u到v的路径点权和
+        return hld.get_pat(u, v, [&](int l, int r) {return sgt::ask(l, r);}, 0);
+        };
+    auto init = [&](int isEdge) {//如果是边权:将边权寄存在较深的节点
+        if (!isEdge) return;
+        for (int i = 1;i <= n - 1;i++) {
+            auto [u, v, w] = edg[i];
+            if (hld.dep[u] < hld.dep[v]) sgt::upd(hld.dfn[v], w);
+            else sgt::upd(hld.dfn[u], w);
         }
-        else {
-            cout << hld.get_pat(u, v, qr, 1) << endl;
-        }
-    }
+        };
+    auto modify_E = [&](int u, int v, int w) {//修改边(u,v)的权值为w
+        if (hld.dep[u] < hld.dep[v]) swap(u, v);
+        sgt::set(hld.dfn[u], w);
+        };
+    auto query_E = [&](int u, int v) {//查询u到v的路径边权和
+        return hld.get_pat(u, v, [&](int l, int r) {return sgt::ask(l, r);}, 1);
+        };
 }
 
 signed main() {

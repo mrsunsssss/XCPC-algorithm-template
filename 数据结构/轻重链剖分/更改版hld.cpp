@@ -203,11 +203,17 @@ void Solve() {
         return hld.get_pat(u, v, [&](int l, int r) {return sgt::ask(l, r);}, 0);
         };
     auto init = [&](int isEdge) {//如果是边权:将边权寄存在较深的节点
-        if (!isEdge) return;
-        for (int i = 1;i <= n - 1;i++) {
-            auto [u, v, w] = edg[i];
-            if (hld.dep[u] < hld.dep[v]) sgt::upd(hld.dfn[v], w);
-            else sgt::upd(hld.dfn[u], w);
+        if (!isEdge) {
+            for (int i = 1; i <= n; i++) {
+                sgt::set(hld.dfn[i], a[i]);
+            }
+        }
+        else {
+            for (int i = 1;i <= n - 1;i++) {
+                auto [u, v, w] = edg[i];
+                if (hld.dep[u] < hld.dep[v]) sgt::set(hld.dfn[v], w);
+                else sgt::set(hld.dfn[u], w);
+            }
         }
         };
     auto modify_E = [&](int u, int v, int w) {//修改边(u,v)的权值为w

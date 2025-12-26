@@ -39,7 +39,7 @@ namespace sgt {
         _upd(u * 2 + 1, mid + 1, r, ql, qr, v);
 
         tr[u] = Combine(tr[u * 2], tr[u * 2 + 1]);
-    };
+    }
 
     int _ask(int u, int l, int r, int ql, int qr) {
         if (l > qr || r < ql) return 0;//注意设置幺元
@@ -48,6 +48,23 @@ namespace sgt {
         int mid = (l + r) / 2;
         return Combine(_ask(u * 2, l, mid, ql, qr), _ask(u * 2 + 1, mid + 1, r, ql, qr));
     }
+
+    void set(int u, int l, int r, int pos, int v) {
+        if (l > pos or r < pos) return;
+        if (l == r) {
+            tr[u] = v;
+            tag[u] = 0;
+            return;
+        }
+        Down(u, l, r);
+
+        int mid = (l + r) / 2;
+        set(u * 2, l, mid, pos, v);
+        set(u * 2 + 1, mid + 1, r, pos, v);
+
+        tr[u] = Combine(tr[u * 2], tr[u * 2 + 1]);
+    }
     void upd(int ql, int qr, int v) { return _upd(1, 1, n, ql, qr, v); };
+    void upd(int pos, int v) { return _upd(1, 1, n, pos, pos, v); };
     int ask(int ql, int qr) { return _ask(1, 1, n, ql, qr); };
 }

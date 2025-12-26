@@ -10,8 +10,8 @@ struct Segtree {
     void init(int n, Info v = Info()) { init(vector(n + 1, v)); }
     template<class T> void init(vector<T> a) {
         n = a.size() - 1;
-        info.assign(4 << (__lg(n) + 1), Info());
-        tag.assign(4 << (__lg(n) + 1), Tag());
+        info.assign(4 << __lg(n), Info());
+        tag.assign(4 << __lg(n), Tag());
         auto build = [&](auto&& build, int p, int l, int r) {
             if (l == r) {
                 info[p] = a[l];

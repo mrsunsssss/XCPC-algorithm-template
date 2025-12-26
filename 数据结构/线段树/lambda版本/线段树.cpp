@@ -33,7 +33,7 @@
         };
 
     auto _ask = [&](auto&& _ask, int u, int l, int r, int ql, int qr) -> int {
-        if (l > qr || r < ql) return 0;
+        if (l > qr || r < ql) return 0;//注意设置幺元
         if (l >= ql && r <= qr) return tr[u];
         Down(u, l, r);
         int mid = (l + r) / 2;

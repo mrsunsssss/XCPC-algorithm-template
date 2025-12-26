@@ -157,17 +157,19 @@ struct HLD {
         if (dep[a] > dep[b]) swap(a, b);
         op(dfn[a] + isEdge, dfn[b]);
     }
-    int get_pat(int a, int b, function<int(int, int)> op, bool isEdge) {
-        int res = 0;
+    //注意当不满足结合律时，两种op不同，需要改写（矩阵，字符串）
+    int get_pat(int a, int b, function<int(int, int)> query_op, function<int(int, int)> merge_op, int e, bool isEdge) {
+        int res = e;//注意设置幺元
         while (top[a] != top[b]) {
             if (dep[top[a]] < dep[top[b]]) swap(a, b);
-            res += op(dfn[top[a]], dfn[a]);
+            res = merge_op(res, query_op(dfn[top[a]], dfn[a]));
             a = p[top[a]];
         }
         if (dep[a] > dep[b]) swap(a, b);
-        res += op(dfn[a] + isEdge, dfn[b]);
+        res = merge_op(res, query_op(dfn[a] + isEdge, dfn[b]));
         return res;
     }
+
 
     // 操作子树
     void add_subt(int x, function<void(int, int)> op, bool isEdge) {
@@ -200,12 +202,12 @@ void Solve() {
         sgt::set(hld.dfn[u], v);
         };
     auto query_V = [&](int u, int v) {//查询u到v的路径点权和
-        return hld.get_pat(u, v, [&](int l, int r) {return sgt::ask(l, r);}, 0);
+        return hld.get_pat(u, v, sgt::Combine, sgt::Combine, 0, 0);
         };
     auto init = [&](int isEdge) {//如果是边权:将边权寄存在较深的节点
         if (!isEdge) {
             for (int i = 1; i <= n; i++) {
-                sgt::set(hld.dfn[i], a[i]);
+                // sgt::set(hld.dfn[i], a[i]);
             }
         }
         else {
@@ -221,7 +223,7 @@ void Solve() {
         sgt::set(hld.dfn[u], w);
         };
     auto query_E = [&](int u, int v) {//查询u到v的路径边权和
-        return hld.get_pat(u, v, [&](int l, int r) {return sgt::ask(l, r);}, 1);
+        return hld.get_pat(u, v, sgt::Combine, sgt::Combine, 0, 1);
         };
 }
 

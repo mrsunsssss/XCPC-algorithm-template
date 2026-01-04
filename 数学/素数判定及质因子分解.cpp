@@ -1,6 +1,6 @@
 mt19937_64 gen(random_device{}());
 vector<ll> res;
-inline ll qp(ll a, ll n, ll mod) {
+inline ll qp(ll a, ll n, ll mod) {//判较小的数字需要去掉int128卡常
     ll res = 1;
     while (n) {
         if (n & 1) res = (__int128)1 * res * a % mod;

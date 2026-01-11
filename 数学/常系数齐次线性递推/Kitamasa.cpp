@@ -38,5 +38,5 @@ namespace kitamasa {
         for (int i = 0;i < k;i++) res = (res + 1LL * t[i] * F[i] % MOD) % MOD;
         return res;
     }
-    //F[n] = C[1]F[n-1]+C[2]F[n-2]+...+C[k]F[n-k]
-}
+    //F[n] = C[1]F[n-1]+C[2]F[n-2]+...+C[k]F[n-k] ==> F[k] = C[1]F[k-1]+C[2]F[k-2]+...+C[k]F[0]
+}//C:1-index,F:0-index

@@ -30,7 +30,7 @@ namespace kitamasa {
         }
         return res;
     }
-    int RUN(vector<int> C, vector<int> F, int n) {//计算递推数列{Fn}第n项
+    int RUN(vector<int> C, vector<int> F, int n) {//计算递推数列{Fn}中F[n]
         int k = (int)C.size() - 1;
         if (n < k) return F[n];
         auto t = POW(C, n, k);

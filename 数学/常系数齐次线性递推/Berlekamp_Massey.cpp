@@ -1,5 +1,5 @@
 namespace Berlekamp_Massey {
-    const int MOD = 998244353;
+    const int MOD = 1e9 + 7;
     int qpow(int x, int n) {
         int res = 1;
         while (n) {

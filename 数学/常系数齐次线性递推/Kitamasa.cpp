@@ -11,8 +11,8 @@ namespace kitamasa {
         for (int i = 2 * k - 2;i >= k;i--) {
             if (res[i] == 0) continue;
             for (int j = 1;j <= k;j++) {
-                res[i - j - 1] += 1LL * res[i] * C[j - 1] % MOD;
-                if (res[i - j - 1] >= MOD) res[i - j - 1] -= MOD;
+                res[i - j] += 1LL * res[i] * C[j - 1] % MOD;
+                if (res[i - j] >= MOD) res[i - j] -= MOD;
             }
         }
         res.resize(k);

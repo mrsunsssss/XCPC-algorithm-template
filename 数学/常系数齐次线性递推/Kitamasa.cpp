@@ -11,7 +11,7 @@ namespace kitamasa {
         for (int i = 2 * k - 2;i >= k;i--) {
             if (res[i] == 0) continue;
             for (int j = 1;j <= k;j++) {
-                res[i - j - 1] += 1LL * res[i] * C[j] % MOD;
+                res[i - j - 1] += 1LL * res[i] * C[j - 1] % MOD;
                 if (res[i - j - 1] >= MOD) res[i - j - 1] -= MOD;
             }
         }
@@ -22,7 +22,7 @@ namespace kitamasa {
         vector<int> res(k);res[0] = 1;
         vector<int> base(k);
         if (k > 1) base[1] = 1;
-        else base[0] = C[1];
+        else base[0] = C[0];
         while (n) {
             if (n & 1) res = MUL(res, base, C, k);
             base = MUL(base, base, C, k);
@@ -31,7 +31,7 @@ namespace kitamasa {
         return res;
     }
     int run(vector<int> C, vector<int> F, int n) {//计算递推数列{Fn}第n项
-        int k = (int)C.size() - 1;
+        int k = C.size();
         if (n < k) return F[n];
         auto t = POW(C, n, k);
         int res = 0;

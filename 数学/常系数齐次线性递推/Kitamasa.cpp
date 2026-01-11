@@ -40,3 +40,4 @@ namespace kitamasa {
     }
     //F[n] = C[0]F[n-1]+C[1]F[n-2]+...+C[k-1]F[n-k] ==> F[k] = C[0]F[k-1]+C[1]F[k-2]+...+C[k-1]F[0]
 }
+//0-based: F,C
